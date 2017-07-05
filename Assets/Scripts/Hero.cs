@@ -10,7 +10,11 @@ public struct Hero
     // Combat Stats
     public int hp;
     public int maxHp;
-    public int skillPoints;
+    public int sp;
+    public float hpPerc;
+    public float turnRate;
+    public float interval;
+    public float counter;
 
     // Specials
     public float critChance;
@@ -25,7 +29,11 @@ public struct Hero
     public float staminaRunes;
     public float agilityRunes;
 
+    // state
+    public bool alive;
+
     // Pet
+    public string pets;
     public Pet pet;
     public enum Pet
     {
