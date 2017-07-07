@@ -1,63 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
+using UnityEngine.UI;
 
-
-public class Simulation : MonoBehaviour {
-
-    public HeroPanel hero_1;
-    public HeroPanel hero_2;
-    public HeroPanel hero_3;
-    public HeroPanel hero_4;
-    public HeroPanel hero_5;
+public class Simulation
+{
     public static Hero[] hero = new Hero[5];
     public static int dummyPower = 1600, dummyStamina = 2880, dummyAgility = 640, hpDummy, spDummy = 0;
+    public static float winRate;
+    public static int progressionBar = 0;
+    private static Slider slider;
 
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyUp(KeyCode.Space)) {
-            //StartCoroutine(simulation());
-            StartCoroutine(test());
-        }
-    }
-
-    public void onClickInit() {
-        StartCoroutine(simulation());
-        //StartCoroutine(test());
-    }
-
-    IEnumerator test() {
-        int i = 0, a = 0, b = 0;
-        bool te;
-        int s;
-        for (s = 0; s < 1; s++) {
-            a = 0;
-            b = 0;
-            for (i = 0; i < 100000; i++)
-            {
-                te = Logic.RNGroll(10f);
-                if (te)
-                {
-                    a++;
-                }
-                else { b++; }
-            }
-            Debug.Log(a);
-            Debug.Log(b); }
-        yield return null;
-    }
-
-    IEnumerator simulation() {
-        int progressionBar = 0;
+    public static void simulation()
+    {
+        slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
         int i;
 
         float win = 0;
         float lose = 0;
-        float winRate;
+        //float winRate;
 
-        int games = 1000; //number of times fight will run.
-        int playerNo;
+        int games = 10000; //number of times fight will run.
+        int playerNo = 5;
         int counterMax = 100;
         int cycle;
 
@@ -67,56 +32,38 @@ public class Simulation : MonoBehaviour {
 
         bool DS;
         bool teamAlive = true;
+        progressionBar = 0;
 
-
-        for (p = 0; p < games; p++)
-        {  // for loop to simulate as many fights as you want.
-
-            
-            if (p % 100 == 0 && p > 0)
-            {
-                progressionBar += 10;
-                Debug.Log(progressionBar);
-            }
-
-            teamAlive = true;
-            playerNo = 5;
-
-            hero[0].power = 452;
+        /*hero[0].power = 452;
             hero[1].power = 600;
-            hero[2].power = 1020;
+            hero[2].power = 1085;
             hero[3].power = 600;
             hero[4].power = 100;
             hero[0].stamina = 704;
-            hero[1].stamina = 200;
-            hero[2].stamina = 138;
-            hero[3].stamina = 200;
+            hero[1].stamina = 205;
+            hero[2].stamina = 135;
+            hero[3].stamina = 205;
             hero[4].stamina = 1010;
             hero[0].agility = 101;
             hero[1].agility = 600;
-            hero[2].agility = 77;
+            hero[2].agility = 69;
             hero[3].agility = 555;
             hero[4].agility = 100;
-            hero[0].sp = 4;
-            hero[1].sp = 4;
-            hero[2].sp = 4;
-            hero[3].sp = 4;
-            hero[4].sp = 4;
             hero[0].critChance = 10f;
             hero[1].critChance = 29f;
-            hero[2].critChance = 25f;
+            hero[2].critChance = 15f;
             hero[3].critChance = 10f;
             hero[4].critChance = 10f;
-            hero[0].critDamage = 1.5f;
-            hero[1].critDamage = 1.5f;
-            hero[2].critDamage = 1.5f;
-            hero[3].critDamage = 1.5f;
-            hero[4].critDamage = 1.5f;
-            hero[0].dsChance = 0f;
+            hero[0].critDamage = 50f;
+            hero[1].critDamage = 50f;
+            hero[2].critDamage = 50f;
+            hero[3].critDamage = 50f;
+            hero[4].critDamage = 50f;
+            hero[0].dsChance = 2.5f;
             hero[1].dsChance = 7.5f;
             hero[2].dsChance = 18f;
             hero[3].dsChance = 10f;
-            hero[4].dsChance = 0f;
+            hero[4].dsChance = 2.5f;
             hero[0].blockChance = 31f;
             hero[1].blockChance = 0f;
             hero[2].blockChance = 0f;
@@ -132,53 +79,85 @@ public class Simulation : MonoBehaviour {
             hero[2].deflectChance = 0f;
             hero[3].deflectChance = 0f;
             hero[4].deflectChance = 5f;
-            hero[0].powerRunes = 1f;
-            hero[1].powerRunes = 1.22f;
-            hero[2].powerRunes = 1.155f;
-            hero[3].powerRunes = 1.16f;
-            hero[4].powerRunes = 1f;
-            hero[0].agilityRunes = 1f;
-            hero[1].agilityRunes = 1f;
-            hero[2].agilityRunes = 1f;
-            hero[3].agilityRunes = 1.025f;
-            hero[4].agilityRunes = 1f;
+            hero[0].powerRunes = 0f;
+            hero[1].powerRunes = 22f;
+            hero[2].powerRunes = 15.5f;
+            hero[3].powerRunes = 16f;
+            hero[4].powerRunes = 0f;
+            hero[0].agilityRunes = 0f;
+            hero[1].agilityRunes = 0f;
+            hero[2].agilityRunes = 0f;
+            hero[3].agilityRunes = 2.5f;
+            hero[4].agilityRunes = 0f;
             hero[0].pets = "gemmi";
             hero[1].pets = "nelson";
             hero[2].pets = "gemmi";
             hero[3].pets = "nelson";
             hero[4].pets = "gemmi";
-            hero[0].alive = true;
-            hero[1].alive = true;
-            hero[2].alive = true;
-            hero[3].alive = true;
-            hero[4].alive = true;
-
-            /*hero[0] = hero_1.GetHeroStruct();
-            hero[1] = hero_2.GetHeroStruct();
-            hero[2] = hero_3.GetHeroStruct();
-            hero[3] = hero_4.GetHeroStruct();
-            hero[4] = hero_5.GetHeroStruct();*/
+            hero[0].pet = Hero.Pet.Gemmi;
+            hero[1].pet = Hero.Pet.Nelson;
+            hero[2].pet = Hero.Pet.Gemmi;
+            hero[3].pet = Hero.Pet.Nelson;
+            hero[4].pet = Hero.Pet.Gemmi;*/
 
 
-            hpDummy = dummyStamina * 10;
-            dummyTR = Logic.turnRate(dummyPower, dummyAgility);
-            dummyInterval = (float)counterMax / dummyTR;
+        for (i = 0; i < 5; i++)
+        {  //initialisation
+
+            hero[i].powerRunes = (100f + hero[i].powerRunes) / 100f;
+            hero[i].agilityRunes = (100f + hero[i].agilityRunes) / 100f;
+            hero[i].critDamage = (100f + hero[i].critDamage) / 100f;
+            hero[i].staminaRunes = (100f + hero[i].staminaRunes) / 100f;
+
+            hero[i].turnRate = Logic.turnRate(hero[i].power, hero[i].agility);
+            hero[i].power = Convert.ToInt32(hero[i].power * hero[i].powerRunes);
+            hero[i].turnRate *= hero[i].agilityRunes;
+            hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
+            hero[i].maxHp = hero[i].hp;
+            hero[i].interval = counterMax / hero[i].turnRate;
+            hero[i].counter = 0;
+            hero[i].sp = 4;
+            hero[i].alive = true;
+            /*UnityEngine.Debug.Log(hero[i].power);
+            UnityEngine.Debug.Log(hero[i].stamina);
+            UnityEngine.Debug.Log(hero[i].hp);
+            UnityEngine.Debug.Log(hero[i].agility);
+            UnityEngine.Debug.Log(hero[i].critChance);
+            UnityEngine.Debug.Log(hero[i].critDamage);
+            UnityEngine.Debug.Log(hero[i].dsChance);
+            UnityEngine.Debug.Log(hero[i].blockChance);
+            UnityEngine.Debug.Log(hero[i].powerRunes);
+            UnityEngine.Debug.Log(hero[i].agilityRunes);
+            UnityEngine.Debug.Log(hero[i].pet);*/
+        }
+
+        dummyTR = Logic.turnRate(dummyPower, dummyAgility);//boss init
+        dummyInterval = (float)counterMax / dummyTR;
 
 
-            for (i = 0; i < playerNo; i++)
-            {  //initialisation
-                hero[i].turnRate = Logic.turnRate(hero[i].power, hero[i].agility);
-                hero[i].power = System.Convert.ToInt32(hero[i].power * hero[i].powerRunes);
-                hero[i].turnRate *= hero[i].agilityRunes;
-                hero[i].hp = hero[i].stamina * 10;
-                hero[i].maxHp = hero[i].hp;
-                hero[i].interval = counterMax / hero[i].turnRate;
+        for (p = 0; p < games; p++)
+        {  // for loop to simulate as many fights as you want.
+
+
+            if ((float)p % 100 == 0 && p > 0)
+            {
+                progressionBar += 10;
+                //UnityEngine.Debug.Log(progressionBar);
+                slider.value = progressionBar;
+            }
+
+            teamAlive = true;
+
+            for (i = 0; i < 5; i++)
+            {  //hero  values that need to be reset every game
+                hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
                 hero[i].counter = 0;
                 hero[i].sp = 4;
                 hero[i].alive = true;
             }
 
-
+            hpDummy = dummyStamina * 10;
+            
             while (hpDummy > 0 && teamAlive == true)
             {           //fight will stop if either party is dead
                 for (cycle = 1; cycle <= counterMax; cycle++)
@@ -208,7 +187,7 @@ public class Simulation : MonoBehaviour {
                                 cycle = counterMax;
                                 dummyCounter = 0;
                             }
-                            //Console.WriteLine("boss hP ={0}", hpDummy);
+                            //UnityEngine.Debug.Log("boss hP = "+ hpDummy);
 
                             //Console.WriteLine("hp0 = {0}  hp1 = {1} hp2 = {2} hp3 = {3} hp4 = {4}\n", hero[0].hp, hero[1].hp, hero[2].hp, hero[3].hp, hero[4].hp);
                         }
@@ -230,8 +209,6 @@ public class Simulation : MonoBehaviour {
                             teamAlive = false;
                             cycle = counterMax;
                         }
-                        //Debug.Log("boss attacked ; hp0 = {0}  hp1 = {1} hp2 = {2} hp3 = {3} hp4 = {4}\n", hero[0].hp, hero[1].hp, hero[2].hp, hero[3].hp,hero[4].hp);
-                        //Console.WriteLine("{0}. {1}. {2}. [3}. {4}",hero[0].hp, hero[1].hp, hero[2].hp, hero[3].hp, hero[4].hp);
                     }
                 }
             }
@@ -240,13 +217,18 @@ public class Simulation : MonoBehaviour {
                 lose++;
                 dummyCounter = 0;
             }
-            
+
         }
         winRate = (win / games) * 100;
 
-        Debug.Log("winrate = " + winRate);
-        //printf("won = %f lost = %f\n", win, lose);
-        //printf("winRate = %f %%\n", winRate);
-        yield return null;
+
+        //Console.WriteLine("won = %f lost = %f\n", win, lose);
+        //Console.WriteLine(win);
+        //Console.WriteLine(lose);
+        //Console.WriteLine(games);
+        //Console.WriteLine(winRate + "%");
+        UnityEngine.Debug.Log(winRate);
+        
+
     }
 }

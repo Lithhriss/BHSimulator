@@ -39,7 +39,9 @@ public struct Hero
     {
         None,
         Nelson,
-        Gemmi
+        Gemmi,
+        Boogie,
+        Nemo
     }
 
     // Predefined Heroes
@@ -48,20 +50,20 @@ public struct Hero
             "Shadown88",
             new Hero {
                 // Base Stats
-                power         = 829,
-                stamina       = 185,
-                agility       = 204,
+                power         = 1085,
+                stamina       = 135,
+                agility       = 69,
                 // Specials
-                critChance    = 0.15f,
-                critDamage    = 0.5f,
-                dsChance      = 0.15f,
+                critChance    = 15f,
+                critDamage    = 50f,
+                dsChance      = 18f,
                 blockChance   = 0f,
-                evadeChance   = 0.025f,
+                evadeChance   = 2.5f,
                 deflectChance = 0f,
                 // Runes
-                powerRunes    = 0f,
+                powerRunes    = 15.5f,
                 staminaRunes  = 0f,
-                agilityRunes  = 0.01f,
+                agilityRunes  = 0f,
                 // Pet
                 pet           = Pet.Gemmi
             }
@@ -70,24 +72,91 @@ public struct Hero
             "SSS1",
             new Hero {
                 // Base Stats
-                power         = 568,
+                power         = 600,
                 stamina       = 205,
                 agility       = 555,
                 // Specials
-                critChance    = 0.25f,
-                critDamage    = 1f,
-                dsChance      = 0.05f,
+                critChance    = 25f,
+                critDamage    = 50f,
+                dsChance      = 10f,
                 blockChance   = 0f,
-                evadeChance   = 0.025f,
+                evadeChance   = 2.5f,
                 deflectChance = 0f,
                 // Runes
-                powerRunes    = 0.05f,
+                powerRunes    = 16f,
                 staminaRunes  = 0f,
-                agilityRunes  = 0.025f,
+                agilityRunes  = 2.5f,
+                // Pet
+                pet           = Pet.Nelson
+            }
+        },
+        {
+            "Tobeyg44",
+            new Hero {
+                // Base Stats
+                power         = 600,
+                stamina       = 205,
+                agility       = 600,
+                // Specials
+                critChance    = 29f,
+                critDamage    = 50f,
+                dsChance      = 7.5f,
+                blockChance   = 0f,
+                evadeChance   = 2.5f,
+                deflectChance = 0f,
+                // Runes
+                powerRunes    = 22f,
+                staminaRunes  = 0f,
+                agilityRunes  = 0f,
+                // Pet
+                pet           = Pet.Nelson
+            }
+        },
+        {
+            "SilskeofGH",
+            new Hero {
+                // Base Stats
+                power         = 452,
+                stamina       = 704,
+                agility       = 101,
+                // Specials
+                critChance    = 10f,
+                critDamage    = 50f,
+                dsChance      = 2.5f,
+                blockChance   = 31f,
+                evadeChance   = 14f,
+                deflectChance = 5f,
+                // Runes
+                powerRunes    = 0f,
+                staminaRunes  = 0f,
+                agilityRunes  = 0f,
+                // Pet
+                pet           = Pet.Gemmi
+            }
+        },
+        {
+            "Borealis",
+            new Hero {
+                // Base Stats
+                power         = 100,
+                stamina       = 1010,
+                agility       = 100,
+                // Specials
+                critChance    = 10f,
+                critDamage    = 50f,
+                dsChance      = 2.5f,
+                blockChance   = 40f,
+                evadeChance   = 12.5f,
+                deflectChance = 5f,
+                // Runes
+                powerRunes    = 0f,
+                staminaRunes  = 0f,
+                agilityRunes  = 0f,
                 // Pet
                 pet           = Pet.Gemmi
             }
         }
+
     };
     
     // Hero Alive?

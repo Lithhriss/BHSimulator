@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System;
 
-public class BossLogic {
-
+class BossLogic
+{
     public static void bossAttack()
     {
         int k;
         int attackValue = 0;
         int target;
-        target = Logic.bossSkillSelection(Simulation.spDummy,  out attackValue);
+        target = Logic.bossSkillSelection(Simulation.spDummy, out attackValue);
 
         k = Logic.targetSelection(target);
 
@@ -19,7 +19,7 @@ public class BossLogic {
         redirectRoll = Logic.RNGroll(25f);
         if (redirectRoll)
         {
-            //UnityEngine.Debug.Log("\nredirect successful!\n");
+            //Console.WriteLine("\nredirect successful!\n");
             k = 4;
         }
         if (critRoll)
@@ -35,7 +35,7 @@ public class BossLogic {
                 blockRoll = Logic.RNGroll(Simulation.hero[k].blockChance);
                 if (blockRoll)
                 {
-                    //UnityEngine.Debug.Log("\n block successful!\n");
+                    //Console.WriteLine("\n block successful!\n");
                     Simulation.hero[k].hp -= Convert.ToInt32(0.5 * attackValue);
                     if (Simulation.hero[k].hp <= 0)
                     {
@@ -60,13 +60,12 @@ public class BossLogic {
                 }
             }
             else
-            {
-               // UnityEngine.Debug.Log("\n evade successful!\n"); 
+            { //Console.WriteLine("\n evade successful!\n"); 
             }
         }
         else
         {
-           // UnityEngine.Debug.Log("\n deflect successful!\n");
+            //Console.WriteLine("\n deflect successful!\n");
             Simulation.hpDummy -= attackValue;
 
         }

@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\BossLogic.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\HeroLogic.cs" />
+    <Compile Include="Assets\Scripts\Launch.cs" />
     <Compile Include="Assets\Scripts\Logic.cs" />
     <Compile Include="Assets\Scripts\PetLogic.cs" />
     <Compile Include="Assets\Scripts\Simulation.cs" />

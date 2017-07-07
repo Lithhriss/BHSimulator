@@ -92,15 +92,23 @@ public class HeroPanel : MonoBehaviour
     // Return a Hero struct
     public Hero GetHeroStruct()
     {
-        Hero.Pet currrentPet;
+        Hero.Pet currentPet;
         switch (pet.options[pet.value].text)
         {
+            case "Nemo":
+                currentPet = Hero.Pet.Nemo;
+                break;
+
+            case "Boogie":
+                currentPet = Hero.Pet.Boogie;
+                break;
+
             case "Nelson":
-                currrentPet = Hero.Pet.Nelson;
+                currentPet = Hero.Pet.Nelson;
                 break;
 
             default:   // Gemmi
-                currrentPet = Hero.Pet.Gemmi;
+                currentPet = Hero.Pet.Gemmi;
                 break;
         }
         return new Hero {
@@ -120,7 +128,7 @@ public class HeroPanel : MonoBehaviour
             staminaRunes  = Convert.ToSingle(staminaRunes.text),
             agilityRunes  = Convert.ToSingle(agilityRunes.text),
             // Pet
-            pet           = currrentPet
+            pet           = currentPet
         };
     }
 }
