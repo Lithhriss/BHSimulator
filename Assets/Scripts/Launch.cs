@@ -28,6 +28,7 @@ public class Launch : MonoBehaviour {
         {
             slider.value += 1;
             
+
             
         }
 

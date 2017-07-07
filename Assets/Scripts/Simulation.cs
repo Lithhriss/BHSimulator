@@ -21,7 +21,7 @@ public class Simulation
         float lose = 0;
         //float winRate;
 
-        int games = 10000; //number of times fight will run.
+        int games = 1000; //number of times fight will run.
         int playerNo = 5;
         int counterMax = 100;
         int cycle;
