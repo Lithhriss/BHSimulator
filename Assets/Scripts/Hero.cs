@@ -11,6 +11,8 @@ public struct Hero
     public int hp;
     public int maxHp;
     public int sp;
+    public int shield;
+    public int maxShield;
     public float hpPerc;
     public float turnRate;
     public float interval;
@@ -23,14 +25,20 @@ public struct Hero
     public float blockChance;
     public float evadeChance;
     public float deflectChance;
+    public float absorbChance;
 
     // Runes
     public float powerRunes;
     public float staminaRunes;
     public float agilityRunes;
+    public float lifeSteal;
 
     // state
     public bool alive;
+    public bool drain;
+    public bool unity;
+    public bool redirect;
+    public bool redirectRune;
 
     // Pet
     public string pets;
@@ -41,7 +49,19 @@ public struct Hero
         Nelson,
         Gemmi,
         Boogie,
-        Nemo
+        Nemo,
+        Crem, 
+        Boiguh, 
+        Nerder
+    }
+    public Weapon weapon;
+    public enum Weapon
+    {
+        bow,
+        spear,
+        sword,
+        staff,
+        axe
     }
 
     // Predefined Heroes

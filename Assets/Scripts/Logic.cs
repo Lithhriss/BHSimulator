@@ -106,48 +106,50 @@ class Logic
         int target = 0;
         int i = 0;
         bool targetLocked = false;
-        if (method == 1)
+
+        switch (method)
         {
-            while (!targetLocked)
-            {
-                if (Simulation.hero[i].alive)
+            case 1:
+                while (!targetLocked)
                 {
-                    target = i;
-                    targetLocked = true;
+                    if (Simulation.hero[i].alive)
+                    {
+                        target = i;
+                        targetLocked = true;
+                    }
+                    i++;
                 }
-                i++;
-            }
-        }
-        if (method == 2)
-        {
-            i = 4;
-            while (!targetLocked)
-            {
-                if (Simulation.hero[i].alive)
+                break;
+            case 2:
+                i = 4;
+                while (!targetLocked)
                 {
-                    target = i;
-                    targetLocked = true;
+                    if (Simulation.hero[i].alive)
+                    {
+                        target = i;
+                        targetLocked = true;
+                    }
+                    i--;
                 }
-                i--;
-            }
-        }
-        if (method == 3)
-        {
-            while (!targetLocked)
-            {
-                i = UnityEngine.Random.Range(0, 5);
-                if (Simulation.hero[i].alive)
+                break;
+            case 3:
+                while (!targetLocked)
                 {
-                    target = i;
-                    targetLocked = true;
+                    i = UnityEngine.Random.Range(0, 5);
+                    if (Simulation.hero[i].alive)
+                    {
+                        target = i;
+                        targetLocked = true;
+                    }
                 }
-            }
+                break;
+            default:
+                break;
         }
         return target;
     }
-
-
-    public static int bossSkillSelection(int sp, out int finalAttack)
+    //obsolete method. Keeping it in case I reuse the code
+    /*public static int bossSkillSelection(int sp, out int finalAttack)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
@@ -298,7 +300,180 @@ class Logic
         finalAttack = attackValue;
         return targetMethod;
     }
+    */
 
+    public static void heroDamageApplication(int k, int attackValue)
+    {
+        bool bossEvade = RNGroll(2.5f);
+        if (!bossEvade) {
+            PetLogic.petSelection(k);
+            Simulation.hpDummy -= attackValue;
+            if (Simulation.hero[k].drain)
+            {
+                Simulation.hero[k].hp += attackValue;
+                if (Simulation.hero[k].hp > Simulation.hero[k].maxHp)
+                {
+                    Simulation.hero[k].hp = Simulation.hero[k].maxHp;
+                }
+            }
+            if (Simulation.hero[k].lifeSteal > 0f)
+            {
+                Simulation.hero[k].hp = Simulation.hero[k].hp + Convert.ToInt32(attackValue * Simulation.hero[k].lifeSteal);
+            }
+        }
 
+    }
+    // following statements to choose a def proc and to select the redirected target
+    public static int defensiveProcCase(int k) {
+        int scenario = 10;
+        if (RNGroll(Simulation.hero[k].blockChance)) { scenario = 3; }
+        if (RNGroll(Simulation.hero[k].evadeChance)) { scenario = 2; }
+        if (RNGroll(Simulation.hero[k].deflectChance)) { scenario = 1; }
+        if (RNGroll(Simulation.hero[k].absorbChance)) { scenario = 0; }
+        return scenario;
+    }
+    public static int redirectSelection(int k)
+    {
+        int redirectCountLive = Simulation.redirectCount;
+        while (redirectCountLive > 0)
+        {//redirect loop will run only if at least one member has the rune
+            for (int i = 0; i < 5; i++)
+            {
+                if (Simulation.hero[i].redirectRune && Simulation.hero[i].redirect)
+                { //2 part condition, that they have rune and that their llast redirect roll was successful
+                    Simulation.hero[i].redirect = RNGroll(25f);
+                    if (!Simulation.hero[i].redirect)
+                    {
+                        redirectCountLive--;
+                    }
+                    else
+                    {
+                        k = i;
+                        if (redirectCountLive == 1)
+                        {//if only one member has the rune. will stop the loop to lock itself as target
+                            redirectCountLive = 0;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 5; i++)
+        { //reset redirect rolls to true
+            if (Simulation.hero[i].redirectRune)
+            {
+                Simulation.hero[i].redirect = true;
+            }
+        }
+        return k;
+    }
+    // following methods used when defensiveproc is successful in boss' damage application nethod
+    public static void heroAbsorb (int attackValue, int k)
+    {
+        Simulation.hero[k].shield += attackValue;
+        if (Simulation.hero[k].shield > Simulation.hero[k].maxShield)
+        {
+            Simulation.hero[k].shield = Simulation.hero[k].maxShield;
+        }
+    }
+    public static void heroDeflect (int attackValue, int k)
+    {
+        Simulation.hpDummy -= attackValue;
+        if (Simulation.dummyDrain)
+        {
+            Simulation.hpDummy += attackValue;
+        }
+        if (Simulation.dummySelfInjure)
+        {
+            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+        }
+    }
+    public static void heroBlock (int attackValue, int k)
+    {
+        attackValue = Convert.ToInt32(0.5 * attackValue);
+        if (Simulation.dummyDrain)
+        {
+            Simulation.hpDummy += attackValue;
+        }
+        if (Simulation.dummySelfInjure)
+        {
+            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+        }
+        if (Simulation.hero[k].shield > 0)
+        {
+            if (attackValue > Simulation.hero[k].shield)
+            {
+                attackValue -= Simulation.hero[k].shield;
+                Simulation.hero[k].shield = 0;
+            }
+            else
+            {
+                Simulation.hero[k].shield -= attackValue;
+                attackValue = 0;
+            }
+        }
+        Simulation.hero[k].hp -= attackValue;
+        if (Simulation.hero[k].hp <= 0)
+        {
+            Simulation.hero[k].alive = false;
+            Simulation.aliveCount--;
+        }
+        else
+        {
+            PetLogic.petSelection(k);
+        }
+    }
+    public static void heroNormal(int attackValue, int k)
+    {
+        if (Simulation.dummyDrain)
+        {
+            Simulation.hpDummy += attackValue;
+        }
+        if (Simulation.dummySelfInjure)
+        {
+            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+        }
+        if (Simulation.hero[k].shield > 0)
+        {
+            if (attackValue > Simulation.hero[k].shield)
+            {
+                attackValue -= Simulation.hero[k].shield;
+                Simulation.hero[k].shield = 0;
+            }
+            else
+            {
+                Simulation.hero[k].shield -= attackValue;
+                attackValue = 0;
+            }
+        }
+        Simulation.hero[k].hp -= attackValue;
+        if (Simulation.hero[k].hp <= 0)
+        {
+            Simulation.hero[k].alive = false;
+            Simulation.aliveCount--;
+        }
+        else
+        {
+            PetLogic.petSelection(k);
+        }
+    }
 
+    //Hero skills
+    public static void heroNormalAttack(int k, bool DS)
+    {
+        int attackValue = SkillList.normalAttack(Simulation.hero[k].power);
+        if (Logic.RNGroll(Simulation.hero[k].critChance))
+        {
+            attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critChance);
+        }
+        Logic.heroDamageApplication(k, attackValue);
+        if (DS)
+        {
+            attackValue = SkillList.normalAttack(Simulation.hero[k].power);
+            if (Logic.RNGroll(Simulation.hero[k].critChance))
+            {
+                attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critChance);
+            }
+            Logic.heroDamageApplication(k, attackValue);
+        }
+    }
 }

@@ -7,9 +7,13 @@ public class Simulation
 {
     public static Hero[] hero = new Hero[5];
     public static int dummyPower = 1600, dummyStamina = 2880, dummyAgility = 640, hpDummy, spDummy = 0;
+    public static bool dummyDrain = false;
+    public static bool dummySelfInjure = false;
     public static float winRate;
     public static int progressionBar = 0;
     private static Slider slider;
+    public static int redirectCount = 0;
+    public static int aliveCount = 5;
 
     public static void simulation()
     {
@@ -103,32 +107,24 @@ public class Simulation
 
         for (i = 0; i < 5; i++)
         {  //initialisation
-
+            if (hero[i].redirectRune) {
+                redirectCount++;
+            }
             hero[i].powerRunes = (100f + hero[i].powerRunes) / 100f;
             hero[i].agilityRunes = (100f + hero[i].agilityRunes) / 100f;
             hero[i].critDamage = (100f + hero[i].critDamage) / 100f;
             hero[i].staminaRunes = (100f + hero[i].staminaRunes) / 100f;
-
             hero[i].turnRate = Logic.turnRate(hero[i].power, hero[i].agility);
             hero[i].power = Convert.ToInt32(hero[i].power * hero[i].powerRunes);
             hero[i].turnRate *= hero[i].agilityRunes;
             hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
             hero[i].maxHp = hero[i].hp;
+            hero[i].maxShield = Convert.ToInt32(hero[i].maxHp / 2);
             hero[i].interval = counterMax / hero[i].turnRate;
             hero[i].counter = 0;
             hero[i].sp = 4;
             hero[i].alive = true;
-            /*UnityEngine.Debug.Log(hero[i].power);
-            UnityEngine.Debug.Log(hero[i].stamina);
-            UnityEngine.Debug.Log(hero[i].hp);
-            UnityEngine.Debug.Log(hero[i].agility);
-            UnityEngine.Debug.Log(hero[i].critChance);
-            UnityEngine.Debug.Log(hero[i].critDamage);
-            UnityEngine.Debug.Log(hero[i].dsChance);
-            UnityEngine.Debug.Log(hero[i].blockChance);
-            UnityEngine.Debug.Log(hero[i].powerRunes);
-            UnityEngine.Debug.Log(hero[i].agilityRunes);
-            UnityEngine.Debug.Log(hero[i].pet);*/
+            hero[i].drain = false;
         }
 
         dummyTR = Logic.turnRate(dummyPower, dummyAgility);//boss init
@@ -151,9 +147,11 @@ public class Simulation
             for (i = 0; i < 5; i++)
             {  //hero  values that need to be reset every game
                 hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
+                hero[i].shield = Convert.ToInt32(hero[i].hp / 10);
                 hero[i].counter = 0;
                 hero[i].sp = 4;
                 hero[i].alive = true;
+                hero[i].redirect = true;
             }
 
             hpDummy = dummyStamina * 10;
@@ -172,13 +170,7 @@ public class Simulation
                             hero[i].sp++;
                             PetLogic.petSelection(i);
                             DS = Logic.RNGroll(hero[i].dsChance);
-                            if (DS)
-                            {
-                                HeroLogic.heroAttack(i, DS);
-                                DS = false;
-                                HeroLogic.heroAttack(i, DS);
-                            }
-                            else { HeroLogic.heroAttack(i, DS); }
+                            HeroLogic.weaponSelection(i, DS);
                             hero[i].counter -= hero[i].interval;
                             if (hpDummy <= 0)
                             {
@@ -195,7 +187,7 @@ public class Simulation
                     if (hpDummy > 0 && dummyCounter >= dummyInterval)
                     {         //checks if it's boss' turn to attack
                         spDummy++;
-                        BossLogic.bossAttack();
+                        BossLogic.kaleidoAI();
                         dummyCounter -= dummyInterval;
                         if (hpDummy <= 0)
                         {

@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\Logic.cs" />
     <Compile Include="Assets\Scripts\PetLogic.cs" />
     <Compile Include="Assets\Scripts\Simulation.cs" />
+    <Compile Include="Assets\Scripts\SkillList.cs" />
     <Compile Include="Assets\Scripts\UI\HeroPanel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
