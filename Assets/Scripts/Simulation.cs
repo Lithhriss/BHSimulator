@@ -155,6 +155,7 @@ public class Simulation
             }
 
             hpDummy = dummyStamina * 10;
+            spDummy = 0;
             
             while (hpDummy > 0 && teamAlive == true)
             {           //fight will stop if either party is dead
@@ -179,9 +180,6 @@ public class Simulation
                                 cycle = counterMax;
                                 dummyCounter = 0;
                             }
-                            //UnityEngine.Debug.Log("boss hP = "+ hpDummy);
-
-                            //Console.WriteLine("hp0 = {0}  hp1 = {1} hp2 = {2} hp3 = {3} hp4 = {4}\n", hero[0].hp, hero[1].hp, hero[2].hp, hero[3].hp, hero[4].hp);
                         }
                     }
                     if (hpDummy > 0 && dummyCounter >= dummyInterval)
@@ -209,18 +207,8 @@ public class Simulation
                 lose++;
                 dummyCounter = 0;
             }
-
         }
-        winRate = (win / games) * 100;
-
-
-        //Console.WriteLine("won = %f lost = %f\n", win, lose);
-        //Console.WriteLine(win);
-        //Console.WriteLine(lose);
-        //Console.WriteLine(games);
-        //Console.WriteLine(winRate + "%");
+        winRate = (win / games) * 100;     
         UnityEngine.Debug.Log(winRate);
-        
-
     }
 }

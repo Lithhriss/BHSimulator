@@ -20,14 +20,20 @@ public class HeroPanel : MonoBehaviour
     public InputField blockChance;
     public InputField evadeChance;
     public InputField deflectChance;
+    public InputField absorbChance;
 
     // Runes
     public InputField powerRunes;
     public InputField staminaRunes;
     public InputField agilityRunes;
 
+    public Toggle unitySkill;
+    public Toggle bushidoBonus;
+    public Toggle divinityBonus;
     // Pet
     public Dropdown pet;
+    public Dropdown weapon;
+    public Dropdown metaRune;
 
     // Awake
     public void Awake()
@@ -44,6 +50,14 @@ public class HeroPanel : MonoBehaviour
         // Pets
         pet.ClearOptions();
         pet.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.Pet))));
+
+        // Weapons
+        weapon.ClearOptions();
+        weapon.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.Weapon))));
+
+        //meta
+        metaRune.ClearOptions();
+        metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.MetaRune))));
     }
 
     // Predefine Switch
@@ -74,6 +88,12 @@ public class HeroPanel : MonoBehaviour
         blockChance.text   = Convert.ToString(hero.blockChance);
         evadeChance.text   = Convert.ToString(hero.evadeChance);
         deflectChance.text = Convert.ToString(hero.deflectChance);
+        absorbChance.text  = Convert.ToString(hero.absorbChance);
+
+        //set bonuses
+        unitySkill.isOn    = hero.unity;
+        divinityBonus.isOn = hero.divinityBonus;
+
         // Runes
         powerRunes.text    = Convert.ToString(hero.powerRunes);
         staminaRunes.text  = Convert.ToString(hero.staminaRunes);
@@ -84,6 +104,26 @@ public class HeroPanel : MonoBehaviour
             if (pet.options[i].text == hero.pet.ToString())
             {
                 pet.value = i;
+                break;
+            }
+        }
+
+        //weapon
+        for (int i = 0; i < weapon.options.Count; i++)
+        {
+            if (weapon.options[i].text == hero.weapon.ToString())
+            {
+                weapon.value = i;
+                break;
+            }
+        }
+
+        // meta bonus
+        for (int i = 0; i < metaRune.options.Count; i++)
+        {
+            if (metaRune.options[i].text == hero.metaRune.ToString())
+            {
+                metaRune.value = i;
                 break;
             }
         }
@@ -107,10 +147,56 @@ public class HeroPanel : MonoBehaviour
                 currentPet = Hero.Pet.Nelson;
                 break;
 
+            case "Crem":
+                currentPet = Hero.Pet.Crem;
+                break;
+
+            case "Boiguh":
+                currentPet = Hero.Pet.Boiguh;
+                break;
+
+            case "nerder":
+                currentPet = Hero.Pet.Nerder;
+                break;
+
             default:   // Gemmi
                 currentPet = Hero.Pet.Gemmi;
                 break;
         }
+
+        Hero.Weapon currentWeapon;
+        switch (weapon.options[weapon.value].text)
+        {
+            case "axe":
+                currentWeapon = Hero.Weapon.Axe;
+                break;
+            case "bow":
+                currentWeapon = Hero.Weapon.Bow;
+                break;
+            case "staff":
+                currentWeapon = Hero.Weapon.Staff;
+                break;
+            case "sword":
+                currentWeapon = Hero.Weapon.Sword;
+                break;
+            default: //spear
+                currentWeapon = Hero.Weapon.Spear;
+                break;
+        }
+        Hero.MetaRune currentMetaRune;
+        switch (metaRune.options[metaRune.value].text)
+        {
+            case "Redirect":
+                currentMetaRune = Hero.MetaRune.Redirect;
+                break;
+            case "HealBonus":
+                currentMetaRune = Hero.MetaRune.HealBonus;
+                break;
+            default: //spear
+                currentMetaRune = Hero.MetaRune.None;
+                break;
+        }
+
         return new Hero {
             // Base Stats
             power         = Convert.ToInt32(power.text),
@@ -123,12 +209,21 @@ public class HeroPanel : MonoBehaviour
             blockChance   = Convert.ToSingle(blockChance.text),
             evadeChance   = Convert.ToSingle(evadeChance.text),
             deflectChance = Convert.ToSingle(deflectChance.text),
+            absorbChance  = Convert.ToSingle(absorbChance.text),
             // Runes
             powerRunes    = Convert.ToSingle(powerRunes.text),
             staminaRunes  = Convert.ToSingle(staminaRunes.text),
             agilityRunes  = Convert.ToSingle(agilityRunes.text),
+            //Set Bonuses
+
+            unity         = unitySkill.isOn,
+            bushidoBonus  = bushidoBonus.isOn,
+            divinityBonus = bushidoBonus.isOn,
+
             // Pet
-            pet           = currentPet
+            metaRune      = currentMetaRune,
+            pet           = currentPet,
+            weapon        = currentWeapon
         };
     }
 }

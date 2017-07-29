@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Launch : MonoBehaviour {
     public HeroPanel hero_1;
@@ -11,11 +12,14 @@ public class Launch : MonoBehaviour {
     public HeroPanel hero_5;
     public Text myText;
     private Slider slider;
+    public Dropdown bossName;
+    public Dropdown bossDifficulty;
     
 
     void Start()
     {
         slider = GameObject.Find("Progress").GetComponent<Slider>();
+        
     }
 
     void Update()

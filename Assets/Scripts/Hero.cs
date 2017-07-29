@@ -39,6 +39,8 @@ public struct Hero
     public bool unity;
     public bool redirect;
     public bool redirectRune;
+    public bool bushidoBonus;
+    public bool divinityBonus;
 
     // Pet
     public string pets;
@@ -57,11 +59,20 @@ public struct Hero
     public Weapon weapon;
     public enum Weapon
     {
-        bow,
-        spear,
-        sword,
-        staff,
-        axe
+        None,
+        Bow,
+        Spear,
+        Sword,
+        Staff,
+        Axe
+    }
+    public MetaRune metaRune;
+    public enum MetaRune
+    {
+        None,
+        Redirect,
+        HealBonus,
+
     }
 
     // Predefined Heroes
@@ -80,12 +91,18 @@ public struct Hero
                 blockChance   = 0f,
                 evadeChance   = 2.5f,
                 deflectChance = 0f,
+                absorbChance  = 0f,
                 // Runes
                 powerRunes    = 15.5f,
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Gemmi
+                pet           = Pet.Gemmi,
+                weapon        = Weapon.Bow,
+                metaRune      = MetaRune.HealBonus,
+                // set bonuses
+                unity         = true,
+                divinityBonus = true
             }
         },
         {
@@ -102,6 +119,7 @@ public struct Hero
                 blockChance   = 0f,
                 evadeChance   = 2.5f,
                 deflectChance = 0f,
+                absorbChance  = 0f,
                 // Runes
                 powerRunes    = 16f,
                 staminaRunes  = 0f,
@@ -124,6 +142,7 @@ public struct Hero
                 blockChance   = 0f,
                 evadeChance   = 2.5f,
                 deflectChance = 0f,
+                absorbChance  = 0f,
                 // Runes
                 powerRunes    = 22f,
                 staminaRunes  = 0f,
@@ -146,6 +165,7 @@ public struct Hero
                 blockChance   = 31f,
                 evadeChance   = 14f,
                 deflectChance = 5f,
+                absorbChance  = 0f,
                 // Runes
                 powerRunes    = 0f,
                 staminaRunes  = 0f,
@@ -168,6 +188,7 @@ public struct Hero
                 blockChance   = 40f,
                 evadeChance   = 12.5f,
                 deflectChance = 5f,
+                absorbChance  = 0f,
                 // Runes
                 powerRunes    = 0f,
                 staminaRunes  = 0f,

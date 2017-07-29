@@ -131,6 +131,9 @@ class BossLogic
             case 1:
                 Logic.heroDeflect(attackValue, k);
                 break;
+            case 2:
+                //evade do nothing
+                break;
             case 3:
                 Logic.heroBlock(attackValue, k);
                 break;
