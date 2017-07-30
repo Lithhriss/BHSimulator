@@ -15,7 +15,8 @@ public class Simulation
     private static Slider slider;
     public static int redirectCount = 0;
     public static int aliveCount = 5;
-    
+    public static int games = 1000;//number of times fight will run.
+
 
     public static IEnumerator simulation()
     {
@@ -30,7 +31,7 @@ public class Simulation
         float lose = 0;
         //float winRate;
 
-        int games = 10000;//number of times fight will run.
+        int games = 1000;//number of times fight will run.
         int gameDivider = Convert.ToInt32(games / 100);
         int playerNo = 5;
         int counterMax = 100;

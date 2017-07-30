@@ -32,7 +32,7 @@ public class Launch : MonoBehaviour {
         {
             slider.value += 1;    
         }
-        myText.text = "Winrate over 10 000 fights = " + Simulation.winRate + "%";
+        myText.text = "Winrate over " + Simulation.games + " fights = " + Simulation.winRate + "%";
 
         //slider.value = Simulation.progressionBar;
 
