@@ -7,8 +7,6 @@ class PetLogic
     
     public static void offPetProc(int l)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         int attackModifier = Convert.ToInt32(0.54 * Simulation.hero[l].power);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 0.63);
 
@@ -30,14 +28,12 @@ class PetLogic
 
     public static void superOffPetProc(int l)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         int attackModifier = Convert.ToInt32(Simulation.hero[l].power * 0.37);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 1.668);
 
 
         bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
-        bool petRoll = Logic.RNGroll((float)10);
+        bool petRoll = Logic.RNGroll(10f);
 
         if (critRoll)
         {
@@ -52,8 +48,6 @@ class PetLogic
 
     public static void spreadHealPet(int l)
     {
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
         int i;
         int target = 0;
         int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.14);
@@ -82,8 +76,6 @@ class PetLogic
 
     public static void superSpreadHealPet(int l)
     {
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
         int i;
         int target = 0;
         int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.288);
@@ -112,8 +104,6 @@ class PetLogic
 
     public static void teamShieldPet(int l)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         int i;
         int shieldModifier = Convert.ToInt32(Simulation.hero[l].power * 0.06);
         float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.27 * Simulation.hero[l].power);
@@ -143,8 +133,6 @@ class PetLogic
 
     public static void superSelfHealPet(int l)
     {
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
         int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.454);
         int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.89 * Simulation.hero[l].power);
 

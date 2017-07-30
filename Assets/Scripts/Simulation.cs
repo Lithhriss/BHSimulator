@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Simulation
 {
     public static Hero[] hero = new Hero[5];
-    public static int dummyPower = 1600, dummyStamina = 2880, dummyAgility = 640, hpDummy, spDummy = 0;
+    public static int dummyPower = 10, dummyStamina = 18, dummyAgility = 4, hpDummy, maxHpDummy, spDummy = 0;
+    public static int difficultyModifier;
     public static bool dummyDrain = false;
     public static bool dummySelfInjure = false;
     public static float winRate;
@@ -14,18 +15,23 @@ public class Simulation
     private static Slider slider;
     public static int redirectCount = 0;
     public static int aliveCount = 5;
+    
 
-    public static void simulation()
+    public static IEnumerator simulation()
     {
+        UnityEngine.Debug.Log(hero[1].bushidoBonus);
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
+        
         int p;
         int i;
+        redirectCount = 0;
 
         float win = 0;
         float lose = 0;
         //float winRate;
 
-        int games = 1000; //number of times fight will run.
+        int games = 10000;//number of times fight will run.
+        int gameDivider = Convert.ToInt32(games / 100);
         int playerNo = 5;
         int counterMax = 100;
         int cycle;
@@ -33,6 +39,10 @@ public class Simulation
         float dummyTR;
         float dummyInterval;
         float dummyCounter = 0;
+        dummyPower = 10 * difficultyModifier;
+        dummyAgility = 4 * difficultyModifier;
+        dummyStamina = 18 * difficultyModifier;
+
 
         bool DS;
         bool teamAlive = true;
@@ -107,9 +117,12 @@ public class Simulation
 
         for (i = 0; i < 5; i++)
         {  //initialisation
-            if (hero[i].redirectRune) {
+            if ((int)hero[i].metaRune == 1)
+            {
+                hero[i].redirectRune = true;
                 redirectCount++;
             }
+  
             hero[i].powerRunes = (100f + hero[i].powerRunes) / 100f;
             hero[i].agilityRunes = (100f + hero[i].agilityRunes) / 100f;
             hero[i].critDamage = (100f + hero[i].critDamage) / 100f;
@@ -129,20 +142,11 @@ public class Simulation
 
         dummyTR = Logic.turnRate(dummyPower, dummyAgility);//boss init
         dummyInterval = (float)counterMax / dummyTR;
-
-
+        UnityEngine.Debug.Log(dummyStamina);
         for (p = 0; p < games; p++)
         {  // for loop to simulate as many fights as you want.
-
-
-            if ((float)p % 100 == 0 && p > 0)
-            {
-                progressionBar += 10;
-                //UnityEngine.Debug.Log(progressionBar);
-                slider.value = progressionBar;
-            }
-
             teamAlive = true;
+            aliveCount = 5;
 
             for (i = 0; i < 5; i++)
             {  //hero  values that need to be reset every game
@@ -155,6 +159,7 @@ public class Simulation
             }
 
             hpDummy = dummyStamina * 10;
+            maxHpDummy = hpDummy;
             spDummy = 0;
             
             while (hpDummy > 0 && teamAlive == true)
@@ -185,7 +190,15 @@ public class Simulation
                     if (hpDummy > 0 && dummyCounter >= dummyInterval)
                     {         //checks if it's boss' turn to attack
                         spDummy++;
-                        BossLogic.kaleidoAI();
+                        switch (Launch.bossDiff)
+                        {
+                            case 0:
+                                BossLogic.kaleidoAI();
+                                break;
+                            default:
+                                BossLogic.woodbeardAI();
+                                break;
+                        }
                         dummyCounter -= dummyInterval;
                         if (hpDummy <= 0)
                         {
@@ -207,8 +220,16 @@ public class Simulation
                 lose++;
                 dummyCounter = 0;
             }
+            if ((float)p % gameDivider == 0 && p > 0)
+            {
+                progressionBar += 1;
+                //UnityEngine.Debug.Log(progressionBar);
+                slider.value = progressionBar;
+                winRate = (win / p) * 100;
+                yield return null;
+            }
         }
-        winRate = (win / games) * 100;     
+        winRate = (win / p) * 100;
         UnityEngine.Debug.Log(winRate);
     }
 }

@@ -14,7 +14,7 @@ public class Launch : MonoBehaviour {
     private Slider slider;
     public Dropdown bossName;
     public Dropdown bossDifficulty;
-    
+    public static int bossDiff;
 
     void Start()
     {
@@ -30,11 +30,9 @@ public class Launch : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
-            slider.value += 1;
-            
-
-            
+            slider.value += 1;    
         }
+        myText.text = "Winrate over 10 000 fights = " + Simulation.winRate + "%";
 
         //slider.value = Simulation.progressionBar;
 
@@ -48,10 +46,35 @@ public class Launch : MonoBehaviour {
         Simulation.hero[2] = hero_3.GetHeroStruct();
         Simulation.hero[3] = hero_4.GetHeroStruct();
         Simulation.hero[4] = hero_5.GetHeroStruct();
-      
-        Simulation.simulation();
-        
-        myText.text = "Winrate over 10 000 fights = " + Simulation.winRate + "%";
+
+        int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
+        bossDiff = bossName.value;
+        switch (difficultyChecker)
+        {
+            case 0:
+                Simulation.difficultyModifier = 70;
+                break;
+            case 1:
+                Simulation.difficultyModifier = 115;
+                break;
+            case 2:
+                Simulation.difficultyModifier = 160;
+                break;
+            case 10:
+                Simulation.difficultyModifier = 105;
+                break;
+            case 11:
+                Simulation.difficultyModifier = 156;
+                break;
+            case 12:
+                Simulation.difficultyModifier = 207;
+                break;
+            default:
+                break;
+        }
+        Debug.Log(Simulation.difficultyModifier);
+
+        StartCoroutine(Simulation.simulation());
         //StartCoroutine(launchSimulation());
         //StartCoroutine(test());
     }

@@ -202,6 +202,8 @@ class BossLogic
             {
                 Simulation.spDummy -= 2;
                 target = Logic.targetSelection(1);
+                //UnityEngine.Debug.Log("aliveCount :" + Simulation.aliveCount);
+                //UnityEngine.Debug.Log("target is :" + target);
                 for (int i = 0; i < 2; i++)
                 {
                     attackValue = SkillList.wbPierce2_1sp(Simulation.dummyPower);

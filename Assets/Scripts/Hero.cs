@@ -40,7 +40,7 @@ public struct Hero
     public bool redirect;
     public bool redirectRune;
     public bool bushidoBonus;
-    public bool divinityBonus;
+    //public bool divinityBonus;
 
     // Pet
     public string pets;
@@ -70,9 +70,15 @@ public struct Hero
     public enum MetaRune
     {
         None,
-        Redirect,
-        HealBonus,
+        Redirect
 
+    }
+    public DivinityBonus divinityBonus;
+    public enum DivinityBonus
+    {
+        None,
+        Bonus_2_of_3,
+        Bonus_3_of_3
     }
 
     // Predefined Heroes
@@ -102,7 +108,7 @@ public struct Hero
                 metaRune      = MetaRune.HealBonus,
                 // set bonuses
                 unity         = true,
-                divinityBonus = true
+                //divinityBonus = true
             }
         },
         {
@@ -125,7 +131,8 @@ public struct Hero
                 staminaRunes  = 0f,
                 agilityRunes  = 2.5f,
                 // Pet
-                pet           = Pet.Nelson
+                pet           = Pet.Nelson,
+                weapon        = Weapon.Bow
             }
         },
         {
@@ -148,7 +155,8 @@ public struct Hero
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Nelson
+                pet           = Pet.Nelson,
+                weapon        = Weapon.Bow
             }
         },
         {
@@ -171,7 +179,8 @@ public struct Hero
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Gemmi
+                pet           = Pet.Gemmi,
+                weapon        = Weapon.Bow
             }
         },
         {
@@ -194,7 +203,9 @@ public struct Hero
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Gemmi
+                pet           = Pet.Gemmi,
+                weapon        = Weapon.Bow,
+                metaRune      = MetaRune.Redirect
             }
         }
 

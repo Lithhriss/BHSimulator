@@ -307,6 +307,28 @@ class Logic
         bool bossEvade = RNGroll(2.5f);
         if (!bossEvade) {
             PetLogic.petSelection(k);
+            if ((int)Simulation.hero[k].weapon == 3)
+            {
+                switch ((int)Simulation.hero[k].divinityBonus)
+                {
+                    case 1:
+                        attackValue = Convert.ToInt32(attackValue * 1.05);
+                        break;
+                    case 2:
+                        attackValue = Convert.ToInt32(attackValue * 1.05);
+                        if (Simulation.hpDummy < Convert.ToInt32(Simulation.maxHpDummy / 4))
+                        {
+                            attackValue = Convert.ToInt32(attackValue * 1.30);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (Simulation.hero[k].bushidoBonus)
+            {
+                attackValue = Convert.ToInt32(attackValue * 1.10);
+            }
             Simulation.hpDummy -= attackValue;
             if (Simulation.hero[k].drain)
             {
@@ -389,6 +411,10 @@ class Logic
     }
     public static void heroBlock (int attackValue, int k)
     {
+        if (Simulation.hero[k].bushidoBonus)
+        {
+            attackValue = Convert.ToInt32(attackValue * 1.10);
+        }
         attackValue = Convert.ToInt32(0.5 * attackValue);
         if (Simulation.dummyDrain)
         {
@@ -424,6 +450,10 @@ class Logic
     }
     public static void heroNormal(int attackValue, int k)
     {
+        if (Simulation.hero[k].bushidoBonus)
+        {
+            attackValue = Convert.ToInt32(attackValue * 1.10);
+        }
         if (Simulation.dummyDrain)
         {
             Simulation.hpDummy += attackValue;

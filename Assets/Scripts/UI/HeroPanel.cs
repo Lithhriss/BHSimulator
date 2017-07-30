@@ -34,6 +34,7 @@ public class HeroPanel : MonoBehaviour
     public Dropdown pet;
     public Dropdown weapon;
     public Dropdown metaRune;
+    public Dropdown divinity;
 
     // Awake
     public void Awake()
@@ -58,6 +59,10 @@ public class HeroPanel : MonoBehaviour
         //meta
         metaRune.ClearOptions();
         metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.MetaRune))));
+
+        //Divinity
+        divinity.ClearOptions();
+        divinity.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.DivinityBonus))));
     }
 
     // Predefine Switch
@@ -92,7 +97,7 @@ public class HeroPanel : MonoBehaviour
 
         //set bonuses
         unitySkill.isOn    = hero.unity;
-        divinityBonus.isOn = hero.divinityBonus;
+        //divinityBonus.isOn = hero.divinityBonus;
 
         // Runes
         powerRunes.text    = Convert.ToString(hero.powerRunes);
@@ -127,6 +132,15 @@ public class HeroPanel : MonoBehaviour
                 break;
             }
         }
+        // divinity
+        for (int i = 0; i < divinity.options.Count; i++)
+        {
+            if (divinity.options[i].text == hero.divinityBonus.ToString())
+            {
+                divinity.value = i;
+                break;
+            }
+        }
     }
 
     // Return a Hero struct
@@ -155,7 +169,7 @@ public class HeroPanel : MonoBehaviour
                 currentPet = Hero.Pet.Boiguh;
                 break;
 
-            case "nerder":
+            case "Nerder":
                 currentPet = Hero.Pet.Nerder;
                 break;
 
@@ -167,16 +181,16 @@ public class HeroPanel : MonoBehaviour
         Hero.Weapon currentWeapon;
         switch (weapon.options[weapon.value].text)
         {
-            case "axe":
+            case "Axe":
                 currentWeapon = Hero.Weapon.Axe;
                 break;
-            case "bow":
+            case "Bow":
                 currentWeapon = Hero.Weapon.Bow;
                 break;
-            case "staff":
+            case "Staff":
                 currentWeapon = Hero.Weapon.Staff;
                 break;
-            case "sword":
+            case "Sword":
                 currentWeapon = Hero.Weapon.Sword;
                 break;
             default: //spear
@@ -189,13 +203,28 @@ public class HeroPanel : MonoBehaviour
             case "Redirect":
                 currentMetaRune = Hero.MetaRune.Redirect;
                 break;
-            case "HealBonus":
+            /*case "HealBonus":
                 currentMetaRune = Hero.MetaRune.HealBonus;
-                break;
+                break;*/
             default: //spear
                 currentMetaRune = Hero.MetaRune.None;
                 break;
         }
+        Hero.DivinityBonus currentDivinity;
+        switch (divinity.options[divinity.value].text)
+        {
+            case "Bonus_2_of_3":
+                currentDivinity = Hero.DivinityBonus.Bonus_2_of_3;
+                break;
+            case "Bonus_3_of_3":
+                currentDivinity = Hero.DivinityBonus.Bonus_3_of_3;
+                break;
+            default: //spear
+                currentDivinity = Hero.DivinityBonus.None;
+                break;
+        }
+
+
 
         return new Hero {
             // Base Stats
@@ -218,7 +247,7 @@ public class HeroPanel : MonoBehaviour
 
             unity         = unitySkill.isOn,
             bushidoBonus  = bushidoBonus.isOn,
-            divinityBonus = bushidoBonus.isOn,
+            divinityBonus = currentDivinity,
 
             // Pet
             metaRune      = currentMetaRune,
