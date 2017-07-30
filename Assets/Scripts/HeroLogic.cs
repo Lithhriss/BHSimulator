@@ -147,7 +147,7 @@ class HeroLogic
             {
                 Logic.heroNormalAttack(k, DS);
             }
-            else if (skillRoll >= 10 && skillRoll < 25)
+            else if (skillRoll >= 10 && skillRoll < 15)
             {
                 Simulation.hero[k].sp -= 2;
                 attackValue = SkillList.swTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
@@ -158,8 +158,9 @@ class HeroLogic
                     Logic.heroDamageApplication(k, attackValue);
                 }
             }
-            else if (skillRoll >= 25)
+            else if (skillRoll >= 15)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -167,7 +168,7 @@ class HeroLogic
                 }
             }
         }
-        else if (sp >=6)
+        else if (sp >= 6)
         {
             // 1 - 2 sp skill AI
             range = 45;
@@ -206,6 +207,7 @@ class HeroLogic
             }
             else if (skillRoll >= 45)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -253,6 +255,7 @@ class HeroLogic
             }
             else if (skillRoll >= 25)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -297,6 +300,7 @@ class HeroLogic
             }
             else if (skillRoll >= 55)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -330,7 +334,7 @@ class HeroLogic
             }
             else if (skillRoll >= 25 && skillRoll < 55)
             {
-                Simulation.hero[k].sp -= 2;
+                Simulation.hero[k].sp -= 4;
                 attackValue = SkillList.spTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
                 Logic.heroDamageApplication(k, attackValue);
                 if (DS)
@@ -339,7 +343,7 @@ class HeroLogic
                     Logic.heroDamageApplication(k, attackValue);
                 }
             }
-            else if (skillRoll >= 55 && skillRoll <85)
+            else if (skillRoll >= 55 && skillRoll < 85)
             {
                 Simulation.hero[k].sp -= 6;
                 attackValue = SkillList.spClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
@@ -352,13 +356,14 @@ class HeroLogic
             }
             else if (skillRoll >= 85)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
                     spreadHealingSkill(k);
                 }
             }
-        }      
+        }
     }
 
     public static void bowSkillSelection(int k, int sp, bool unity, bool DS)
@@ -395,10 +400,10 @@ class HeroLogic
                     attackValue = SkillList.bTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
                     Logic.heroDamageApplication(k, attackValue);
                 }
-                Simulation.hero[k].sp -= 2;
             }
             else if (skillRoll >= 25)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -430,9 +435,8 @@ class HeroLogic
                     attackValue = SkillList.bTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
                     Logic.heroDamageApplication(k, attackValue);
                 }
-                Simulation.hero[k].sp -= 2;
             }
-            else if (skillRoll >= 25 && skillRoll <55)
+            else if (skillRoll >= 25 && skillRoll < 55)
             {
                 Simulation.hero[k].sp -= 4;
                 attackValue = SkillList.bBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
@@ -442,10 +446,10 @@ class HeroLogic
                     attackValue = SkillList.bBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
                     Logic.heroDamageApplication(k, attackValue);
                 }
-                Simulation.hero[k].sp -= 4;
             }
             else if (skillRoll >= 55)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -503,6 +507,7 @@ class HeroLogic
             }
             else if (skillRoll >= 80)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -556,6 +561,7 @@ class HeroLogic
             }
             else if (skillRoll >= 90)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -590,7 +596,7 @@ class HeroLogic
             {
                 Logic.heroNormalAttack(k, DS);
             }
-            else if (skillRoll >= 10 && skillRoll <20)
+            else if (skillRoll >= 10 && skillRoll < 20)
             {
                 Simulation.hero[k].sp -= 2;
                 attackValue = SkillList.aClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
@@ -603,6 +609,7 @@ class HeroLogic
             }
             else if (skillRoll >= 20)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -647,6 +654,7 @@ class HeroLogic
             }
             else if (skillRoll >= 80)
             {
+                Simulation.hero[k].sp -= 2;
                 spreadHealingSkill(k);
                 if (DS)
                 {
@@ -661,19 +669,19 @@ class HeroLogic
         int weapon = (int)Simulation.hero[k].weapon;
         switch (weapon)
         {
-            case 0:
+            case 1:
                 bowSkillSelection(k, Simulation.hero[k].sp, Simulation.hero[k].unity, DS);
                 break;
-            case 1:
+            case 2:
                 spearSkillSelection(k, Simulation.hero[k].sp, Simulation.hero[k].unity, DS);
                 break;
-            case 2:
+            case 3:
                 swordSkillSelection(k, Simulation.hero[k].sp, Simulation.hero[k].unity, DS);
                 break;
-            case 3:
+            case 4:
                 staffSkillSelection(k, Simulation.hero[k].sp, Simulation.hero[k].unity, DS);
                 break;
-            case 4:
+            case 5:
                 axeSkillSelection(k, Simulation.hero[k].sp, Simulation.hero[k].unity, DS);
                 break;
             default:

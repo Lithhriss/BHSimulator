@@ -493,7 +493,7 @@ class Logic
         int attackValue = SkillList.normalAttack(Simulation.hero[k].power);
         if (Logic.RNGroll(Simulation.hero[k].critChance))
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critChance);
+            attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
         }
         Logic.heroDamageApplication(k, attackValue);
         if (DS)
@@ -501,7 +501,7 @@ class Logic
             attackValue = SkillList.normalAttack(Simulation.hero[k].power);
             if (Logic.RNGroll(Simulation.hero[k].critChance))
             {
-                attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critChance);
+                attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
             }
             Logic.heroDamageApplication(k, attackValue);
         }

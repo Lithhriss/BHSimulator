@@ -84,6 +84,34 @@ public struct Hero
     // Predefined Heroes
     public static readonly Dictionary<string, Hero> predefined = new Dictionary<string, Hero>() {
         {
+            "Default Hero",
+            new Hero {
+                // Base Stats
+                power         = 500,
+                stamina       = 500,
+                agility       = 500,
+                // Specials
+                critChance    = 10,
+                critDamage    = 50f,
+                dsChance      = 0,
+                blockChance   = 0f,
+                evadeChance   = 2.5f,
+                deflectChance = 0f,
+                absorbChance  = 0f,
+                // Runes
+                powerRunes    = 0f,
+                staminaRunes  = 0f,
+                agilityRunes  = 0f,
+                // Pet
+                pet           = Pet.None,
+                weapon        = Weapon.None,
+                metaRune      = MetaRune.None,
+                // set bonuses
+                unity         = false,
+                //divinityBonus = true
+            }
+        },
+        {
             "Shadown88",
             new Hero {
                 // Base Stats

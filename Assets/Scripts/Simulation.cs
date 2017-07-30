@@ -135,7 +135,7 @@ public class Simulation
             hero[i].maxShield = Convert.ToInt32(hero[i].maxHp / 2);
             hero[i].interval = counterMax / hero[i].turnRate;
             hero[i].counter = 0;
-            hero[i].sp = 4;
+            hero[i].sp = 2;
             hero[i].alive = true;
             hero[i].drain = false;
         }
@@ -151,9 +151,10 @@ public class Simulation
             for (i = 0; i < 5; i++)
             {  //hero  values that need to be reset every game
                 hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
-                hero[i].shield = Convert.ToInt32(hero[i].hp / 10);
+                //hero[i].shield = Convert.ToInt32(hero[i].hp / 10);
+                hero[i].shield = 0;
                 hero[i].counter = 0;
-                hero[i].sp = 4;
+                hero[i].sp = 0;
                 hero[i].alive = true;
                 hero[i].redirect = true;
             }
