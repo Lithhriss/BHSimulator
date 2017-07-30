@@ -105,7 +105,7 @@ public struct Hero
                 // Pet
                 pet           = Pet.Gemmi,
                 weapon        = Weapon.Bow,
-                metaRune      = MetaRune.HealBonus,
+                metaRune      = MetaRune.None,
                 // set bonuses
                 unity         = true,
                 //divinityBonus = true
