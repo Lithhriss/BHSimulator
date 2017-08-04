@@ -111,6 +111,64 @@ public struct Hero
                 //divinityBonus = true
             }
         },
+              {
+            "Default DPS",
+            new Hero {
+                // Base Stats
+                power         = 1000,
+                stamina       = 250,
+                agility       = 400,
+                // Specials
+                critChance    = 17,
+                critDamage    = 50f,
+                dsChance      = 20,
+                blockChance   = 0f,
+                evadeChance   = 2.5f,
+                deflectChance = 0f,
+                absorbChance  = 0f,
+                // Runes
+                powerRunes    = 4f,
+                staminaRunes  = 0f,
+                agilityRunes  = 4f,
+                // Pet
+                pet           = Pet.Gemmi,
+                weapon        = Weapon.Sword,
+                metaRune      = MetaRune.None,
+                // set bonuses
+                unity         = true,
+                bushidoBonus  = true,
+                divinityBonus = DivinityBonus.Bonus_2_of_3
+            }
+        },
+               {
+            "Default Tank",
+            new Hero {
+                // Base Stats
+                power         = 500,
+                stamina       = 1000,
+                agility       = 100,
+                // Specials
+                critChance    = 10,
+                critDamage    = 50f,
+                dsChance      = 0,
+                blockChance   = 36f,
+                evadeChance   = 12.5f,
+                deflectChance = 8f,
+                absorbChance  = 6f,
+                // Runes
+                powerRunes    = 0f,
+                staminaRunes  = 0f,
+                agilityRunes  = 0f,
+                // Pet
+                pet           = Pet.Boiguh,
+                weapon        = Weapon.Axe,
+                metaRune      = MetaRune.Redirect,
+                // set bonuses
+                unity         = false,
+                bushidoBonus  = false,
+                divinityBonus = DivinityBonus.None
+            }
+        },
         {
             "Shadown88",
             new Hero {

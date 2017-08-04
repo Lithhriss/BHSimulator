@@ -25,3 +25,9 @@ Library/metadata/57/57b26c628056040009f0ea21900e3cac
 Library/metadata/03/03cd0d8d14fb14d8dafae514c1dc8eb6
 Library/metadata/81/81afffa64eec144a298faa405e21d1d0
 *.bc
+WebBuild_7/TemplateData/UnityProgress.js
+*.ico
+WebBuild_7/Build/UnityLoader.js
+*.stripped
+Library/webgl_cache/linkresult_asm_1467875398922F4FD5351CBB8BBDBEA3/build.js.symbols
+*.mem
