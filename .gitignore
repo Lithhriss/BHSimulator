@@ -11,3 +11,11 @@ Temp/UnityTempFile-f319efae932b9184f9c39d13ad06947e
 Temp/UnityTempFile-ecc35ad67fff7d74caaf6ac1ef34c886
 Temp/UnityTempFile-dbef812879cceea4bbd66a83bbac6cb3
 *.o
+*.unityweb
+WebBuild_5/TemplateData/progressFull.Light.png
+*.png
+*.zip
+WebBuild_5/Build/UnityLoader.js
+*.json
+WebBuild_5/index.html
+*.css
