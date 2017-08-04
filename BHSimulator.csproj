@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Simulation.cs" />
     <Compile Include="Assets\Scripts\SkillList.cs" />
     <Compile Include="Assets\Scripts\UI\HeroPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\HeroesImporter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

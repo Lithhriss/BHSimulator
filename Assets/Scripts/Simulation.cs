@@ -18,7 +18,7 @@ public class Simulation
     public static int games = 1000;//number of times fight will run.
 
 
-    public static IEnumerator simulation()
+	public static IEnumerator simulation(System.Action<float> callback)
     {
         UnityEngine.Debug.Log(hero[1].bushidoBonus);
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
@@ -233,5 +233,7 @@ public class Simulation
         }
         winRate = (win / p) * 100;
         UnityEngine.Debug.Log(winRate);
+
+		callback(winRate);
     }
 }

@@ -82,150 +82,75 @@ public class HeroPanel : MonoBehaviour
             hero = Hero.GetPredefined(heroName);
         }
 
-        // Base Stats
-        power.text         = Convert.ToString(hero.power);
-        stamina.text       = Convert.ToString(hero.stamina);
-        agility.text       = Convert.ToString(hero.agility);
-        // Specials
-        critChance.text    = Convert.ToString(hero.critChance);
-        critDamage.text    = Convert.ToString(hero.critDamage);
-        dsChance.text      = Convert.ToString(hero.dsChance);
-        blockChance.text   = Convert.ToString(hero.blockChance);
-        evadeChance.text   = Convert.ToString(hero.evadeChance);
-        deflectChance.text = Convert.ToString(hero.deflectChance);
-        absorbChance.text  = Convert.ToString(hero.absorbChance);
-
-        //set bonuses
-        unitySkill.isOn    = hero.unity;
-        //divinityBonus.isOn = hero.divinityBonus;
-
-        // Runes
-        powerRunes.text    = Convert.ToString(hero.powerRunes);
-        staminaRunes.text  = Convert.ToString(hero.staminaRunes);
-        agilityRunes.text  = Convert.ToString(hero.agilityRunes);
-        // Pet
-        for (int i = 0; i < pet.options.Count; i++)
-        {
-            if (pet.options[i].text == hero.pet.ToString())
-            {
-                pet.value = i;
-                break;
-            }
-        }
-
-        //weapon
-        for (int i = 0; i < weapon.options.Count; i++)
-        {
-            if (weapon.options[i].text == hero.weapon.ToString())
-            {
-                weapon.value = i;
-                break;
-            }
-        }
-
-        // meta bonus
-        for (int i = 0; i < metaRune.options.Count; i++)
-        {
-            if (metaRune.options[i].text == hero.metaRune.ToString())
-            {
-                metaRune.value = i;
-                break;
-            }
-        }
-        // divinity
-        for (int i = 0; i < divinity.options.Count; i++)
-        {
-            if (divinity.options[i].text == hero.divinityBonus.ToString())
-            {
-                divinity.value = i;
-                break;
-            }
-        }
+		setFieldsFromHero(hero);
     }
+
+	public void setFieldsFromHero(Hero hero)
+	{
+		// Base Stats
+		power.text         = Convert.ToString(hero.power);
+		stamina.text       = Convert.ToString(hero.stamina);
+		agility.text       = Convert.ToString(hero.agility);
+		// Specials
+		critChance.text    = Convert.ToString(hero.critChance);
+		critDamage.text    = Convert.ToString(hero.critDamage);
+		dsChance.text      = Convert.ToString(hero.dsChance);
+		blockChance.text   = Convert.ToString(hero.blockChance);
+		evadeChance.text   = Convert.ToString(hero.evadeChance);
+		deflectChance.text = Convert.ToString(hero.deflectChance);
+		absorbChance.text  = Convert.ToString(hero.absorbChance);
+
+		//set bonuses
+		unitySkill.isOn    = hero.unity;
+		//divinityBonus.isOn = hero.divinityBonus;
+
+		// Runes
+		powerRunes.text    = Convert.ToString(hero.powerRunes);
+		staminaRunes.text  = Convert.ToString(hero.staminaRunes);
+		agilityRunes.text  = Convert.ToString(hero.agilityRunes);
+		// Pet
+		for (int i = 0; i < pet.options.Count; i++)
+		{
+			if (pet.options[i].text == hero.pet.ToString())
+			{
+				pet.value = i;
+				break;
+			}
+		}
+
+		//weapon
+		for (int i = 0; i < weapon.options.Count; i++)
+		{
+			if (weapon.options[i].text == hero.weapon.ToString())
+			{
+				weapon.value = i;
+				break;
+			}
+		}
+
+		// meta bonus
+		for (int i = 0; i < metaRune.options.Count; i++)
+		{
+			if (metaRune.options[i].text == hero.metaRune.ToString())
+			{
+				metaRune.value = i;
+				break;
+			}
+		}
+		// divinity
+		for (int i = 0; i < divinity.options.Count; i++)
+		{
+			if (divinity.options[i].text == hero.divinityBonus.ToString())
+			{
+				divinity.value = i;
+				break;
+			}
+		}
+	}
 
     // Return a Hero struct
     public Hero GetHeroStruct()
     {
-        Hero.Pet currentPet;
-        switch (pet.options[pet.value].text)
-        {
-            case "Nemo":
-                currentPet = Hero.Pet.Nemo;
-                break;
-
-            case "Boogie":
-                currentPet = Hero.Pet.Boogie;
-                break;
-
-            case "Nelson":
-                currentPet = Hero.Pet.Nelson;
-                break;
-
-            case "Crem":
-                currentPet = Hero.Pet.Crem;
-                break;
-
-            case "Boiguh":
-                currentPet = Hero.Pet.Boiguh;
-                break;
-
-            case "Nerder":
-                currentPet = Hero.Pet.Nerder;
-                break;
-
-            default:   // Gemmi
-                currentPet = Hero.Pet.Gemmi;
-                break;
-        }
-
-        Hero.Weapon currentWeapon;
-        switch (weapon.options[weapon.value].text)
-        {
-            case "Axe":
-                currentWeapon = Hero.Weapon.Axe;
-                break;
-            case "Bow":
-                currentWeapon = Hero.Weapon.Bow;
-                break;
-            case "Staff":
-                currentWeapon = Hero.Weapon.Staff;
-                break;
-            case "Sword":
-                currentWeapon = Hero.Weapon.Sword;
-                break;
-            default: //spear
-                currentWeapon = Hero.Weapon.Spear;
-                break;
-        }
-        Hero.MetaRune currentMetaRune;
-        switch (metaRune.options[metaRune.value].text)
-        {
-            case "Redirect":
-                currentMetaRune = Hero.MetaRune.Redirect;
-                break;
-            /*case "HealBonus":
-                currentMetaRune = Hero.MetaRune.HealBonus;
-                break;*/
-            default: //spear
-                currentMetaRune = Hero.MetaRune.None;
-                break;
-        }
-        Hero.DivinityBonus currentDivinity;
-        switch (divinity.options[divinity.value].text)
-        {
-            case "Bonus_2_of_3":
-                currentDivinity = Hero.DivinityBonus.Bonus_2_of_3;
-                break;
-            case "Bonus_3_of_3":
-                currentDivinity = Hero.DivinityBonus.Bonus_3_of_3;
-                break;
-            default: //spear
-                currentDivinity = Hero.DivinityBonus.None;
-                break;
-        }
-
-
-
         return new Hero {
             // Base Stats
             power         = Convert.ToInt32(power.text),
@@ -247,12 +172,123 @@ public class HeroPanel : MonoBehaviour
 
             unity         = unitySkill.isOn,
             bushidoBonus  = bushidoBonus.isOn,
-            divinityBonus = currentDivinity,
+			divinityBonus = GetDivinityBonusFromString(divinity.options[divinity.value].text),
 
             // Pet
-            metaRune      = currentMetaRune,
-            pet           = currentPet,
-            weapon        = currentWeapon
+			metaRune      = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
+			pet           = GetPetFromString(pet.options[pet.value].text),
+			weapon        = GetWeaponFromString(weapon.options[weapon.value].text)
         };
     }
+
+	public static Hero.DivinityBonus GetDivinityBonusFromString(String s)
+	{
+		Hero.DivinityBonus divinityBonus;
+
+		switch (s)
+		{
+			case "Bonus_2_of_3":
+				divinityBonus = Hero.DivinityBonus.Bonus_2_of_3;
+				break;
+			case "Bonus_3_of_3":
+				divinityBonus = Hero.DivinityBonus.Bonus_3_of_3;
+				break;
+			default:
+				divinityBonus = Hero.DivinityBonus.None;
+				break;
+		}
+
+		return divinityBonus;
+	}
+
+	public static Hero.MetaRune GetMetaRuneFromString(String s)
+	{
+		Hero.MetaRune metaRune;
+
+		switch (s)
+		{
+			case "Redirect":
+				metaRune = Hero.MetaRune.Redirect;
+				break;
+			/*case "HealBonus":
+	            currentMetaRune = Hero.MetaRune.HealBonus;
+	            break;*/
+			default:
+				metaRune = Hero.MetaRune.None;
+				break;
+		}
+
+		return metaRune;
+	}
+
+	public static Hero.Pet GetPetFromString(String s)
+	{
+		Hero.Pet pet;
+
+		switch (s)
+		{
+			case "Nemo":
+				pet = Hero.Pet.Nemo;
+				break;
+
+			case "Boogie":
+				pet = Hero.Pet.Boogie;
+				break;
+
+			case "Nelson":
+				pet = Hero.Pet.Nelson;
+				break;
+
+			case "Gemmi":
+				pet = Hero.Pet.Gemmi;
+				break;
+
+			case "Crem":
+				pet = Hero.Pet.Crem;
+				break;
+
+			case "Boiguh":
+				pet = Hero.Pet.Boiguh;
+				break;
+
+			case "Nerder":
+				pet = Hero.Pet.Nerder;
+				break;
+
+			default:
+				pet = Hero.Pet.None;
+				break;
+		}
+
+		return pet;
+	}
+
+	public static Hero.Weapon GetWeaponFromString(String s)
+	{
+		Hero.Weapon weapon;
+
+		switch (s)
+		{
+			case "Axe":
+				weapon = Hero.Weapon.Axe;
+				break;
+			case "Bow":
+				weapon = Hero.Weapon.Bow;
+				break;
+			case "Spear":
+				weapon = Hero.Weapon.Spear;
+				break;
+			case "Staff":
+				weapon = Hero.Weapon.Staff;
+				break;
+			case "Sword":
+				weapon = Hero.Weapon.Sword;
+				break;
+			default:
+				weapon = Hero.Weapon.None;
+				break;
+		}
+
+		return weapon;
+	}
 }

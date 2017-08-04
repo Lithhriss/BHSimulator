@@ -4,7 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Launch : MonoBehaviour {
+public class Launch : MonoBehaviour
+{
+	public delegate void RunEvent();
+	public static event RunEvent onRun;
+	public static Launch instance;
+
+	private bool _isRunning = false;
+	public bool IsRunning
+	{
+		get { return _isRunning; }
+		set
+		{
+			_isRunning = value;
+
+			if (onRun != null)
+			{
+				onRun();
+			}
+		}
+	}
+
     public HeroPanel hero_1;
     public HeroPanel hero_2;
     public HeroPanel hero_3;
@@ -15,6 +35,11 @@ public class Launch : MonoBehaviour {
     public Dropdown bossName;
     public Dropdown bossDifficulty;
     public static int bossDiff;
+
+	void Awake()
+	{
+		instance = this;
+	}
 
     void Start()
     {
@@ -40,6 +65,7 @@ public class Launch : MonoBehaviour {
 
     public void onClickInit()
     {
+		IsRunning = true;
 
         Simulation.hero[0] = hero_1.GetHeroStruct();
         Simulation.hero[1] = hero_2.GetHeroStruct();
@@ -74,16 +100,11 @@ public class Launch : MonoBehaviour {
         }
         Debug.Log(Simulation.difficultyModifier);
 
-        StartCoroutine(Simulation.simulation());
-        //StartCoroutine(launchSimulation());
+		StartCoroutine(Simulation.simulation(callback => {
+			IsRunning = false;
+		}));
+
         //StartCoroutine(test());
-    }
-
- 
-
-    IEnumerator launchSimulation() {
-        Simulation.simulation();
-        yield return null;
     }
 
    IEnumerator test()
