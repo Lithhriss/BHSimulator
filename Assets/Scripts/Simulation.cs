@@ -20,7 +20,6 @@ public class Simulation
 
 	public static IEnumerator simulation(System.Action<float> callback)
     {
-        UnityEngine.Debug.Log(hero[1].bushidoBonus);
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         
         int p;
@@ -29,7 +28,6 @@ public class Simulation
 
         float win = 0;
         float lose = 0;
-        //float winRate;
 
         int games = 1000;//number of times fight will run.
         int gameDivider = Convert.ToInt32(games / 100);
@@ -49,78 +47,10 @@ public class Simulation
         bool teamAlive = true;
         progressionBar = 0;
 
-        /*hero[0].power = 452;
-            hero[1].power = 600;
-            hero[2].power = 1085;
-            hero[3].power = 600;
-            hero[4].power = 100;
-            hero[0].stamina = 704;
-            hero[1].stamina = 205;
-            hero[2].stamina = 135;
-            hero[3].stamina = 205;
-            hero[4].stamina = 1010;
-            hero[0].agility = 101;
-            hero[1].agility = 600;
-            hero[2].agility = 69;
-            hero[3].agility = 555;
-            hero[4].agility = 100;
-            hero[0].critChance = 10f;
-            hero[1].critChance = 29f;
-            hero[2].critChance = 15f;
-            hero[3].critChance = 10f;
-            hero[4].critChance = 10f;
-            hero[0].critDamage = 50f;
-            hero[1].critDamage = 50f;
-            hero[2].critDamage = 50f;
-            hero[3].critDamage = 50f;
-            hero[4].critDamage = 50f;
-            hero[0].dsChance = 2.5f;
-            hero[1].dsChance = 7.5f;
-            hero[2].dsChance = 18f;
-            hero[3].dsChance = 10f;
-            hero[4].dsChance = 2.5f;
-            hero[0].blockChance = 31f;
-            hero[1].blockChance = 0f;
-            hero[2].blockChance = 0f;
-            hero[3].blockChance = 0f;
-            hero[4].blockChance = 40f;
-            hero[0].evadeChance = 14f;
-            hero[1].evadeChance = 2.5f;
-            hero[2].evadeChance = 2.5f;
-            hero[3].evadeChance = 2.5f;
-            hero[4].evadeChance = 12.5f;
-            hero[0].deflectChance = 5f;
-            hero[1].deflectChance = 0f;
-            hero[2].deflectChance = 0f;
-            hero[3].deflectChance = 0f;
-            hero[4].deflectChance = 5f;
-            hero[0].powerRunes = 0f;
-            hero[1].powerRunes = 22f;
-            hero[2].powerRunes = 15.5f;
-            hero[3].powerRunes = 16f;
-            hero[4].powerRunes = 0f;
-            hero[0].agilityRunes = 0f;
-            hero[1].agilityRunes = 0f;
-            hero[2].agilityRunes = 0f;
-            hero[3].agilityRunes = 2.5f;
-            hero[4].agilityRunes = 0f;
-            hero[0].pets = "gemmi";
-            hero[1].pets = "nelson";
-            hero[2].pets = "gemmi";
-            hero[3].pets = "nelson";
-            hero[4].pets = "gemmi";
-            hero[0].pet = Hero.Pet.Gemmi;
-            hero[1].pet = Hero.Pet.Nelson;
-            hero[2].pet = Hero.Pet.Gemmi;
-            hero[3].pet = Hero.Pet.Nelson;
-            hero[4].pet = Hero.Pet.Gemmi;*/
-
-
         for (i = 0; i < 5; i++)
         {  //initialisation
-            if ((int)hero[i].metaRune == 1)
+            if (hero[i].metaRune == Hero.MetaRune.Redirect)
             {
-                hero[i].redirectRune = true;
                 redirectCount++;
             }
   
@@ -128,7 +58,7 @@ public class Simulation
             hero[i].agilityRunes = (100f + hero[i].agilityRunes) / 100f;
             hero[i].critDamage = (100f + hero[i].critDamage) / 100f;
             hero[i].staminaRunes = (100f + hero[i].staminaRunes) / 100f;
-            hero[i].turnRate = Logic.turnRate(hero[i].power, hero[i].agility);
+            hero[i].turnRate = Logic.TurnRate(hero[i].power, hero[i].agility);
             hero[i].power = Convert.ToInt32(hero[i].power * hero[i].powerRunes);
             hero[i].turnRate *= hero[i].agilityRunes;
             hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
@@ -141,9 +71,8 @@ public class Simulation
             hero[i].drain = false;
         }
 
-        dummyTR = Logic.turnRate(dummyPower, dummyAgility);//boss init
+        dummyTR = Logic.TurnRate(dummyPower, dummyAgility);//boss init
         dummyInterval = (float)counterMax / dummyTR;
-        UnityEngine.Debug.Log(dummyStamina);
         for (p = 0; p < games; p++)
         {  // for loop to simulate as many fights as you want.
             teamAlive = true;
@@ -152,7 +81,6 @@ public class Simulation
             for (i = 0; i < 5; i++)
             {  //hero  values that need to be reset every game
                 hero[i].hp = Convert.ToInt32(hero[i].stamina * 10 * hero[i].staminaRunes);
-                //hero[i].shield = Convert.ToInt32(hero[i].hp / 10);
                 hero[i].shield = 0;
                 hero[i].counter = 0;
                 hero[i].sp = 0;
@@ -160,6 +88,7 @@ public class Simulation
                 hero[i].redirect = true;
             }
 
+            // reset boss values after each game
             hpDummy = dummyStamina * 10;
             maxHpDummy = hpDummy;
             spDummy = 0;
@@ -174,11 +103,11 @@ public class Simulation
                         hero[i].counter++;
                         if (hero[i].counter >= hero[i].interval && hero[i].alive)
                         {      //checks if it's player's turn to attack
-                            Logic.hpPerc();
+                            Logic.HpPerc();
                             hero[i].sp++;
-                            PetLogic.petSelection(i);
+                            PetLogic.PetSelection(i);
                             DS = Logic.RNGroll(hero[i].dsChance);
-                            HeroLogic.weaponSelection(i, DS);
+                            HeroLogic.WeaponSelection(i, DS);
                             hero[i].counter -= hero[i].interval;
                             if (hpDummy <= 0)
                             {
@@ -195,10 +124,10 @@ public class Simulation
                         switch (Launch.bossDiff)
                         {
                             case 0:
-                                BossLogic.kaleidoAI();
+                                BossLogic.KaleidoAI();
                                 break;
                             default:
-                                BossLogic.woodbeardAI();
+                                BossLogic.WoodbeardAI();
                                 break;
                         }
                         dummyCounter -= dummyInterval;
@@ -225,15 +154,12 @@ public class Simulation
             if ((float)p % gameDivider == 0 && p > 0)
             {
                 progressionBar += 1;
-                //UnityEngine.Debug.Log(progressionBar);
                 slider.value = progressionBar;
                 winRate = (win / p) * 100;
                 yield return null;
             }
         }
         winRate = (win / p) * 100;
-        UnityEngine.Debug.Log(winRate);
-
 		callback(winRate);
     }
 }

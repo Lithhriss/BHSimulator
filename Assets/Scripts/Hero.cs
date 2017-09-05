@@ -297,22 +297,6 @@ public struct Hero
 
     };
     
-    // Hero Alive?
-    public bool Alive()
-    {
-        return hp > 0;
-    }
-
-    // Heal the Hero
-    public void Heal(int health)
-    {
-        hp += health;
-        if (hp > maxHp)
-        {
-            hp = maxHp;
-        }
-    }
-
     // Returns a predefined Hero struct
     public static Hero GetPredefined(string name)
     {

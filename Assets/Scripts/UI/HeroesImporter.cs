@@ -99,7 +99,7 @@ public class HeroesImporter : MonoBehaviour
 	public void UpdateHeroPanelsFromCsv(String csv)
 	{
 		String[] lines;
-		String line;
+		
 
 		lines = csv.Split('\n');
 

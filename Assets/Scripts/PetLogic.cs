@@ -5,11 +5,10 @@ using System;
 class PetLogic
 {
     
-    public static void offPetProc(int l)
+    public static void OffPetProc(int l)
     {
         int attackModifier = Convert.ToInt32(0.54 * Simulation.hero[l].power);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 0.63);
-
 
         bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll((float)20);
@@ -21,16 +20,14 @@ class PetLogic
         if (petRoll)
         {
             Simulation.hpDummy -= attackValue;
-            //Console.WriteLine("\npet proc successful\n");
         }
 
     }
 
-    public static void superOffPetProc(int l)
+    public static void SuperOffPetProc(int l)
     {
         int attackModifier = Convert.ToInt32(Simulation.hero[l].power * 0.37);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 1.668);
-
 
         bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(10f);
@@ -46,7 +43,7 @@ class PetLogic
 
     }
 
-    public static void spreadHealPet(int l)
+    public static void SpreadHealPet(int l)
     {
         int i;
         int target = 0;
@@ -54,7 +51,7 @@ class PetLogic
         int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.66 * Simulation.hero[l].power);
 
         bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
-        bool petRoll = Logic.RNGroll((float)20);
+        bool petRoll = Logic.RNGroll(20f);
 
         if (critRoll)
         {
@@ -64,7 +61,7 @@ class PetLogic
         {
             for (i = 0; i < healValue; i++)
             {
-                target = Logic.healLogic();
+                target = Logic.HealLogic();
                 Simulation.hero[target].hp++;
                 if (Simulation.hero[target].hp > Simulation.hero[target].maxHp)
                 {
@@ -74,7 +71,7 @@ class PetLogic
         }
     }
 
-    public static void superSpreadHealPet(int l)
+    public static void SuperSpreadHealPet(int l)
     {
         int i;
         int target = 0;
@@ -92,7 +89,7 @@ class PetLogic
         {
             for (i = 0; i < healValue; i++)
             {
-                target = Logic.healLogic();
+                target = Logic.HealLogic();
                 Simulation.hero[target].hp++;
                 if (Simulation.hero[target].hp > Simulation.hero[target].maxHp)
                 {
@@ -102,7 +99,7 @@ class PetLogic
         }
     }
 
-    public static void teamShieldPet(int l)
+    public static void TeamShieldPet(int l)
     {
         int i;
         int shieldModifier = Convert.ToInt32(Simulation.hero[l].power * 0.06);
@@ -131,7 +128,7 @@ class PetLogic
         }
     }
 
-    public static void superSelfHealPet(int l)
+    public static void SuperSelfHealPet(int l)
     {
         int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.454);
         int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.89 * Simulation.hero[l].power);
@@ -153,32 +150,31 @@ class PetLogic
         }
     }
 
-    // strcmp to find what pet Simulation.hero is using
-    public static void petSelection(int k)
+    public static void PetSelection(int k)
     {
         int pet = (int)Simulation.hero[k].pet;
         switch (pet)
         {
             case 1:
-                offPetProc(k);
+                OffPetProc(k);
                 break;
             case 2:
-                Logic.teamHeal(k);
+                Logic.TeamHeal(k);
                 break;
             case 3:
-                spreadHealPet(k);
+                SpreadHealPet(k);
                 break;
             case 4:
-                superOffPetProc(k);
+                SuperOffPetProc(k);
                 break;
             case 5:
-                superSpreadHealPet(k);
+                SuperSpreadHealPet(k);
                 break;
             case 6:
-                teamShieldPet(k);
+                TeamShieldPet(k);
                 break;
             case 7:
-                superSelfHealPet(k);
+                SuperSelfHealPet(k);
                 break;
             default:
                 break;

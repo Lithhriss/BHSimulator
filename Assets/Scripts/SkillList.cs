@@ -8,7 +8,7 @@ public class SkillList
 
     //0 sp attack
 
-    public static int normalAttack(int power)
+    public static int NormalAttack(int power)
     {
 
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
@@ -21,7 +21,7 @@ public class SkillList
     //Spear skill set
 
 
-    public static int spBack1sp(int power, float critChance, float critDamage)
+    public static int SpBack1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.6 * power);
@@ -33,7 +33,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int spPierce3_1sp(int power, float critChance, float critDamage)
+    public static int SpPierce3_1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.3 * power);
@@ -45,7 +45,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int spTarget2sp(int power, float critChance, float critDamage)
+    public static int SpTarget2sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.73 * power);
@@ -57,7 +57,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int spClosest3sp(int power, float critChance, float critDamage)
+    public static int SpClosest3sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.07 * power);
@@ -73,7 +73,7 @@ public class SkillList
     //Bow skill set
 
 
-    public static int bTarget1sp(int power, float critChance, float critDamage)
+    public static int BTarget1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.545 * power);
@@ -85,7 +85,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int bAoe1sp(int power, float critChance, float critDamage)
+    public static int BAoe1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.25 * power);
@@ -97,7 +97,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int bBack2sp(int power, float critChance, float critDamage)
+    public static int BBack2sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.85 * power);
@@ -109,7 +109,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int bAoeDraint3sp(int power, float critChance, float critDamage)
+    public static int BAoeDraint3sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.2 * power);
@@ -124,7 +124,7 @@ public class SkillList
 
     //Sword skill set
 
-    public static int swTarget_1sp(int power, float critChance, float critDamage)
+    public static int SwTarget_1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.27 * power);
@@ -136,7 +136,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int swPierce3_1sp(int power, float critChance, float critDamage)
+    public static int SwPierce3_1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.16 * power);
@@ -148,7 +148,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int swAoe2sp(int power, float critChance, float critDamage)
+    public static int SwAoe2sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.16 * power);
@@ -160,7 +160,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int swClosest3sp(int power, float critChance, float critDamage)
+    public static int SwClosest3sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.25 * power);
@@ -175,7 +175,7 @@ public class SkillList
 
     //Axe skill set
 
-    public static int aAoeDrain1sp(int power, float critChance, float critDamage)
+    public static int AAoeDrain1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.18 * power);
@@ -187,7 +187,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int aClosest_1sp(int power, float critChance, float critDamage)
+    public static int AClosest_1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.96 * power);
@@ -199,7 +199,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int aTarget2sp(int power, float critChance, float critDamage)
+    public static int ATarget2sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.095 * power);
@@ -211,16 +211,11 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int aSpreadHealt3sp(int power, float critChance, float critDamage)
-    {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //add spread healing
-        return 0;
-    }
+
 
     //Staff skill set
 
-    public static int stClosest1sp(int power, float critChance, float critDamage)
+    public static int StClosest1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.31 * power);
@@ -232,10 +227,10 @@ public class SkillList
         }
         return attackValue;
     }
-    public static void stHeal1sp(int power, float critChance, float critDamage)
+    public static void StHeal1sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        int k = Logic.healLogic(); ;
+        int k = Logic.HealLogic(); ;
         int healModifier = Convert.ToInt32(0.15 * power);
         int healValue = Convert.ToInt32(rnd.Next(0, healModifier) + 0.675 * power);
         bool critroll = Logic.RNGroll(critChance);
@@ -245,7 +240,7 @@ public class SkillList
         }
         Simulation.hero[k].hp += healValue;
     }
-    public static int stAOE2sp(int power, float critChance, float critDamage)
+    public static int StAOE2sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.095 * power);
@@ -257,7 +252,7 @@ public class SkillList
         }
         return attackValue;
     }
-    public static int stTarget3sp(int power, float critChance, float critDamage)
+    public static int StTarget3sp(int power, float critChance, float critDamage)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.45 * power);
@@ -271,29 +266,28 @@ public class SkillList
     }
 
     //Woodbeard skill set
-    public static int wbClosest1sp(int power)
+    public static int WbClosest1sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.95 * power);
         attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 1.10 * power);
-        bool critroll = Logic.RNGroll(10f);
         return attackValue;
     }
-    public static int wbPierce2_1sp(int power)
+    public static int WbPierce2_1sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.58 * power);
         attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.68 * power);
         return attackValue;
     }
-    public static int wbAOEDrain1sp(int power)
+    public static int WbAOEDrain1sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.18 * power);
         attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.21 * power);
         return attackValue;
     }
-    public static int wbTarget2sp(int power)
+    public static int WbTarget2sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(0.95 * power);
@@ -302,14 +296,14 @@ public class SkillList
     }
 
     //Kaleido skill set
-    public static int klCLosest1sp(int power)
+    public static int KlCLosest1sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.26 * power);
         attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.94 * power);
         return attackValue;
     }
-    public static int klBack1sp(int power)
+    public static int KlBack1sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.32 * power);
@@ -317,7 +311,7 @@ public class SkillList
         return attackValue;
 
     }
-    public static int klTarget2sp(int power)
+    public static int KlTarget2sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         attackModifier = Convert.ToInt32(1.36 * power);
@@ -325,11 +319,11 @@ public class SkillList
         return attackValue;
 
     }
-    public static void klHeal2sp(int power)
+    public static void KlHeal2sp(int power)
     {
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
         int healModifier = Convert.ToInt32(0.80 * power);
-        int healValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.60 * power);
+        int healValue = Convert.ToInt32(rnd.Next(0, healModifier) + 0.60 * power);
         bool critroll = Logic.RNGroll(10f);
         if (critroll)
         {

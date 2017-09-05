@@ -31,7 +31,6 @@ public class Launch : MonoBehaviour
     public HeroPanel hero_4;
     public HeroPanel hero_5;
     public Text myText;
-    private Slider slider;
     public Dropdown bossName;
     public Dropdown bossDifficulty;
     public static int bossDiff;
@@ -42,28 +41,15 @@ public class Launch : MonoBehaviour
 	}
 
     void Start()
-    {
-        slider = GameObject.Find("Progress").GetComponent<Slider>();
-        
+    {        
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            slider.value = 0;
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            slider.value += 1;    
-        }
         myText.text = "Winrate over " + Simulation.games + " fights = " + Simulation.winRate + "%";
-
-        //slider.value = Simulation.progressionBar;
-
     }
 
-    public void onClickInit()
+    public void OnClickInit()
     {
 		IsRunning = true;
 
@@ -98,37 +84,9 @@ public class Launch : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log(Simulation.difficultyModifier);
 
 		StartCoroutine(Simulation.simulation(callback => {
 			IsRunning = false;
 		}));
-
-        //StartCoroutine(test());
     }
-
-   IEnumerator test()
-    {
-        int i = 0, a = 0, b = 0;
-        bool te;
-        int s;
-        for (s = 0; s < 1; s++)
-        {
-            a = 0;
-            b = 0;
-            for (i = 0; i < 100000; i++)
-            {
-                te = Logic.RNGroll(10f);
-                if (te)
-                {
-                    a++;
-                }
-                else { b++; }
-            }
-            Debug.Log(a);
-            Debug.Log(b);
-        }
-        yield return null;
-    }
-
 }

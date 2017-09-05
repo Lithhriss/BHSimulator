@@ -4,11 +4,9 @@ using System;
 
 class Logic
 {
-
+    //methods for game logic
     public static bool RNGroll(float a)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         bool outcome;
         float chance = a * 10f;
         float roll = UnityEngine.Random.Range(0, 999);
@@ -23,7 +21,7 @@ class Logic
         return outcome;
     }
 
-    public static float turnRate(int b, int a)
+    public static float TurnRate(int b, int a)
     {
         float tr = 0f;
         tr = ((a + b) / 2f);
@@ -32,11 +30,8 @@ class Logic
         return tr;
     }
 
-    public static void teamHeal(int l)
+    public static void TeamHeal(int l)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        int i;
         int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.072);
         float healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.324 * Simulation.hero[l].power);
 
@@ -49,7 +44,7 @@ class Logic
         }
         if (petRoll)
         {
-            for (i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (Simulation.hero[i].hp > 0)
                 {
@@ -63,22 +58,27 @@ class Logic
         }
     }
 
-    public static void hpPerc()
+    public static void HpPerc()
     {
         int i;
         for (i = 0; i < 5; i++)
         {
-
-            Simulation.hero[i].hpPerc = (float)(Simulation.hero[i].hp) / (float)(Simulation.hero[i].maxHp);
-
+            if (Simulation.hero[i].alive)
+            {
+                Simulation.hero[i].hpPerc = (float)(Simulation.hero[i].hp) / (float)(Simulation.hero[i].maxHp);
+            }
+            else
+            {
+                Simulation.hero[i].hpPerc = 10;
+            }
         }
     }
 
-    public static int healLogic()
+    public static int HealLogic()
     {
         int i;
         int lowest = 0;
-        hpPerc();
+        HpPerc();
         for (i = 0; i < 4; i++)
         {
             if (Simulation.hero[lowest].hpPerc >= Simulation.hero[i + 1].hpPerc)
@@ -99,10 +99,8 @@ class Logic
         return lowest;
     }
 
-    public static int targetSelection(int method)
+    public static int TargetSelection(int method)
     {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         int target = 0;
         int i = 0;
         bool targetLocked = false;
@@ -148,165 +146,13 @@ class Logic
         }
         return target;
     }
-    //obsolete method. Keeping it in case I reuse the code
-    /*public static int bossSkillSelection(int sp, out int finalAttack)
-    {
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
-        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        int attackValue = 0;
-        int skillRoll = 0;
-        int attackModifier = 0;
-        int targetMethod = 0;
 
-        if (sp < 2)
-        {
-            //normal attack
-            attackModifier = Convert.ToInt32(0.2 * Simulation.dummyPower);
-            attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + 0.9 * Simulation.dummyPower);
-            targetMethod = 1;
-        }
-        else if (sp < 4)
-        {
-            // 1 sp skill AI
-            skillRoll = UnityEngine.Random.Range(0, 100);
-            if (skillRoll < 20)
-            {
-                attackModifier = Convert.ToInt32(0.2 * Simulation.dummyPower);
-                attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + 0.9 * Simulation.dummyPower);
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 20 && skillRoll < 60)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 126) + 94);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 60)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 132) + 99);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 2;
-            }
-        }
-        else if (sp < 6)
-        {
-            // 1 - 2 sp skill AI
-            skillRoll = UnityEngine.Random.Range(0, 100);
-            if (skillRoll < 15)
-            {
-                attackModifier = Convert.ToInt32(0.2 * Simulation.dummyPower);
-                attackValue = Convert.ToInt32(UnityEngine.Random.Range(1, attackModifier) + 0.9 * Simulation.dummyPower);
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 15 && skillRoll < 55)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 126) + 94);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 55 && skillRoll < 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 132) + 99);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 2;
-            }
-            else if (skillRoll >= 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 136) + 102);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 4;
-                targetMethod = 3;
-            }
-        }
-        else if (sp < 8)
-        {
-            // 1 - 2 sp skill AI
-            skillRoll = UnityEngine.Random.Range(0, 100);
-            if (skillRoll < 5)
-            {
-                attackModifier = Convert.ToInt32(0.2 * Simulation.dummyPower);
-                attackValue = Convert.ToInt32(UnityEngine.Random.Range(1, attackModifier) + 0.9 * Simulation.dummyPower);
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 5 && skillRoll < 50)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 126) + 94);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 50 && skillRoll < 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 132) + 99);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 2;
-            }
-            else if (skillRoll >= 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 136) + 102);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 4;
-                targetMethod = 3;
-            }
-        }
-        else if (sp == 8)
-        {
-            // 1 - 2 sp skill AI
-            skillRoll = UnityEngine.Random.Range(0, 100);
-            if (skillRoll < 0)
-            {
-                attackModifier = Convert.ToInt32(0.2 * Simulation.dummyPower);
-                attackValue = Convert.ToInt32(UnityEngine.Random.Range(1, attackModifier) + 0.9 * Simulation.dummyPower);
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 0 && skillRoll < 45)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 126) + 94);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 1;
-            }
-            else if (skillRoll >= 45 && skillRoll < 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 132) + 99);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 2;
-                targetMethod = 2;
-            }
-            else if (skillRoll >= 95)
-            {
-                float skillModifier = (UnityEngine.Random.Range(0, 136) + 102);
-                skillModifier /= 100;
-                attackValue = Convert.ToInt32(Simulation.dummyPower * skillModifier);
-                Simulation.spDummy -= 4;
-                targetMethod = 3;
-            }
-        }
-        finalAttack = attackValue;
-        return targetMethod;
-    }
-    */
-
-    public static void heroDamageApplication(int k, int attackValue)
+    // method for hero to deal damage
+    public static void HeroDamageApplication(int k, int attackValue)
     {
         bool bossEvade = RNGroll(2.5f);
         if (!bossEvade) {
-            PetLogic.petSelection(k);
+            PetLogic.PetSelection(k);
             if ((int)Simulation.hero[k].weapon == 3)
             {
                 switch ((int)Simulation.hero[k].divinityBonus)
@@ -345,24 +191,26 @@ class Logic
         }
 
     }
+
     // following statements to choose a def proc and to select the redirected target
-    public static int defensiveProcCase(int k) {
+    public static int DefensiveProcCase(int k) {
         int scenario = 10;
-        if (RNGroll(Simulation.hero[k].blockChance)) { scenario = 3; }
-        if (RNGroll(Simulation.hero[k].evadeChance)) { scenario = 2; }
+        if (RNGroll(Simulation.hero[k].blockChance))   { scenario = 3; }
+        if (RNGroll(Simulation.hero[k].evadeChance))   { scenario = 2; }
         if (RNGroll(Simulation.hero[k].deflectChance)) { scenario = 1; }
-        if (RNGroll(Simulation.hero[k].absorbChance)) { scenario = 0; }
+        if (RNGroll(Simulation.hero[k].absorbChance))  { scenario = 0; }
         return scenario;
     }
-    public static int redirectSelection(int k)
+
+    public static int RedirectSelection(int k)
     {
         int redirectCountLive = Simulation.redirectCount;
         while (redirectCountLive > 0)
         {//redirect loop will run only if at least one member has the rune
             for (int i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].redirectRune && Simulation.hero[i].redirect)
-                { //2 part condition, that they have rune and that their llast redirect roll was successful
+                if (Simulation.hero[i].metaRune == Hero.MetaRune.Redirect && Simulation.hero[i].redirect && Simulation.hero[i].alive)
+                { //3 part condition, that they have rune, that their last redirect roll was successful and alive
                     Simulation.hero[i].redirect = RNGroll(25f);
                     if (!Simulation.hero[i].redirect)
                     {
@@ -381,15 +229,17 @@ class Logic
         }
         for (int i = 0; i < 5; i++)
         { //reset redirect rolls to true
-            if (Simulation.hero[i].redirectRune)
+            if (Simulation.hero[i].metaRune == Hero.MetaRune.Redirect)
             {
                 Simulation.hero[i].redirect = true;
             }
         }
         return k;
     }
-    // following methods used when defensiveproc is successful in boss' damage application nethod
-    public static void heroAbsorb (int attackValue, int k)
+
+
+    // following methods used when defensiveproc is successful in boss' damage application method
+    public static void HeroAbsorb (int attackValue, int k)
     {
         Simulation.hero[k].shield += attackValue;
         if (Simulation.hero[k].shield > Simulation.hero[k].maxShield)
@@ -397,7 +247,8 @@ class Logic
             Simulation.hero[k].shield = Simulation.hero[k].maxShield;
         }
     }
-    public static void heroDeflect (int attackValue, int k)
+
+    public static void HeroDeflect (int attackValue, int k)
     {
         Simulation.hpDummy -= attackValue;
         if (Simulation.dummyDrain)
@@ -409,7 +260,8 @@ class Logic
             Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
         }
     }
-    public static void heroBlock (int attackValue, int k)
+
+    public static void HeroBlock (int attackValue, int k)
     {
         if (Simulation.hero[k].bushidoBonus)
         {
@@ -445,10 +297,11 @@ class Logic
         }
         else
         {
-            PetLogic.petSelection(k);
+            PetLogic.PetSelection(k);
         }
     }
-    public static void heroNormal(int attackValue, int k)
+
+    public static void HeroNormal(int attackValue, int k)
     {
         if (Simulation.hero[k].bushidoBonus)
         {
@@ -480,30 +333,35 @@ class Logic
         {
             Simulation.hero[k].alive = false;
             Simulation.aliveCount--;
+            if (Simulation.hero[k].metaRune == Hero.MetaRune.Redirect)
+            {
+                Simulation.redirectCount--;
+            }
         }
         else
         {
-            PetLogic.petSelection(k);
+            PetLogic.PetSelection(k);
         }
     }
 
+
     //Hero skills
-    public static void heroNormalAttack(int k, bool DS)
+    public static void HeroAttak0SP(int k, bool DS)
     {
-        int attackValue = SkillList.normalAttack(Simulation.hero[k].power);
+        int attackValue = SkillList.NormalAttack(Simulation.hero[k].power);
         if (Logic.RNGroll(Simulation.hero[k].critChance))
         {
             attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
         }
-        Logic.heroDamageApplication(k, attackValue);
+        Logic.HeroDamageApplication(k, attackValue);
         if (DS)
         {
-            attackValue = SkillList.normalAttack(Simulation.hero[k].power);
+            attackValue = SkillList.NormalAttack(Simulation.hero[k].power);
             if (Logic.RNGroll(Simulation.hero[k].critChance))
             {
                 attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
             }
-            Logic.heroDamageApplication(k, attackValue);
+            Logic.HeroDamageApplication(k, attackValue);
         }
     }
 }

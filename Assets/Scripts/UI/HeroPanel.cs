@@ -102,7 +102,6 @@ public class HeroPanel : MonoBehaviour
 
 		//set bonuses
 		unitySkill.isOn    = hero.unity;
-		//divinityBonus.isOn = hero.divinityBonus;
 
 		// Runes
 		powerRunes.text    = Convert.ToString(hero.powerRunes);
@@ -210,9 +209,6 @@ public class HeroPanel : MonoBehaviour
 			case "Redirect":
 				metaRune = Hero.MetaRune.Redirect;
 				break;
-			/*case "HealBonus":
-	            currentMetaRune = Hero.MetaRune.HealBonus;
-	            break;*/
 			default:
 				metaRune = Hero.MetaRune.None;
 				break;
