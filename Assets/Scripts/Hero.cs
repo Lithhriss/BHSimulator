@@ -21,6 +21,7 @@ public struct Hero
     // Specials
     public float critChance;
     public float critDamage;
+	public float empowerChance;
     public float dsChance;
     public float blockChance;
     public float evadeChance;
@@ -32,6 +33,7 @@ public struct Hero
     public float staminaRunes;
     public float agilityRunes;
     public float lifeSteal;
+	public float damageReduction;
 
     // state
     public bool alive;
@@ -54,7 +56,12 @@ public struct Hero
         Nemo,
         Crem, 
         Boiguh, 
-        Nerder
+        Nerder,
+		Quimby,
+		Snut,
+		Wuvboi,
+		Buvboi,
+		Skulldemort
     }
     public Weapon weapon;
     public enum Weapon

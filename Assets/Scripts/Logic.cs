@@ -29,34 +29,7 @@ class Logic
         tr = tr / (100f * b);
         return tr;
     }
-
-    public static void TeamHeal(int l)
-    {
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.072);
-        float healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.324 * Simulation.hero[l].power);
-
-        bool critroll = RNGroll(Simulation.hero[l].critChance);
-        bool petRoll = RNGroll(20f);
-
-        if (critroll)
-        {
-            healValue *= Simulation.hero[l].critDamage;
-        }
-        if (petRoll)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                if (Simulation.hero[i].hp > 0)
-                {
-                    Simulation.hero[i].hp += Convert.ToInt32(healValue);
-                    if (Simulation.hero[i].hp >= Simulation.hero[i].maxHp)
-                    {
-                        Simulation.hero[i].hp = Simulation.hero[i].maxHp;
-                    }
-                }
-            }
-        }
-    }
+		
 
     public static void HpPerc()
     {
@@ -98,6 +71,29 @@ class Logic
         }
         return lowest;
     }
+
+	public static int FindLowestHealth()
+	{
+		int lowest = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			if (Simulation.hero[i].hp >= Simulation.hero[i + 1].hp)
+			{
+				if (Simulation.hero[i + 1].alive)
+				{
+					lowest = i + 1;
+				}
+				else
+				{
+					if (!Simulation.hero[lowest].alive)
+					{
+						lowest = i + 1;
+					}
+				}
+			}
+		}
+		return lowest;
+	}
 
     public static int TargetSelection(int method)
     {
@@ -263,11 +259,14 @@ class Logic
 
     public static void HeroBlock (int attackValue, int k)
     {
+		float reductionModifier;
+		reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
         if (Simulation.hero[k].bushidoBonus)
         {
             attackValue = Convert.ToInt32(attackValue * 1.10);
         }
         attackValue = Convert.ToInt32(0.5 * attackValue);
+		attackValue = Convert.ToInt32(attackValue * reductionModifier);
         if (Simulation.dummyDrain)
         {
             Simulation.hpDummy += attackValue;
@@ -303,18 +302,21 @@ class Logic
 
     public static void HeroNormal(int attackValue, int k)
     {
-        if (Simulation.hero[k].bushidoBonus)
-        {
-            attackValue = Convert.ToInt32(attackValue * 1.10);
-        }
-        if (Simulation.dummyDrain)
-        {
-            Simulation.hpDummy += attackValue;
-        }
+		if (Simulation.hero[k].bushidoBonus)
+		{
+			attackValue = Convert.ToInt32(attackValue * 1.10);
+		}
         if (Simulation.dummySelfInjure)
         {
             Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
-        }
+		}
+
+		int reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
+		attackValue = Convert.ToInt32(attackValue * reductionModifier);
+		if (Simulation.dummyDrain)
+		{
+			Simulation.hpDummy += attackValue;
+		}
         if (Simulation.hero[k].shield > 0)
         {
             if (attackValue > Simulation.hero[k].shield)

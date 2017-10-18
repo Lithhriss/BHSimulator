@@ -60,11 +60,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 15)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -94,11 +94,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 15)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SwTarget_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -106,11 +106,11 @@ class HeroLogic
             {
                 Simulation.hero[k].sp -= 6;
                 Simulation.hero[k].drain = true;
-                attackValue = SkillList.SwClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SwClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SwClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SwClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
                 Simulation.hero[k].drain = false;
@@ -155,11 +155,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 25)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -189,22 +189,22 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 25)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 25 && skillRoll > 55)
             {
                 Simulation.hero[k].sp -= 4;
-                attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -234,33 +234,33 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 25)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpBack1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 25 && skillRoll < 55)
             {
                 Simulation.hero[k].sp -= 4;
-                attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpTarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 55 && skillRoll < 85)
             {
                 Simulation.hero[k].sp -= 6;
-                attackValue = SkillList.SpClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.SpClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.SpClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.SpClosest3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -303,11 +303,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 25)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -338,22 +338,22 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 25)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.BTarget1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 25 && skillRoll < 55)
             {
                 Simulation.hero[k].sp -= 4;
-                attackValue = SkillList.BBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.BBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.BBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.BBack2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -397,11 +397,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 20)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
 
@@ -409,10 +409,10 @@ class HeroLogic
             else if (skillRoll >= 20 && skillRoll < 80)
             {
                 Simulation.hero[k].sp -= 2;
-                SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 if (DS)
                 {
-                    SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 }
             }
             else if (skillRoll >= 80)
@@ -441,31 +441,31 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 20)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.StClosest1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 20 && skillRoll < 80)
             {
                 Simulation.hero[k].sp -= 2;
-                SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 if (DS)
                 {
-                    SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    SkillList.StHeal1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 }
             }
             else if (skillRoll >= 80 && skillRoll < 90)
             {
                 Simulation.hero[k].sp -= 6;
-                attackValue = SkillList.StTarget3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.StTarget3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.StTarget3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.StTarget3sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -509,11 +509,11 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 20)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
@@ -543,22 +543,22 @@ class HeroLogic
             else if (skillRoll >= 10 && skillRoll < 20)
             {
                 Simulation.hero[k].sp -= 2;
-                attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.AClosest_1sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
             else if (skillRoll >= 20 && skillRoll < 80)
             {
                 Simulation.hero[k].sp -= 4;
-                attackValue = SkillList.ATarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                attackValue = SkillList.ATarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                 Logic.HeroDamageApplication(k, attackValue);
                 if (DS)
                 {
-                    attackValue = SkillList.ATarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage);
+                    attackValue = SkillList.ATarget2sp(Simulation.hero[k].power, Simulation.hero[k].critChance, Simulation.hero[k].critDamage, Simulation.hero[k].empowerChance);
                     Logic.HeroDamageApplication(k, attackValue);
                 }
             }
