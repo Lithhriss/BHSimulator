@@ -21,11 +21,13 @@ public class HeroPanel : MonoBehaviour
     public InputField evadeChance;
     public InputField deflectChance;
     public InputField absorbChance;
+    public InputField damageReduction;
 
     // Runes
     public InputField powerRunes;
     public InputField staminaRunes;
     public InputField agilityRunes;
+    public InputField empowerRunes;
 
     public Toggle unitySkill;
     public Toggle bushidoBonus;
@@ -88,20 +90,21 @@ public class HeroPanel : MonoBehaviour
 	public void setFieldsFromHero(Hero hero)
 	{
 		// Base Stats
-		power.text         = Convert.ToString(hero.power);
-		stamina.text       = Convert.ToString(hero.stamina);
-		agility.text       = Convert.ToString(hero.agility);
+		power.text           = Convert.ToString(hero.power);
+		stamina.text         = Convert.ToString(hero.stamina);
+		agility.text         = Convert.ToString(hero.agility);
 		// Specials
-		critChance.text    = Convert.ToString(hero.critChance);
-		critDamage.text    = Convert.ToString(hero.critDamage);
-		dsChance.text      = Convert.ToString(hero.dsChance);
-		blockChance.text   = Convert.ToString(hero.blockChance);
-		evadeChance.text   = Convert.ToString(hero.evadeChance);
-		deflectChance.text = Convert.ToString(hero.deflectChance);
-		absorbChance.text  = Convert.ToString(hero.absorbChance);
-
-		//set bonuses
-		unitySkill.isOn    = hero.unity;
+		critChance.text      = Convert.ToString(hero.critChance);
+		critDamage.text      = Convert.ToString(hero.critDamage);
+		dsChance.text        = Convert.ToString(hero.dsChance);
+		blockChance.text     = Convert.ToString(hero.blockChance);
+		evadeChance.text     = Convert.ToString(hero.evadeChance);
+		deflectChance.text   = Convert.ToString(hero.deflectChance);
+		absorbChance.text    = Convert.ToString(hero.absorbChance);
+        empowerRunes.text    = Convert.ToString(hero.empowerChance);
+        damageReduction.text = Convert.ToString(hero.damageReduction);
+        //set bonuses
+        unitySkill.isOn    = hero.unity;
 
 		// Runes
 		powerRunes.text    = Convert.ToString(hero.powerRunes);
@@ -152,31 +155,33 @@ public class HeroPanel : MonoBehaviour
     {
         return new Hero {
             // Base Stats
-            power         = Convert.ToInt32(power.text),
-            stamina       = Convert.ToInt32(stamina.text),
-            agility       = Convert.ToInt32(agility.text),
+            power           = Convert.ToInt32(power.text),
+            stamina         = Convert.ToInt32(stamina.text),
+            agility         = Convert.ToInt32(agility.text),
             // Specials
-            critChance    = Convert.ToSingle(critChance.text),
-            critDamage    = Convert.ToSingle(critDamage.text),
-            dsChance      = Convert.ToSingle(dsChance.text),
-            blockChance   = Convert.ToSingle(blockChance.text),
-            evadeChance   = Convert.ToSingle(evadeChance.text),
-            deflectChance = Convert.ToSingle(deflectChance.text),
-            absorbChance  = Convert.ToSingle(absorbChance.text),
+            critChance      = Convert.ToSingle(critChance.text),
+            critDamage      = Convert.ToSingle(critDamage.text),
+            dsChance        = Convert.ToSingle(dsChance.text),
+            blockChance     = Convert.ToSingle(blockChance.text),
+            evadeChance     = Convert.ToSingle(evadeChance.text),
+            deflectChance   = Convert.ToSingle(deflectChance.text),
+            absorbChance    = Convert.ToSingle(absorbChance.text),
+            empowerChance   = Convert.ToSingle(empowerRunes.text),
+            damageReduction = Convert.ToSingle(damageReduction.text),
             // Runes
-            powerRunes    = Convert.ToSingle(powerRunes.text),
-            staminaRunes  = Convert.ToSingle(staminaRunes.text),
-            agilityRunes  = Convert.ToSingle(agilityRunes.text),
+            powerRunes      = Convert.ToSingle(powerRunes.text),
+            staminaRunes    = Convert.ToSingle(staminaRunes.text),
+            agilityRunes    = Convert.ToSingle(agilityRunes.text),
             //Set Bonuses
 
-            unity         = unitySkill.isOn,
-            bushidoBonus  = bushidoBonus.isOn,
-			divinityBonus = GetDivinityBonusFromString(divinity.options[divinity.value].text),
+            unity           = unitySkill.isOn,
+            bushidoBonus    = bushidoBonus.isOn,
+			divinityBonus   = GetDivinityBonusFromString(divinity.options[divinity.value].text),
 
             // Pet
-			metaRune      = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
-			pet           = GetPetFromString(pet.options[pet.value].text),
-			weapon        = GetWeaponFromString(weapon.options[weapon.value].text)
+			metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
+			pet             = GetPetFromString(pet.options[pet.value].text),
+			weapon          = GetWeaponFromString(weapon.options[weapon.value].text)
         };
     }
 
@@ -251,7 +256,27 @@ public class HeroPanel : MonoBehaviour
 				pet = Hero.Pet.Nerder;
 				break;
 
-			default:
+            case "Buvboi":
+                pet = Hero.Pet.Buvboi;
+                break;
+
+            case "Wuvboi":
+                pet = Hero.Pet.Wuvboi;
+                break;
+
+            case "Snut":
+                pet = Hero.Pet.Snut;
+                break;
+
+            case "Quimby":
+                pet = Hero.Pet.Quimby;
+                break;
+
+            case "Skulldemort":
+                pet = Hero.Pet.Skulldemort;
+                break;
+
+            default:
 				pet = Hero.Pet.None;
 				break;
 		}

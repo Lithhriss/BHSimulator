@@ -311,7 +311,7 @@ class Logic
             Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
 		}
 
-		int reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
+		float reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
 		attackValue = Convert.ToInt32(attackValue * reductionModifier);
 		if (Simulation.dummyDrain)
 		{
