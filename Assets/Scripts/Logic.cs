@@ -312,7 +312,7 @@ class Logic
 		}
 
 		float reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
-		attackValue = Convert.ToInt32(attackValue * reductionModifier);
+		attackValue = Convert.ToInt32((float)attackValue * reductionModifier);
 		if (Simulation.dummyDrain)
 		{
 			Simulation.hpDummy += attackValue;
@@ -362,6 +362,10 @@ class Logic
             if (Logic.RNGroll(Simulation.hero[k].critChance))
             {
                 attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
+            }
+            if (Logic.RNGroll(Simulation.hero[k].empowerChance))
+            {
+                attackValue *= 2;
             }
             Logic.HeroDamageApplication(k, attackValue);
         }

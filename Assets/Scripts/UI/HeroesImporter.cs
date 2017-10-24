@@ -105,7 +105,7 @@ public class HeroesImporter : MonoBehaviour
 
 		for (var i = 0; i < heroes.Length; i++)
 		{
-			heroes[i].setFieldsFromHero(GetHeroFromCsvLine(lines[i]));
+			heroes[i].SetFieldsFromHero(GetHeroFromCsvLine(lines[i]));
 		}
 	}
 

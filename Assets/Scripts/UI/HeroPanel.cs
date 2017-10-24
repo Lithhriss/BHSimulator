@@ -84,10 +84,10 @@ public class HeroPanel : MonoBehaviour
             hero = Hero.GetPredefined(heroName);
         }
 
-		setFieldsFromHero(hero);
+		SetFieldsFromHero(hero);
     }
 
-	public void setFieldsFromHero(Hero hero)
+	public void SetFieldsFromHero(Hero hero)
 	{
 		// Base Stats
 		power.text           = Convert.ToString(hero.power);

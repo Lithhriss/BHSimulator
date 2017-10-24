@@ -264,7 +264,6 @@ class PetLogic
 
 	public static void TargetWeakestHealPet(int l)
 	{
-		int i;
 		int target = 0;
 		int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.288);
 		int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.576 * Simulation.hero[l].power);
