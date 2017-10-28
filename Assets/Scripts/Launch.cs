@@ -81,6 +81,15 @@ public class Launch : MonoBehaviour
             case 12:
                 Simulation.difficultyModifier = 207;
                 break;
+            case 20:
+                Simulation.difficultyModifier = 150;
+                break;
+            case 21:
+                Simulation.difficultyModifier = 207;
+                break;
+            case 22:
+                Simulation.difficultyModifier = 265;
+                break;
             default:
                 break;
         }

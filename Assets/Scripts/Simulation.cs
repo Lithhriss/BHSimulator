@@ -90,6 +90,10 @@ public class Simulation
 
             // reset boss values after each game
             hpDummy = dummyStamina * 10;
+            if (Launch.bossDiff == 2)
+            {
+                hpDummy += 10000; 
+            }
             maxHpDummy = hpDummy;
             spDummy = 0;
             
@@ -126,8 +130,11 @@ public class Simulation
                             case 0:
                                 BossLogic.KaleidoAI();
                                 break;
-                            default:
+                            case 1:
                                 BossLogic.WoodbeardAI();
+                                break;
+                            case 2:
+                                BossLogic.RoboMechAI();
                                 break;
                         }
                         dummyCounter -= dummyInterval;

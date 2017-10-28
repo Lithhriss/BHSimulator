@@ -73,17 +73,19 @@ public class HeroesImporter : MonoBehaviour
 	private String GetCsvLineFromHero(Hero hero)
 	{
 		return String.Format(
-			"{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18}",
+			"{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}",
 			hero.power,
 			hero.stamina,
 			hero.agility,
 			hero.critChance,
 			hero.critDamage,
 			hero.dsChance,
+            hero.empowerChance,
 			hero.blockChance,
 			hero.evadeChance,
 			hero.deflectChance,
 			hero.absorbChance,
+            hero.damageReduction,
 			hero.powerRunes,
 			hero.staminaRunes,
 			hero.agilityRunes,
@@ -116,27 +118,31 @@ public class HeroesImporter : MonoBehaviour
 
 		values = csvLine.Split(',');
 
-		hero = new Hero();
-		hero.power = Convert.ToInt32(values[0]);
-		hero.stamina = Convert.ToInt32(values[1]);
-		hero.agility = Convert.ToInt32(values[2]);
-		hero.critChance = Convert.ToSingle(values[3]);
-		hero.critDamage = Convert.ToSingle(values[4]);
-		hero.dsChance = Convert.ToSingle(values[5]);
-		hero.blockChance = Convert.ToSingle(values[6]);
-		hero.evadeChance = Convert.ToSingle(values[7]);
-		hero.deflectChance = Convert.ToSingle(values[8]);
-		hero.absorbChance = Convert.ToSingle(values[9]);
-		hero.powerRunes = Convert.ToSingle(values[10]);
-		hero.staminaRunes = Convert.ToSingle(values[11]);
-		hero.agilityRunes = Convert.ToSingle(values[12]);
-		hero.unity = Convert.ToBoolean(values[13]);
-		hero.bushidoBonus = Convert.ToBoolean(values[14]);
-		hero.divinityBonus = HeroPanel.GetDivinityBonusFromString(values[15]);
-		hero.metaRune = HeroPanel.GetMetaRuneFromString(values[16]);
-		hero.pet = HeroPanel.GetPetFromString(values[17]);
-		hero.weapon = HeroPanel.GetWeaponFromString(values[18]);
-
+        hero = new Hero()
+        {
+            power = Convert.ToInt32(values[0]),
+            stamina = Convert.ToInt32(values[1]),
+            agility = Convert.ToInt32(values[2]),
+            critChance = Convert.ToSingle(values[3]),
+            critDamage = Convert.ToSingle(values[4]),
+            dsChance = Convert.ToSingle(values[5]),
+            empowerChance = Convert.ToSingle(values[6]),
+            blockChance = Convert.ToSingle(values[7]),
+            evadeChance = Convert.ToSingle(values[8]),
+            deflectChance = Convert.ToSingle(values[9]),
+            absorbChance = Convert.ToSingle(values[10]),
+            damageReduction = Convert.ToSingle(values[11]),
+            powerRunes = Convert.ToSingle(values[12]),
+            staminaRunes = Convert.ToSingle(values[13]),
+            agilityRunes = Convert.ToSingle(values[14]),
+            unity = Convert.ToBoolean(values[15]),
+            bushidoBonus = Convert.ToBoolean(values[16]),
+            divinityBonus = HeroPanel.GetDivinityBonusFromString(values[17]),
+            metaRune = HeroPanel.GetMetaRuneFromString(values[18]),
+            pet = HeroPanel.GetPetFromString(values[19]),
+            weapon = HeroPanel.GetWeaponFromString(values[20])
+        };
+        Debug.Log(values[20] + "$");
 		return hero;
 	}
 }

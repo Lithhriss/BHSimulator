@@ -339,7 +339,41 @@ public class SkillList
         }
         Simulation.hpDummy += healValue;
     }
-	#endregion
+    #endregion
+
+    #region Roboss set
+    public static int RMBackBounce1sp(int power)
+    {
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        attackModifier = Convert.ToInt32(0.4 * power);
+        attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.32 * power);
+        return attackValue;
+    }
+
+    public static int RMAOE1sp(int power)
+    {
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        attackModifier = Convert.ToInt32(0.4 * power);
+        attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.4 * power);
+        return attackValue;
+    }
+
+    public static int RMWeakest2sp(int power)
+    {
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        attackModifier = Convert.ToInt32(0.4 * power);
+        attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 1 * power);
+        return attackValue;
+    }
+
+    public static int RMHealTeam2sp(int power)
+    {
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        attackModifier = Convert.ToInt32(0.4 * power);
+        attackValue = Convert.ToInt32(rnd.Next(0, attackModifier) + 0.4 * power);
+        return attackValue;
+    }
+    #endregion
 }
 
 
