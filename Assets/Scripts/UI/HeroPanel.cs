@@ -287,7 +287,7 @@ public class HeroPanel : MonoBehaviour
 	public static Hero.Weapon GetWeaponFromString(String s)
 	{
 		Hero.Weapon weapon;
-        Debug.Log("string:" + s + "$");
+        
         switch (s)
 		{
 			case "Axe":
@@ -309,7 +309,6 @@ public class HeroPanel : MonoBehaviour
 				weapon = Hero.Weapon.None;
 				break;
 		}
-        Debug.Log("weapon:" + weapon);
         return weapon;
 	}
 }

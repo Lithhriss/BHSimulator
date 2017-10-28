@@ -6,117 +6,118 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HeroesImporter : MonoBehaviour
-{		
-	[DllImport("__Internal")]
-	public static extern void ShowDialog(string text);
+{
+    [DllImport("__Internal")]
+    public static extern void ShowDialog(string text);
 
-	public Button cancelImportButton;
-	public Button openOverlayButton;
-	public Button submitImportButton;
-	public GameObject importOverlay;
-	public HeroPanel[] heroes;
-	public InputField importInputField;
+    public Button cancelImportButton;
+    public Button openOverlayButton;
+    public Button submitImportButton;
+    public GameObject importOverlay;
+    public HeroPanel[] heroes;
+    public InputField importInputField;
 
-	void Start()
-	{
-		openOverlayButton.GetComponent<Button>().onClick.AddListener(OpenOverlayButton_onClick);
-		submitImportButton.GetComponent<Button>().onClick.AddListener(SubmitImport_onClick);
-		cancelImportButton.GetComponent<Button>().onClick.AddListener(CancelImport_onClick);
+    void Start()
+    {
+        openOverlayButton.GetComponent<Button>().onClick.AddListener(OpenOverlayButton_onClick);
+        submitImportButton.GetComponent<Button>().onClick.AddListener(SubmitImport_onClick);
+        cancelImportButton.GetComponent<Button>().onClick.AddListener(CancelImport_onClick);
 
-		Launch.onRun += OnSimulationRun;
-	}
+        Launch.onRun += OnSimulationRun;
+    }
 
-	void OnSimulationRun()
-	{
-		openOverlayButton.interactable = !Launch.instance.IsRunning;
-	}
+    void OnSimulationRun()
+    {
+        openOverlayButton.interactable = !Launch.instance.IsRunning;
+    }
 
-	public void OpenOverlayButton_onClick()
-	{
-		String heroesCsv = GetHeroesCsv();
+    public void OpenOverlayButton_onClick()
+    {
+        String heroesCsv = GetHeroesCsv();
 
-		if (Application.platform == RuntimePlatform.WebGLPlayer)
-		{
-			ShowDialog(heroesCsv);
-		}
-		else
-		{
-			importInputField.text = heroesCsv;
-			importOverlay.SetActive(true);
-		}
-	}
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            ShowDialog(heroesCsv);
+        }
+        else
+        {
+            importInputField.text = heroesCsv;
+            importOverlay.SetActive(true);
+        }
+    }
 
-	public void SubmitImport_onClick()
-	{
-		importOverlay.SetActive(false);
-		UpdateHeroPanelsFromCsv(importInputField.text);
-	}
+    public void SubmitImport_onClick()
+    {
+        importOverlay.SetActive(false);
+        UpdateHeroPanelsFromCsv(importInputField.text);
+    }
 
-	public void CancelImport_onClick()
-	{
-		importOverlay.SetActive(false);
-	}
+    public void CancelImport_onClick()
+    {
+        importOverlay.SetActive(false);
+    }
 
-	private String GetHeroesCsv()
-	{
-		StringBuilder sb;
+    private String GetHeroesCsv()
+    {
+        StringBuilder sb;
 
-		sb = new StringBuilder();
-		for (var i = 0; i < heroes.Length; i++)
-		{
-			sb.AppendLine(GetCsvLineFromHero(heroes[i].GetHeroStruct()));
-		}
+        sb = new StringBuilder();
+        for (var i = 0; i < heroes.Length; i++)
+        {
+            sb.AppendLine(GetCsvLineFromHero(heroes[i].GetHeroStruct()));
+        }
 
-		return sb.ToString();
-	}
+        return sb.ToString();
+    }
 
-	private String GetCsvLineFromHero(Hero hero)
-	{
-		return String.Format(
-			"{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}",
-			hero.power,
-			hero.stamina,
-			hero.agility,
-			hero.critChance,
-			hero.critDamage,
-			hero.dsChance,
+    private String GetCsvLineFromHero(Hero hero)
+    {
+        return String.Format(
+            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},END",
+            hero.power,
+            hero.stamina,
+            hero.agility,
+            hero.critChance,
+            hero.critDamage,
+            hero.dsChance,
             hero.empowerChance,
-			hero.blockChance,
-			hero.evadeChance,
-			hero.deflectChance,
-			hero.absorbChance,
+            hero.blockChance,
+            hero.evadeChance,
+            hero.deflectChance,
+            hero.absorbChance,
             hero.damageReduction,
-			hero.powerRunes,
-			hero.staminaRunes,
-			hero.agilityRunes,
-			hero.unity,
-			hero.bushidoBonus,
-			hero.divinityBonus,
-			hero.metaRune,
-			hero.pet,
-			hero.weapon
-		);
-	}
+            hero.powerRunes,
+            hero.staminaRunes,
+            hero.agilityRunes,
+            hero.unity,
+            hero.bushidoBonus,
+            hero.divinityBonus,
+            hero.metaRune,
+            hero.weapon,
+            hero.pet
+        );
+    }
 
-	public void UpdateHeroPanelsFromCsv(String csv)
-	{
-		String[] lines;
-		
 
-		lines = csv.Split('\n');
+    public void UpdateHeroPanelsFromCsv(String csv)
+    {
+        String[] lines;
 
-		for (var i = 0; i < heroes.Length; i++)
-		{
-			heroes[i].SetFieldsFromHero(GetHeroFromCsvLine(lines[i]));
-		}
-	}
 
-	public Hero GetHeroFromCsvLine(String csvLine)
-	{
-		Hero hero;
-		String[] values;
+        lines = csv.Split('\n');
 
-		values = csvLine.Split(',');
+        for (var i = 0; i < heroes.Length; i++)
+        {
+            heroes[i].SetFieldsFromHero(GetHeroFromCsvLine(lines[i]));
+        }
+    }
+
+    public Hero GetHeroFromCsvLine(String csvLine)
+    {
+        Hero hero;
+        String[] values;
+
+        values = csvLine.Split(',');
 
         hero = new Hero()
         {
@@ -139,10 +140,10 @@ public class HeroesImporter : MonoBehaviour
             bushidoBonus = Convert.ToBoolean(values[16]),
             divinityBonus = HeroPanel.GetDivinityBonusFromString(values[17]),
             metaRune = HeroPanel.GetMetaRuneFromString(values[18]),
-            pet = HeroPanel.GetPetFromString(values[19]),
-            weapon = HeroPanel.GetWeaponFromString(values[20])
+            pet = HeroPanel.GetPetFromString(values[20]),
+            weapon = HeroPanel.GetWeaponFromString(values[19])
         };
         Debug.Log(values[20] + "$");
-		return hero;
-	}
+        return hero;
+    }
 }
