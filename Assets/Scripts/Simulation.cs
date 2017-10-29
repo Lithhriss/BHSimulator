@@ -92,7 +92,7 @@ public class Simulation
             hpDummy = dummyStamina * 10;
             if (Launch.bossDiff == 2)
             {
-                hpDummy += 10000; 
+                hpDummy += 20000; 
             }
             maxHpDummy = hpDummy;
             spDummy = 0;
