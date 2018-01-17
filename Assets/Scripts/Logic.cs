@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 class Logic
 {
+    #region Old Code
     //methods for game logic
     public static bool RNGroll(float a)
     {
@@ -21,12 +23,12 @@ class Logic
         return outcome;
     }
 
-    public static float TurnRate(int b, int a)
+    public static float TurnRate(int power, int agility)
     {
         float tr = 0f;
-        tr = ((a + b) / 2f);
+        tr = ((agility + power) / 2f);
         tr = (float)Math.Pow(tr, 2);
-        tr = tr / (100f * b);
+        tr = tr / (100f * power);
         return tr;
     }
 		
@@ -370,4 +372,162 @@ class Logic
             Logic.HeroDamageApplication(k, attackValue);
         }
     }
+
+#endregion
+
+    #region New Code
+    public static void HpPerc(Hero[] heroes)
+    {
+        int i;
+        for (i = 0; i < heroes.Length; i++)
+        {
+            if (heroes[i].alive)
+            {
+                heroes[i].hpPerc = (float)(heroes[i].hp) / (float)(heroes[i].maxHp);
+            }
+            else
+            {
+                heroes[i].hpPerc = 100;
+            }
+        }
+    }
+    public static int HealLogic(Hero[] heroes)
+    {
+        int i;
+        int lowest = 0;
+        HpPerc(heroes);
+        for (i = 0; i < heroes.Length - 1; i++)
+        {
+            if (heroes[lowest].hpPerc >= heroes[i + 1].hpPerc)
+            {
+                if (heroes[i + 1].alive)
+                {
+                    lowest = i + 1;
+                }
+                else
+                {
+                    if (!heroes[lowest].alive)
+                    {
+                        lowest = i + 1;
+                    }
+                }
+            }
+        }
+        return lowest;
+    }
+
+    public static Enemy SelectTarget(Enemy[] enemies)
+    {
+        while (true)
+        {
+            int target = UnityEngine.Random.Range(0, 4);
+            if (enemies[target].hp > 0) return enemies[target];
+        }
+    }
+    public static Enemy SelectBack(Enemy[] enemies)
+    {
+        int target = enemies.Length - 1;
+        while (true)
+        { 
+            if (enemies[target].hp > 0) return enemies[target];
+            target--;
+        }
+    }
+    public static Enemy SelectFront(Enemy[] enemies)
+    {
+        int target = 0;
+        while (true)
+        {
+            if (enemies[target].hp > 0) return enemies[target];
+            target++;
+        }
+    }
+    public static int SelectPierce(Enemy[] enemies)
+    {
+        int target = 0;
+        while (true)
+        {
+            if (enemies[target].hp > 0) return target;
+            target++;
+        }
+    }
+    public static Hero SelectWeakest(Hero[] heroes)
+    {
+        return heroes.OrderBy(hero => hero.hp).First();
+    }
+
+    public static void HeroDamageApplication(Hero hero, Hero[] heroes, Enemy[] enemies, int attackValue, Enemy target)
+    {
+        bool bossEvade = RNGroll(2.5f);
+        if (!bossEvade)
+        {
+            PetLogic.PetSelection(hero, heroes, enemies );
+            if ((int)hero.weapon == 3)
+            {
+                switch ((int)hero.divinityBonus)
+                {
+                    case 1:
+                        attackValue = Convert.ToInt32(attackValue * 1.05);
+                        break;
+                    case 2:
+                        attackValue = Convert.ToInt32(attackValue * 1.05);
+                        if (target.hp < Convert.ToInt32(target.maxHp / 4))
+                        {
+                            attackValue = Convert.ToInt32(attackValue * 1.30);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (hero.bushidoBonus)
+            {
+                attackValue = Convert.ToInt32(attackValue * 1.10);
+            }
+            target.hp -= attackValue;
+            if (hero.drain)
+            {
+                hero.hp += attackValue;
+                if (hero.hp > hero.maxHp)
+                {
+                    hero.hp = hero.maxHp;
+                }
+            }
+            if (hero.lifeSteal > 0f)
+            {
+                hero.hp = hero.hp + Convert.ToInt32(attackValue * hero.lifeSteal);
+                if (hero.hp > hero.maxHp)
+                {
+                    hero.hp = hero.maxHp;
+                }
+            }
+        }
+
+    }
+
+
+    public static void HeroAttak0SP(Hero hero, Hero[] heroes, Enemy[] enemies)
+    {
+        int attackValue = SkillList.NormalAttack(hero.power);
+        if (RNGroll(hero.critChance))
+        {
+            attackValue = Convert.ToInt32(attackValue * hero.critDamage);
+        }
+        HeroDamageApplication(hero, heroes, enemies, attackValue);
+        if (RNGroll(hero.dsChance))
+        {
+            attackValue = SkillList.NormalAttack(hero.power);
+            if (RNGroll(hero.critChance))
+            {
+                attackValue = Convert.ToInt32(attackValue * hero.critDamage);
+            }
+            if (RNGroll(hero.empowerChance))
+            {
+                attackValue *= 2;
+            }
+            HeroDamageApplication(hero, heroes, enemies, attackValue);
+        }
+    }
+
+    #endregion
 }

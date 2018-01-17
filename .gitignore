@@ -39,3 +39,6 @@ ExportedObj/
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.ide-wal
+.vs/BHSimulator/v15/Server/sqlite3/storage.ide-shm
+*.lock

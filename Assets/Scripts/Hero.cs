@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 public struct Hero
 {
@@ -6,7 +7,7 @@ public struct Hero
     public int power;
     public int stamina;
     public int agility;
-    
+
     // Combat Stats
     public int hp;
     public int maxHp;
@@ -21,7 +22,7 @@ public struct Hero
     // Specials
     public float critChance;
     public float critDamage;
-	public float empowerChance;
+    public float empowerChance;
     public float dsChance;
     public float blockChance;
     public float evadeChance;
@@ -33,7 +34,7 @@ public struct Hero
     public float staminaRunes;
     public float agilityRunes;
     public float lifeSteal;
-	public float damageReduction;
+    public float damageReduction;
 
     // state
     public bool alive;
@@ -42,7 +43,14 @@ public struct Hero
     public bool redirect;
     public bool redirectRune;
     public bool bushidoBonus;
-    //public bool divinityBonus;
+    public bool aresBonus;
+    public bool lunarBonus;
+
+    //mythic bonuses
+    public bool necrosisBonus;
+    public bool hysteriaBonus;
+    public bool nightVisageBonus;
+    public bool consumptionBonus;
 
     // Pet
     public string pets;
@@ -54,14 +62,14 @@ public struct Hero
         Gemmi,
         Boogie,
         Nemo,
-        Crem, 
-        Boiguh, 
+        Crem,
+        Boiguh,
         Nerder,
-		Quimby,
-		Snut,
-		Wuvboi,
-		Buvboi,
-		Skulldemort
+        Quimby,
+        Snut,
+        Wuvboi,
+        Buvboi,
+        Skulldemort
     }
     public Weapon weapon;
     public enum Weapon
@@ -71,7 +79,8 @@ public struct Hero
         Spear,
         Sword,
         Staff,
-        Axe
+        Axe,
+        Laser
     }
     public MetaRune metaRune;
     public enum MetaRune
@@ -88,7 +97,54 @@ public struct Hero
         Bonus_3_of_3
     }
 
-    // Predefined Heroes
+    //Set Bonuses
+    public ObliterationBonus obliterationBonus;
+    public enum ObliterationBonus
+    {
+        None,
+        Bonus_2_of_4,
+        Bonus_3_of_4,
+        Bonus_4_of_4
+    }
+
+    public MARUBonus maruBonus;
+    public enum MARUBonus
+    {
+        None,
+        Bonus_2_of_4,
+        Bonus_3_of_4,
+        Bonus_4_of_4
+    }
+
+    public ConductionBonus conductionBonus;
+    public enum ConductionBonus
+    {
+        None,
+        Bonus_2_of_4,
+        Bonus_3_of_4,
+        Bonus_4_of_4
+    }
+
+    public TatersBonus tatersBonus;
+    public enum TatersBonus
+    {
+        None,
+        Bonus_2_of_3,
+        Bonus_3_of_3
+    }
+
+    public IllustriousBonus illustriousBonus;
+    public enum IllustriousBonus
+    {
+        None,
+        Bonus_2_of_3,
+        Bonus_3_of_3
+    }
+
+    //p2w bonuses
+    public bool gateKeeperBonus;
+
+    // Predefined 
     public static readonly Dictionary<string, Hero> predefined = new Dictionary<string, Hero>() {
         {
             "Default Hero",
@@ -303,7 +359,46 @@ public struct Hero
         }
 
     };
-    
+
+    public void Initialise()
+    {
+        powerRunes = (100f + powerRunes) / 100f;
+        agilityRunes = (100f + agilityRunes) / 100f;
+        critDamage = (100f + critDamage) / 100f;
+        staminaRunes = (100f + staminaRunes) / 100f;
+        turnRate = Logic.TurnRate(power, agility);
+        power = Convert.ToInt32(power * powerRunes);
+        turnRate *= agilityRunes;
+        hp = Convert.ToInt32(stamina * 10 * staminaRunes);
+        maxHp = hp;
+        maxShield = Convert.ToInt32(maxHp / 2);
+        interval = 100 / turnRate;
+        counter = 0;
+        sp = 2;
+        alive = true;
+        drain = false;
+    }
+
+    public void Revive()
+    {
+        hp = maxHp;
+        shield = 0;
+        counter = 0;
+        sp = 0;
+        alive = true;
+        redirect = true;
+    }
+
+    public void IncrementCounter()
+    {
+        counter++;
+    }
+
+    public void IncrementSp()
+    {
+        sp++;
+    }
+
     // Returns a predefined Hero struct
     public static Hero GetPredefined(string name)
     {
