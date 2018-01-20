@@ -5,6 +5,7 @@ using System.Linq;
 
 class Logic
 {
+    public static Random random = new Random(Guid.NewGuid().GetHashCode());
     #region Old Code
     //methods for game logic
     public static bool RNGroll(float a)
@@ -38,13 +39,13 @@ class Logic
         int i;
         for (i = 0; i < 5; i++)
         {
-            if (Simulation.hero[i].alive)
+            if (RaidSimulation.hero[i].alive)
             {
-                Simulation.hero[i].hpPerc = (float)(Simulation.hero[i].hp) / (float)(Simulation.hero[i].maxHp);
+                RaidSimulation.hero[i].hpPerc = (float)(RaidSimulation.hero[i].hp) / (float)(RaidSimulation.hero[i].maxHp);
             }
             else
             {
-                Simulation.hero[i].hpPerc = 10;
+                RaidSimulation.hero[i].hpPerc = 10;
             }
         }
     }
@@ -56,15 +57,15 @@ class Logic
         HpPerc();
         for (i = 0; i < 4; i++)
         {
-            if (Simulation.hero[lowest].hpPerc >= Simulation.hero[i + 1].hpPerc)
+            if (RaidSimulation.hero[lowest].hpPerc >= RaidSimulation.hero[i + 1].hpPerc)
             {
-                if (Simulation.hero[i + 1].alive)
+                if (RaidSimulation.hero[i + 1].alive)
                 {
                     lowest = i + 1;
                 }
                 else
                 {
-                    if (!Simulation.hero[lowest].alive)
+                    if (!RaidSimulation.hero[lowest].alive)
                     {
                         lowest = i + 1;
                     }
@@ -79,15 +80,15 @@ class Logic
 		int lowest = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			if (Simulation.hero[i].hp >= Simulation.hero[i + 1].hp)
+			if (RaidSimulation.hero[i].hp >= RaidSimulation.hero[i + 1].hp)
 			{
-				if (Simulation.hero[i + 1].alive)
+				if (RaidSimulation.hero[i + 1].alive)
 				{
 					lowest = i + 1;
 				}
 				else
 				{
-					if (!Simulation.hero[lowest].alive)
+					if (!RaidSimulation.hero[lowest].alive)
 					{
 						lowest = i + 1;
 					}
@@ -108,7 +109,7 @@ class Logic
             case 1:
                 while (!targetLocked)
                 {
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         target = i;
                         targetLocked = true;
@@ -120,7 +121,7 @@ class Logic
                 i = 4;
                 while (!targetLocked)
                 {
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         target = i;
                         targetLocked = true;
@@ -132,7 +133,7 @@ class Logic
                 while (!targetLocked)
                 {
                     i = UnityEngine.Random.Range(0, 5);
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         target = i;
                         targetLocked = true;
@@ -151,16 +152,16 @@ class Logic
         bool bossEvade = RNGroll(2.5f);
         if (!bossEvade) {
             PetLogic.PetSelection(k);
-            if ((int)Simulation.hero[k].weapon == 3)
+            if ((int)RaidSimulation.hero[k].weapon == 3)
             {
-                switch ((int)Simulation.hero[k].divinityBonus)
+                switch ((int)RaidSimulation.hero[k].divinityBonus)
                 {
                     case 1:
                         attackValue = Convert.ToInt32(attackValue * 1.05);
                         break;
                     case 2:
                         attackValue = Convert.ToInt32(attackValue * 1.05);
-                        if (Simulation.hpDummy < Convert.ToInt32(Simulation.maxHpDummy / 4))
+                        if (RaidSimulation.hpDummy < Convert.ToInt32(RaidSimulation.maxHpDummy / 4))
                         {
                             attackValue = Convert.ToInt32(attackValue * 1.30);
                         }
@@ -169,22 +170,22 @@ class Logic
                         break;
                 }
             }
-            if (Simulation.hero[k].bushidoBonus)
+            if (RaidSimulation.hero[k].bushidoBonus)
             {
                 attackValue = Convert.ToInt32(attackValue * 1.10);
             }
-            Simulation.hpDummy -= attackValue;
-            if (Simulation.hero[k].drain)
+            RaidSimulation.hpDummy -= attackValue;
+            if (RaidSimulation.hero[k].drain)
             {
-                Simulation.hero[k].hp += attackValue;
-                if (Simulation.hero[k].hp > Simulation.hero[k].maxHp)
+                RaidSimulation.hero[k].hp += attackValue;
+                if (RaidSimulation.hero[k].hp > RaidSimulation.hero[k].maxHp)
                 {
-                    Simulation.hero[k].hp = Simulation.hero[k].maxHp;
+                    RaidSimulation.hero[k].hp = RaidSimulation.hero[k].maxHp;
                 }
             }
-            if (Simulation.hero[k].lifeSteal > 0f)
+            if (RaidSimulation.hero[k].lifeSteal > 0f)
             {
-                Simulation.hero[k].hp = Simulation.hero[k].hp + Convert.ToInt32(attackValue * Simulation.hero[k].lifeSteal);
+                RaidSimulation.hero[k].hp = RaidSimulation.hero[k].hp + Convert.ToInt32(attackValue * RaidSimulation.hero[k].lifeSteal);
             }
         }
 
@@ -193,24 +194,24 @@ class Logic
     // following statements to choose a def proc and to select the redirected target
     public static int DefensiveProcCase(int k) {
         int scenario = 10;
-        if (RNGroll(Simulation.hero[k].blockChance))   { scenario = 3; }
-        if (RNGroll(Simulation.hero[k].evadeChance))   { scenario = 2; }
-        if (RNGroll(Simulation.hero[k].deflectChance)) { scenario = 1; }
-        if (RNGroll(Simulation.hero[k].absorbChance))  { scenario = 0; }
+        if (RNGroll(RaidSimulation.hero[k].blockChance))   { scenario = 3; }
+        if (RNGroll(RaidSimulation.hero[k].evadeChance))   { scenario = 2; }
+        if (RNGroll(RaidSimulation.hero[k].deflectChance)) { scenario = 1; }
+        if (RNGroll(RaidSimulation.hero[k].absorbChance))  { scenario = 0; }
         return scenario;
     }
 
     public static int RedirectSelection(int k)
     {
-        int redirectCountLive = Simulation.redirectCount;
+        int redirectCountLive = RaidSimulation.redirectCount;
         while (redirectCountLive > 0)
         {//redirect loop will run only if at least one member has the rune
             for (int i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].metaRune == Hero.MetaRune.Redirect && Simulation.hero[i].redirect && Simulation.hero[i].alive)
+                if (RaidSimulation.hero[i].metaRune == Character.MetaRune.Redirect && RaidSimulation.hero[i].redirect && RaidSimulation.hero[i].alive)
                 { //3 part condition, that they have rune, that their last redirect roll was successful and alive
-                    Simulation.hero[i].redirect = RNGroll(25f);
-                    if (!Simulation.hero[i].redirect)
+                    RaidSimulation.hero[i].redirect = RNGroll(25f);
+                    if (!RaidSimulation.hero[i].redirect)
                     {
                         redirectCountLive--;
                     }
@@ -227,9 +228,9 @@ class Logic
         }
         for (int i = 0; i < 5; i++)
         { //reset redirect rolls to true
-            if (Simulation.hero[i].metaRune == Hero.MetaRune.Redirect)
+            if (RaidSimulation.hero[i].metaRune == Character.MetaRune.Redirect)
             {
-                Simulation.hero[i].redirect = true;
+                RaidSimulation.hero[i].redirect = true;
             }
         }
         return k;
@@ -239,62 +240,61 @@ class Logic
     // following methods used when defensiveproc is successful in boss' damage application method
     public static void HeroAbsorb (int attackValue, int k)
     {
-        Simulation.hero[k].shield += attackValue;
-        if (Simulation.hero[k].shield > Simulation.hero[k].maxShield)
+        RaidSimulation.hero[k].shield += attackValue;
+        if (RaidSimulation.hero[k].shield > RaidSimulation.hero[k].maxShield)
         {
-            Simulation.hero[k].shield = Simulation.hero[k].maxShield;
+            RaidSimulation.hero[k].shield = RaidSimulation.hero[k].maxShield;
         }
     }
 
     public static void HeroDeflect (int attackValue, int k)
     {
-        Simulation.hpDummy -= attackValue;
-        if (Simulation.dummyDrain)
+        RaidSimulation.hpDummy -= attackValue;
+        if (RaidSimulation.dummyDrain)
         {
-            Simulation.hpDummy += attackValue;
+            RaidSimulation.hpDummy += attackValue;
         }
-        if (Simulation.dummySelfInjure)
+        if (RaidSimulation.dummySelfInjure)
         {
-            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+            RaidSimulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
         }
     }
 
     public static void HeroBlock (int attackValue, int k)
     {
 		float reductionModifier;
-		reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
-        if (Simulation.hero[k].bushidoBonus)
+		reductionModifier = 1f - (RaidSimulation.hero[k].damageReduction / 100f);
+        if (RaidSimulation.hero[k].bushidoBonus)
         {
             attackValue = Convert.ToInt32(attackValue * 1.10);
         }
         attackValue = Convert.ToInt32(0.5 * attackValue);
 		attackValue = Convert.ToInt32(attackValue * reductionModifier);
-        if (Simulation.dummyDrain)
+        if (RaidSimulation.dummyDrain)
         {
-            Simulation.hpDummy += attackValue;
+            RaidSimulation.hpDummy += attackValue;
         }
-        if (Simulation.dummySelfInjure)
+        if (RaidSimulation.dummySelfInjure)
         {
-            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+            RaidSimulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
         }
-        if (Simulation.hero[k].shield > 0)
+        if (RaidSimulation.hero[k].shield > 0)
         {
-            if (attackValue > Simulation.hero[k].shield)
+            if (attackValue > RaidSimulation.hero[k].shield)
             {
-                attackValue -= Simulation.hero[k].shield;
-                Simulation.hero[k].shield = 0;
+                attackValue -= RaidSimulation.hero[k].shield;
+                RaidSimulation.hero[k].shield = 0;
             }
             else
             {
-                Simulation.hero[k].shield -= attackValue;
+                RaidSimulation.hero[k].shield -= attackValue;
                 attackValue = 0;
             }
         }
-        Simulation.hero[k].hp -= attackValue;
-        if (Simulation.hero[k].hp <= 0)
+        RaidSimulation.hero[k].hp -= attackValue;
+        if (RaidSimulation.hero[k].hp <= 0)
         {
-            Simulation.hero[k].alive = false;
-            Simulation.aliveCount--;
+            RaidSimulation.aliveCount--;
         }
         else
         {
@@ -304,42 +304,41 @@ class Logic
 
     public static void HeroNormal(int attackValue, int k)
     {
-		if (Simulation.hero[k].bushidoBonus)
+		if (RaidSimulation.hero[k].bushidoBonus)
 		{
 			attackValue = Convert.ToInt32(attackValue * 1.10);
 		}
-        if (Simulation.dummySelfInjure)
+        if (RaidSimulation.dummySelfInjure)
         {
-            Simulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
+            RaidSimulation.hpDummy -= Convert.ToInt32(attackValue * 0.10);
 		}
 
-		float reductionModifier = 1f - (Simulation.hero[k].damageReduction / 100f);
+		float reductionModifier = 1f - (RaidSimulation.hero[k].damageReduction / 100f);
 		attackValue = Convert.ToInt32((float)attackValue * reductionModifier);
-		if (Simulation.dummyDrain)
+		if (RaidSimulation.dummyDrain)
 		{
-			Simulation.hpDummy += attackValue;
+			RaidSimulation.hpDummy += attackValue;
 		}
-        if (Simulation.hero[k].shield > 0)
+        if (RaidSimulation.hero[k].shield > 0)
         {
-            if (attackValue > Simulation.hero[k].shield)
+            if (attackValue > RaidSimulation.hero[k].shield)
             {
-                attackValue -= Simulation.hero[k].shield;
-                Simulation.hero[k].shield = 0;
+                attackValue -= RaidSimulation.hero[k].shield;
+                RaidSimulation.hero[k].shield = 0;
             }
             else
             {
-                Simulation.hero[k].shield -= attackValue;
+                RaidSimulation.hero[k].shield -= attackValue;
                 attackValue = 0;
             }
         }
-        Simulation.hero[k].hp -= attackValue;
-        if (Simulation.hero[k].hp <= 0)
+        RaidSimulation.hero[k].hp -= attackValue;
+        if (RaidSimulation.hero[k].hp <= 0)
         {
-            Simulation.hero[k].alive = false;
-            Simulation.aliveCount--;
-            if (Simulation.hero[k].metaRune == Hero.MetaRune.Redirect)
+            RaidSimulation.aliveCount--;
+            if (RaidSimulation.hero[k].metaRune == Character.MetaRune.Redirect)
             {
-                Simulation.redirectCount--;
+                RaidSimulation.redirectCount--;
             }
         }
         else
@@ -352,20 +351,20 @@ class Logic
     //Hero skills
     public static void HeroAttak0SP(int k, bool DS)
     {
-        int attackValue = SkillList.NormalAttack(Simulation.hero[k].power);
-        if (Logic.RNGroll(Simulation.hero[k].critChance))
+        int attackValue = SkillList.NormalAttack(RaidSimulation.hero[k].power);
+        if (Logic.RNGroll(RaidSimulation.hero[k].critChance))
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
+            attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[k].critDamage);
         }
         Logic.HeroDamageApplication(k, attackValue);
         if (DS)
         {
-            attackValue = SkillList.NormalAttack(Simulation.hero[k].power);
-            if (Logic.RNGroll(Simulation.hero[k].critChance))
+            attackValue = SkillList.NormalAttack(RaidSimulation.hero[k].power);
+            if (Logic.RNGroll(RaidSimulation.hero[k].critChance))
             {
-                attackValue = Convert.ToInt32(attackValue * Simulation.hero[k].critDamage);
+                attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[k].critDamage);
             }
-            if (Logic.RNGroll(Simulation.hero[k].empowerChance))
+            if (Logic.RNGroll(RaidSimulation.hero[k].empowerChance))
             {
                 attackValue *= 2;
             }
@@ -373,10 +372,118 @@ class Logic
         }
     }
 
-#endregion
+    #endregion
 
     #region New Code
-    public static void HpPerc(Hero[] heroes)
+
+
+    public static void HitAbsorbed(int attackValue, Character target)
+    {
+        target.shield += attackValue;
+        if (target.shield > target.maxShield)
+        {
+            target.shield = target.maxShield;
+        }
+    }
+    public static void Hit(int attackValue, Character target, Character author, bool isBlocked)
+    {
+        if (target.bushidoBonus)
+        {
+            attackValue = Convert.ToInt32(attackValue * 1.10);
+        }
+        if (isBlocked) attackValue = Convert.ToInt32(0.5 * attackValue);
+        attackValue = Convert.ToInt32(attackValue * target.damageReduction);
+        if (author.drain)
+        {
+            author.hp += attackValue;
+            if (author.hp > author.maxHp) author.hp = author.maxHp;
+        }
+        if (author.selfInjure)
+        {
+            author.hp -= Convert.ToInt32(attackValue * 0.10);
+        }
+        if (target.shield > 0)
+        {
+            if (attackValue > target.shield)
+            {
+                attackValue -= target.shield;
+                target.shield = 0;
+            }
+            else
+            {
+                target.shield -= attackValue;
+                attackValue = 0;
+            }
+        }
+        target.hp -= attackValue;
+    }
+
+    public static int CountAlive(Character[] heroes)
+    {
+        return heroes.Count(hero => hero.alive == true);
+    }
+    public static int CountRedirect(Character[] heroes)
+    {
+        return heroes.Count(hero => (hero.redirect == true && hero.alive == true));
+    }
+    public static int DefensiveProcCase(Character hero)
+    {
+        int scenario = 10;
+        if (RNGroll(hero.blockChance)) { scenario = 1; }
+        if (RNGroll(hero.evadeChance)) { scenario = 0; }
+        return scenario;
+    }
+    public static Character RedirectSelection(Character target, Character[] party)
+    {
+        Character targetHero = target;
+        int redirectCountLive = CountRedirect(party);
+        while (redirectCountLive > 0)
+        {//redirect loop will run only if at least one member has the rune
+            for (int i = 0; i < 5; i++)
+            {
+                if (party[i].metaRune == Character.MetaRune.Redirect && party[i].redirect && party[i].alive)
+                { //3 part condition, that they have rune, that their last redirect roll was successful and alive
+                    party[i].redirect = RNGroll(25f);
+                    if (!party[i].redirect)
+                    {
+                        redirectCountLive--;
+                    }
+                    else
+                    {
+                        targetHero = party[i];
+                        if (redirectCountLive == 1)
+                        {//if only one member has the rune. will stop the loop to lock itself as target
+                            redirectCountLive = 0;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 5; i++)
+        { //reset redirect rolls to true
+            if (party[i].metaRune == Character.MetaRune.Redirect)
+            {
+                party[i].redirect = true;
+            }
+        }
+        return targetHero;
+    }
+    public static Character RedirectDeflectLoop(Character target, Character author, Character[] opponents, Character[] party, ref bool aborbProc)
+    {
+        Character returnChar = target;
+        returnChar = RedirectSelection(returnChar, party);
+        if (RNGroll(returnChar.absorbChance))
+        {
+            aborbProc = true;
+            return returnChar;
+        }
+        if (RNGroll(returnChar.deflectChance))
+        {
+            returnChar = RedirectDeflectLoop(author, returnChar, party, opponents, ref aborbProc);
+        }
+        return returnChar;
+    }
+    public static void HpPerc(Character[] heroes)
     {
         int i;
         for (i = 0; i < heroes.Length; i++)
@@ -391,7 +498,7 @@ class Logic
             }
         }
     }
-    public static int HealLogic(Hero[] heroes)
+    public static int HealFindWeakestPerc(Character[] heroes)
     {
         int i;
         int lowest = 0;
@@ -415,8 +522,7 @@ class Logic
         }
         return lowest;
     }
-
-    public static Enemy SelectTarget(Enemy[] enemies)
+    public static Character SelectTarget(Character[] enemies)
     {
         while (true)
         {
@@ -424,39 +530,50 @@ class Logic
             if (enemies[target].hp > 0) return enemies[target];
         }
     }
-    public static Enemy SelectBack(Enemy[] enemies)
+    public static Character SelectBack(Character[] party)
     {
-        int target = enemies.Length - 1;
+        int target = party.Length - 1;
         while (true)
         { 
-            if (enemies[target].hp > 0) return enemies[target];
+            if (party[target].hp > 0) return party[target];
             target--;
         }
     }
-    public static Enemy SelectFront(Enemy[] enemies)
+    public static Character SelectFront(Character[] party)
     {
         int target = 0;
         while (true)
         {
-            if (enemies[target].hp > 0) return enemies[target];
+            if (party[target].hp > 0) return party[target];
             target++;
         }
     }
-    public static int SelectPierce(Enemy[] enemies)
+    public static int SelectPierce(Character[] party)
     {
         int target = 0;
         while (true)
         {
-            if (enemies[target].hp > 0) return target;
+            if (party[target].hp > 0) return target;
             target++;
         }
     }
-    public static Hero SelectWeakest(Hero[] heroes)
+    public static Character SelectWeakest(Character[] party)
     {
-        return heroes.OrderBy(hero => hero.hp).First();
+        return party.OrderBy(hero => hero.hp).First();
     }
-
-    public static void HeroDamageApplication(Hero hero, Hero[] heroes, Enemy[] enemies, int attackValue, Enemy target)
+    public static Character SelectRicochet(Character[] party, Character currentTarget)
+    {
+        Character newTarget = party[random.Next(party.Length)];
+        while (true)
+        {
+            if (newTarget != currentTarget || newTarget.alive)
+            {
+                break;
+            }
+        }
+        return newTarget;
+    }
+    public static void HeroDamageApplication(Character hero, Character[] heroes, Character[] enemies, int attackValue, Character target)
     {
         bool bossEvade = RNGroll(2.5f);
         if (!bossEvade)
@@ -504,16 +621,34 @@ class Logic
         }
 
     }
-
-
-    public static void HeroAttak0SP(Hero hero, Hero[] heroes, Enemy[] enemies)
+    public static void DamageApplication(int attackValue, Character target, Character author, Character[] party, Character[] opponents)
+    {
+        int scenario = DefensiveProcCase(target);
+        bool isBlocked = false;
+        switch (scenario)
+        {
+            case 0: // evade
+                break;
+            case 1: //block
+                isBlocked = true;
+                Hit(attackValue, target, author, isBlocked);
+                if (target.alive) PetLogic.PetSelection(target, opponents, party);
+                break;
+            default: //normal
+                Hit(attackValue, target, author, isBlocked);
+                if (target.alive) PetLogic.PetSelection(target, opponents, party);
+                break;
+        }
+        PetLogic.PetSelection(author, party, opponents);
+    }
+    public static void HeroAttak0SP(Character hero, Character[] heroes, Character[] enemies)
     {
         int attackValue = SkillList.NormalAttack(hero.power);
         if (RNGroll(hero.critChance))
         {
             attackValue = Convert.ToInt32(attackValue * hero.critDamage);
         }
-        HeroDamageApplication(hero, heroes, enemies, attackValue);
+        HeroDamageApplication(hero, heroes, enemies, attackValue, SelectFront(enemies));
         if (RNGroll(hero.dsChance))
         {
             attackValue = SkillList.NormalAttack(hero.power);
@@ -525,7 +660,7 @@ class Logic
             {
                 attackValue *= 2;
             }
-            HeroDamageApplication(hero, heroes, enemies, attackValue);
+            HeroDamageApplication(hero, heroes, enemies, attackValue, SelectFront(enemies));
         }
     }
 

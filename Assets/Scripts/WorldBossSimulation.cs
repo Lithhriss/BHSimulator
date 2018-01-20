@@ -4,120 +4,134 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
 
-public class WorldBossSimulation {
+public class WorldBossSimulation
+{
 
-    public Hero[] heroes;
-    public Enemy[] enemies;
-    //public int difficultyModifier;
+    public Character[] heroes;
+    public Character[] enemies;
     public int progressionBar = 0;
     private Slider slider;
     public int redirectCount = 0;
+    private int DifficultyModifier;
+    public float winRate;
     Random rand;
+    private bool isNotHero = false;
+    private bool isHero = true;
 
-    private Enemy[] OrlagDpsFams;
-    private Enemy[] OrlagTankFams;
-    private Enemy[] OrlagBossFams;
-    private Enemy[] OrlagAllFams;
+    private bool heroesAlive;
+    private bool enemiesAlive;
 
-    private Enemy[] NetherDpsFams;
-    private Enemy[] NetherTankFams;
-    private Enemy[] NetherBossFams;
+    //private Character[] OrlagDpsFams;
+    //private Character[] OrlagTankFams;
+    //private Character[] OrlagBossFams;
+    //private Character[] OrlagAllFams;
+
+    //private Character[] NetherDpsFams;
+    //private Character[] NetherTankFams;
+    //private Character[] NetherBossFams;
 
 
     public WorldBossSimulation(int difficultyModifier)
     {
         rand = new Random(Guid.NewGuid().GetHashCode());
-
-        OrlagBossFams = new Enemy[3]
+        /*
+        OrlagBossFams = new Character[3]
         {
             //blue
-            new Enemy(9, 22, 9, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 5f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9),
+            new Character(9, 22, 9, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 5f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "BlueOrc"),
             //green
-            new Enemy(18, 11, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9),
+            new Character(18, 11, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "GreenOrc"),
             //purple
-            new Enemy(20, 10, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9)
+            new Character(20, 10, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "PurpleOrc")
         };
-        OrlagDpsFams = new Enemy[3]
+        OrlagDpsFams = new Character[3]
         {
             //tilge
-            new Enemy(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2),
+            new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "ArcherOrc"),
             //velk
-            new Enemy(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1),
+            new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageOrc"),
             //drek
-            new Enemy(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2)
+            new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "AssassinOrc")
         };
-        OrlagTankFams = new Enemy[2]
+        OrlagTankFams = new Character[2]
         {
             //meatwall
-            new Enemy(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4),
+            new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4, isNotHero, "MeatOrc"),
             //garekk
-            new Enemy(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3),
+            new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "BruiserOrc"),
 
         };
-        OrlagAllFams = new Enemy[5]
+        OrlagAllFams = new Character[5]
         {
             //tilge
-            new Enemy(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2),
+            new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "ArcherOrc"),
             //velk
-            new Enemy(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1),
+            new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageOrc"),
             //drek
-            new Enemy(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2),
+            new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "AssassinOrc"),
             //meatwall
-            new Enemy(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4),
+            new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4, isNotHero, "MeatOrc"),
             //garekk
-            new Enemy(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3),
+            new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "BruiserOrc")
         };
 
-        NetherBossFams = new Enemy[3]
+        NetherBossFams = new Character[3]
         {
             //blue
-            new Enemy (7f, 18f, 7f, 10f, 50f, 0f, 0f, 0f, 12.5f, 6f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2.9),
+            new Character (7f, 18f, 7f, 10f, 50f, 0f, 0f, 0f, 12.5f, 6f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2.9, isNotHero, "BlueNether"),
             //purple
-            new Enemy(7.5f, 17f, 7.5f, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9),
+            new Character(7.5f, 17f, 7.5f, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "PurpleNether"),
             //yellow
-            new Enemy (8f, 16f, 8f, 50f, 50, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9)
+            new Character (8f, 16f, 8f, 50f, 50, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "YellowNether")
         };
-        NetherDpsFams = new Enemy[5]
+        NetherDpsFams = new Character[5]
         {
             //d3mon
-            new Enemy(4f, 6f, 4f, 10f, 250f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2),
+            new Character(4f, 6f, 4f, 10f, 250f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "DemonNether"),
             //Omo
-            new Enemy(4f, 5f, 4f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1),
+            new Character(4f, 5f, 4f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "ImpNether"),
             //Clavid
-            new Enemy(5.5f, 3f, 5.5f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1),
+            new Character(5.5f, 3f, 5.5f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageNether"),
             //Zorgim
-            new Enemy(5f, 4.5f, 5f, 10f, 50f, 0f, 0f, 0f, 2,5f, 0f, 15f, 0f, 0f, 0f, difficultyModifier, 2),
+            new Character(5f, 4.5f, 5f, 10f, 50f, 0f, 0f, 0f, 2,5f, 0f, 15f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "BeastNether"),
             //tankfam
-            new Enemy(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3)
+            new Character(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "TankNether")
         };
-        NetherTankFams = new Enemy[1]
+        NetherTankFams = new Character[1]
         {
-            new Enemy(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3)
+            new Character(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "TankNether")
         };
-
+        */
+        DifficultyModifier = difficultyModifier;
     }
 
-    public  IEnumerator Simulation(int boss , System.Action<float> callback)
+    public IEnumerator Simulation(int boss, System.Action<float> callback)
     {
-        bool heroesAlive;
-        bool enemiesAlive;
+        int p;
         int counterMax = 100;
         redirectCount = 0;
+        bool matchOver = false;
 
-        foreach (Hero hero in heroes)
+        
+        int games = 1000;
+        int gameDivider = Convert.ToInt32(games / 100);
+        float win = 0;
+        float lose = 0;
+
+        foreach (Character hero in heroes)
         {  //initialisation
-            if (hero.metaRune == Hero.MetaRune.Redirect)
+            if (hero.metaRune == Character.MetaRune.Redirect)
             {
                 redirectCount++;
             }
-            hero.Initialise();
+            hero.InitialiseHero();
         }
-        for (int p = 0; p < 1000; p++)
+        for (p = 0; p < games; p++)
         {
             heroesAlive = true;
             enemiesAlive = true;
             SetupEnemies(boss);
-            foreach (Hero hero in heroes)
+            foreach (Character hero in heroes)
             {
                 hero.Revive();
             }
@@ -126,42 +140,91 @@ public class WorldBossSimulation {
             {
                 for (int i = 0; i < counterMax; i++)
                 {
-                    foreach (Hero hero in heroes)
+                    foreach (Character hero in heroes)
                     {
-                        hero.IncrementCounter();
-                        if (hero.counter > hero.interval)
+                        if (hero.alive)
                         {
-                            Logic.HpPerc(heroes);
-                            hero.IncrementSp();
-                            PetLogic.PetSelection(hero, heroes, enemies);
-                            HeroLogic.WeaponSelection(hero, heroes, enemies);
+                            hero.IncrementCounter();
+                            if (hero.counter > hero.interval)
+                            {
+                                Logic.HpPerc(heroes);
+                                hero.IncrementSp();
+                                PetLogic.PetSelection(hero, heroes, enemies);
+                                hero.ChooseSkill(heroes, enemies);
+                                hero.SubstractCounter();
+                                UpdateAliveStatus();
+                                if (!heroesAlive || !enemiesAlive)
+                                {
+                                    matchOver = true;
+                                    break;
+                                }
+                            }
                         }
                     }
+                    if (matchOver) break;
+                    foreach (Character enemy in enemies)
+                    {
+                        if (enemy.alive)
+                        {
+                            enemy.IncrementCounter();
+                            if (enemy.counter > enemy.interval)
+                            {
+                                Logic.HpPerc(enemies);
+                                enemy.IncrementSp();
+                                PetLogic.PetSelection(enemy, enemies, heroes);
+                                enemy.ChooseSkill(enemies, heroes);
+                                enemy.SubstractCounter();
+                                UpdateAliveStatus();
+                                if (!heroesAlive || !enemiesAlive)
+                                {
+                                    matchOver = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (matchOver) break;
                 }
             }
+            if (heroesAlive)
+            {
+                win++;
+            }
+            else
+            {
+                lose++;
+            }
+            if ((float)p % gameDivider == 0 && p > 0)
+            {
+                progressionBar += 1;
+                slider.value = progressionBar;
+                winRate = (win / p) * 100;
+                yield return null;
+            }
         }
-        yield return null;
+        winRate = (win / p) * 100;
+        callback(winRate);
     }
 
     private void SetupEnemies(int boss)
     {
-        int bossType = rand.Next(3);
-        Enemy placeholder;
-        Enemy bossPlaceholder;
+        //int bossType = rand.Next(3);
+        Character placeholder;
+        Character bossPlaceholder;
         if (boss == 0)
         {
-            Enemy dpsPlaceholder = OrlagDpsFams[rand.Next(OrlagDpsFams.Length)];
-            Enemy tankPlaceholder = OrlagTankFams[rand.Next(OrlagTankFams.Length)];
-            placeholder = OrlagAllFams[rand.Next(OrlagAllFams.Length)];
-            bossPlaceholder = OrlagBossFams[rand.Next(OrlagBossFams.Length)];
-            List<Enemy> enemyList = new List<Enemy>() { dpsPlaceholder, tankPlaceholder, placeholder, bossPlaceholder };
+            Character dpsPlaceholder = GetOrlagDPS(rand.Next(3));
+            Character tankPlaceholder = GetOrlagTank(rand.Next(2));
+            placeholder = GetOrlagMix(rand.Next(5));
+            bossPlaceholder = GetOrlagBoss(rand.Next(3));
+            List<Character> enemyList = new List<Character>() { dpsPlaceholder, tankPlaceholder, placeholder, bossPlaceholder };
             enemies = enemyList.OrderByDescending(mob => mob.priority).ToArray();
         }
         else
         {
-            enemies = new Enemy[2];
-            bossPlaceholder = NetherBossFams[rand.Next(NetherBossFams.Length)];
-            placeholder = NetherDpsFams[rand.Next(NetherDpsFams.Length)];
+            enemies = new Character[2];
+            bossPlaceholder = GetNetherBoss(rand.Next(3));
+            placeholder = GetNetherMix(rand.Next(5));
             if (bossPlaceholder.priority > placeholder.priority)
             {
                 enemies[0] = bossPlaceholder;
@@ -173,8 +236,99 @@ public class WorldBossSimulation {
                 enemies[0] = placeholder;
             }
         }
-
+    }
+    private Character GetOrlagBoss(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(9, 22, 9, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 5f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "BlueOrc");
+            case 1:
+                return new Character(18, 11, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 0.9, isNotHero, "GreenOrc");
+            default:
+                return new Character(20, 10, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "PurpleOrc");
+        }
+    }
+    private Character GetOrlagMix(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "ArcherOrc");
+            case 1:
+                return new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1, isNotHero, "MageOrc");
+            case 2:
+                return new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "AssassinOrc");
+            case 3:
+                return new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, DifficultyModifier, 4, isNotHero, "MeatOrc");
+            default:
+                return new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 3, isNotHero, "BruiserOrc");
+        }
+    }
+    private Character GetOrlagDPS(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "ArcherOrc");
+            case 1:
+                return new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1, isNotHero, "MageOrc");
+            default:
+                return new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "AssassinOrc");
+        }
+    }
+    private Character GetOrlagTank(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, DifficultyModifier, 4, isNotHero, "MeatOrc");
+            default:
+                return new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 3, isNotHero, "BruiserOrc");
+        }
     }
 
-
+    private Character GetNetherBoss(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(7f, 18f, 7f, 10f, 50f, 0f, 0f, 0f, 12.5f, 6f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2.9, isNotHero, "BlueNether");
+            case 1:
+                return new Character(7.5f, 17f, 7.5f, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "PurpleNether");
+            default:
+                return new Character(8f, 16f, 8f, 50f, 50, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 0.9, isNotHero, "YellowNether");
+        }
     }
+    private Character GetNetherMix(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(4f, 6f, 4f, 10f, 250f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "DemonNether");
+            case 1:
+                return new Character(4f, 5f, 4f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1, isNotHero, "ImpNether");
+            case 2:
+                return new Character(5.5f, 3f, 5.5f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1, isNotHero, "MageNether");
+            case 3:
+                return new Character(5f, 4.5f, 5f, 10f, 50f, 0f, 0f, 0f, 2, 5f, 0f, 15f, 0f, 0f, 0f, DifficultyModifier, 2, isNotHero, "BeastNether");
+            default:
+                return new Character(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 3, isNotHero, "TankNether");
+        }
+    }
+
+    public static int GetOpponentCount(Character[] opponents)
+    {
+        return opponents.Count(member => member.alive);
+    }
+    public static bool IsAoeEnabled(Character[] opponents)
+    {
+        return opponents.Count(member => member.alive) > 2;
+    }
+
+    public void UpdateAliveStatus()
+    {
+        heroesAlive = GetOpponentCount(heroes) > 0;
+        enemiesAlive = GetOpponentCount(enemies) > 0;
+    }
+}

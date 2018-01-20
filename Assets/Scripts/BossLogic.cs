@@ -37,10 +37,10 @@ class BossLogic
         int target = 0;
         int range = 0;
         bool critRoll = Logic.RNGroll(10f);
-        if (Simulation.spDummy < 2)
+        if (RaidSimulation.spDummy < 2)
         {
             target = Logic.TargetSelection(1);
-            attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+            attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
             if (critRoll)
             {
                 attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -48,10 +48,10 @@ class BossLogic
             BossDamageApplication(target, attackValue);
 
         }
-        else if (Simulation.spDummy < 4)
+        else if (RaidSimulation.spDummy < 4)
         {
             
-            switch (Simulation.aliveCount)
+            switch (RaidSimulation.aliveCount)
             {
                 case 1:
                     range = 25;
@@ -68,7 +68,7 @@ class BossLogic
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll) {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
                 }
@@ -76,9 +76,9 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 25)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.WbClosest1sp(Simulation.dummyPower);
+                attackValue = SkillList.WbClosest1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -88,17 +88,17 @@ class BossLogic
             else if (skillRoll >=25 && skillRoll < 60)
             {
                 //UnityEngine.Debug.Log("pierce entered");
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
                 for (int i = 0; i < 2; i++)
                 {
-                    attackValue = SkillList.WbPierce2_1sp(Simulation.dummyPower);
+                    attackValue = SkillList.WbPierce2_1sp(RaidSimulation.dummyPower);
                     
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[target + i].alive)
+                    if (RaidSimulation.hero[target + i].alive)
                     {
                         BossDamageApplication(target + i, attackValue);
                     }
@@ -106,25 +106,25 @@ class BossLogic
             }
             else if (skillRoll >= 60 )
             {
-                Simulation.spDummy -= 2;
-                Simulation.dummyDrain = true;
+                RaidSimulation.spDummy -= 2;
+                RaidSimulation.dummyDrain = true;
                 for (int i = 0; i < 5; i++) {
-                    attackValue = SkillList.WbAOEDrain1sp(Simulation.dummyPower);
+                    attackValue = SkillList.WbAOEDrain1sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         BossDamageApplication(i, attackValue);
                     }
                 }
-                Simulation.dummyDrain = false;
+                RaidSimulation.dummyDrain = false;
             }
         }
-        else if (Simulation.spDummy >= 4)
+        else if (RaidSimulation.spDummy >= 4)
         {
-            switch (Simulation.aliveCount)
+            switch (RaidSimulation.aliveCount)
             {
                 case 1:
                     range = 35;
@@ -141,7 +141,7 @@ class BossLogic
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -150,9 +150,9 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 25)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.WbClosest1sp(Simulation.dummyPower);
+                attackValue = SkillList.WbClosest1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -162,27 +162,27 @@ class BossLogic
             else if (skillRoll >= 25 && skillRoll < 35)
             {
                 target = Logic.TargetSelection(3);
-                Simulation.dummySelfInjure = true;
-                attackValue = SkillList.WbTarget2sp(Simulation.dummyPower);
+                RaidSimulation.dummySelfInjure = true;
+                attackValue = SkillList.WbTarget2sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
                 }
                 BossDamageApplication(target, attackValue);
-                Simulation.dummySelfInjure = false;
+                RaidSimulation.dummySelfInjure = false;
             }
             else if (skillRoll >= 35 && skillRoll < 60)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
                 for (int i = 0; i < 2; i++)
                 {
-                    attackValue = SkillList.WbPierce2_1sp(Simulation.dummyPower);
+                    attackValue = SkillList.WbPierce2_1sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[target + i].alive)
+                    if (RaidSimulation.hero[target + i].alive)
                     {
                         BossDamageApplication(target + i, attackValue);
                     }
@@ -190,21 +190,21 @@ class BossLogic
             }
             else if (skillRoll >= 60 && skillRoll < 90)
             {
-                Simulation.spDummy -= 2;
-                Simulation.dummyDrain = true;
+                RaidSimulation.spDummy -= 2;
+                RaidSimulation.dummyDrain = true;
                 for (int i = 0; i < 5; i++)
                 {
-                    attackValue = SkillList.WbAOEDrain1sp(Simulation.dummyPower);
+                    attackValue = SkillList.WbAOEDrain1sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         BossDamageApplication(i, attackValue);
                     }
                 }
-                Simulation.dummyDrain = false;
+                RaidSimulation.dummyDrain = false;
             }
             
         }
@@ -217,22 +217,22 @@ class BossLogic
         int skillRoll = 0;
         int target = 0;
         bool critRoll = Logic.RNGroll(10f);
-        if (Simulation.spDummy < 2)
+        if (RaidSimulation.spDummy < 2)
         {
             target = Logic.TargetSelection(1);
-            attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+            attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
             if (critRoll)
             {
                 attackValue = Convert.ToInt32(attackValue * 1.5);
             }
         }
-        else if (Simulation.spDummy < 4)
+        else if (RaidSimulation.spDummy < 4)
         {
             skillRoll = rnd.Next(0, 50);
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -240,9 +240,9 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 30)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.KlCLosest1sp(Simulation.dummyPower);
+                attackValue = SkillList.KlCLosest1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -250,22 +250,22 @@ class BossLogic
             }
             else if (skillRoll >= 30 && skillRoll < 50)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(2);
-                attackValue = SkillList.KlBack1sp(Simulation.dummyPower);
+                attackValue = SkillList.KlBack1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
                 }
             }
         }
-        else if (Simulation.spDummy >= 4)
+        else if (RaidSimulation.spDummy >= 4)
         {
             skillRoll = rnd.Next(0, 100);
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -273,9 +273,9 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 30)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.KlCLosest1sp(Simulation.dummyPower);
+                attackValue = SkillList.KlCLosest1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -283,9 +283,9 @@ class BossLogic
             }
             else if (skillRoll >= 30 && skillRoll < 50)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(2);
-                attackValue = SkillList.KlBack1sp(Simulation.dummyPower);
+                attackValue = SkillList.KlBack1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -293,9 +293,9 @@ class BossLogic
             }
             else if (skillRoll >= 50 && skillRoll < 75)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(3);
-                attackValue = SkillList.KlTarget2sp(Simulation.dummyPower);
+                attackValue = SkillList.KlTarget2sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -303,7 +303,7 @@ class BossLogic
             }
             else if (skillRoll >= 75)
             {
-                SkillList.KlHeal2sp(Simulation.dummyPower);
+                SkillList.KlHeal2sp(RaidSimulation.dummyPower);
             }
         }
         BossDamageApplication(target, attackValue);
@@ -317,20 +317,20 @@ class BossLogic
         int target = 0;
         int range = 0;
         bool critRoll = Logic.RNGroll(10f);
-        if (Simulation.spDummy < 2)
+        if (RaidSimulation.spDummy < 2)
         {
             target = Logic.TargetSelection(1);
-            attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+            attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
             if (critRoll)
             {
                 attackValue = Convert.ToInt32(attackValue * 1.5);
             }
             BossDamageApplication(target, attackValue);
         }
-        else if (Simulation.spDummy < 4)
+        else if (RaidSimulation.spDummy < 4)
         {
 
-            switch (Simulation.aliveCount)
+            switch (RaidSimulation.aliveCount)
             {
                 case 1:
                 case 2:
@@ -345,7 +345,7 @@ class BossLogic
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -354,12 +354,12 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 15)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
                 int target2 = Logic.TargetSelection(3);
                 int target3 = Logic.TargetSelection(3);
 
-                attackValue = SkillList.RMBackBounce1sp(Simulation.dummyPower);
+                attackValue = SkillList.RMBackBounce1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -370,25 +370,25 @@ class BossLogic
             }
             else if (skillRoll >= 15 && skillRoll < 20)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
 
                 for (int i = 0; i < 5; i++)
                 {
-                    attackValue = SkillList.RMAOE1sp(Simulation.dummyPower);
+                    attackValue = SkillList.RMAOE1sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         BossDamageApplication(i, attackValue);
                     }
                 }
             }
         }
-        else if (Simulation.spDummy >= 4)
+        else if (RaidSimulation.spDummy >= 4)
         {
-            switch (Simulation.aliveCount)
+            switch (RaidSimulation.aliveCount)
             {
                 case 1:
                 case 2:
@@ -402,7 +402,7 @@ class BossLogic
             if (skillRoll < 10)
             {
                 target = Logic.TargetSelection(1);
-                attackValue = SkillList.NormalAttack(Simulation.dummyPower);
+                attackValue = SkillList.NormalAttack(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -411,9 +411,9 @@ class BossLogic
             }
             else if (skillRoll >= 10 && skillRoll < 60)
             {
-                Simulation.spDummy -= 4;
+                RaidSimulation.spDummy -= 4;
                 target = Logic.FindLowestHealth();
-                    attackValue = SkillList.RMWeakest2sp(Simulation.dummyPower);
+                    attackValue = SkillList.RMWeakest2sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -422,23 +422,23 @@ class BossLogic
             }
             else if (skillRoll >= 60 && skillRoll < 90)
             {
-                Simulation.spDummy -= 4;
+                RaidSimulation.spDummy -= 4;
                 
-                attackValue = SkillList.RMHealTeam2sp(Simulation.dummyPower);
+                attackValue = SkillList.RMHealTeam2sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
                 }
-                Simulation.hpDummy += attackValue;
+                RaidSimulation.hpDummy += attackValue;
             }
             else if (skillRoll >= 90 && skillRoll < 95)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
                 target = Logic.TargetSelection(1);
                 int target2 = Logic.TargetSelection(3);
                 int target3 = Logic.TargetSelection(3);
 
-                attackValue = SkillList.RMBackBounce1sp(Simulation.dummyPower);
+                attackValue = SkillList.RMBackBounce1sp(RaidSimulation.dummyPower);
                 if (critRoll)
                 {
                     attackValue = Convert.ToInt32(attackValue * 1.5);
@@ -449,16 +449,16 @@ class BossLogic
             }
             else if (skillRoll >= 95 && skillRoll < 100)
             {
-                Simulation.spDummy -= 2;
+                RaidSimulation.spDummy -= 2;
 
                 for (int i = 0; i < 5; i++)
                 {
-                    attackValue = SkillList.RMAOE1sp(Simulation.dummyPower);
+                    attackValue = SkillList.RMAOE1sp(RaidSimulation.dummyPower);
                     if (critRoll)
                     {
                         attackValue = Convert.ToInt32(attackValue * 1.5);
                     }
-                    if (Simulation.hero[i].alive)
+                    if (RaidSimulation.hero[i].alive)
                     {
                         BossDamageApplication(i, attackValue);
                     }
@@ -466,4 +466,76 @@ class BossLogic
             }
         }
     }
+
+
+    //public static void BossDamageApplication(Enemy enemy, Enemy[] enemies,Character[] heroes, int attackValue, Character hero)
+    //{
+    //    hero = Logic.RedirectSelection(hero, heroes);
+    //    int scenario = Logic.DefensiveProcCase(hero);
+    //    switch (scenario)
+    //    {
+    //        case 0:
+    //            Logic.HeroAbsorb(attackValue, hero);
+    //            if (hero.alive)
+    //                PetLogic.PetSelection(hero, heroes, enemies);
+    //            break;
+    //        case 1:
+    //            Logic.HeroDeflect(attackValue, hero, enemy);
+    //            break;
+    //        case 2:
+    //            //evade do nothing
+    //            PetLogic.PetSelection(hero, heroes, enemies);
+    //            break;
+    //        case 3:
+    //            Logic.HeroBlock(attackValue, hero, enemy);
+    //            if (hero.alive)
+    //            PetLogic.PetSelection(hero, heroes, enemies);
+    //            break;
+    //        default:
+    //            Logic.HeroNoProc(attackValue, hero, enemy);
+    //            if (hero.alive)
+    //                PetLogic.PetSelection(hero, heroes, enemies);
+    //            break;
+    //    }
+    //}
+
+    public static void PickMobAI(Enemy enemy, Enemy[] enemies, Character[] heroes)
+    {
+        switch (enemy.name)
+        {
+            case "BlueOrc":
+                break;
+            case "GreenOrc":
+                break;
+            case "PurpleOrc":
+                break;
+            case "ArcherOrc":
+                break;
+            case "AssassinOrc":
+                break;
+            case "BruiserOrc":
+                break;
+            case "MeatOrc":
+                break;
+            case "MageOrc":
+                break;
+            case "BlueNether":
+                break;
+            case "PurpleNether":
+                break;
+            case "YellowNether":
+                break;
+            case "ImpNether":
+                break;
+            case "MageNether":
+                break;
+            case "BeastNether":
+                break;
+            case "TankNether":
+                break;
+            case "DemonNether":
+                break;
+        }
+    }
+
 }

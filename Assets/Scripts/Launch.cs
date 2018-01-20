@@ -9,6 +9,7 @@ public class Launch : MonoBehaviour
 	public delegate void RunEvent();
 	public static event RunEvent onRun;
 	public static Launch instance;
+    WorldBossSimulation wbSim;
 
     private static Dictionary<int, int> WBDictionary = new Dictionary<int, int>()
     {
@@ -95,55 +96,55 @@ public class Launch : MonoBehaviour
 
     void Update()
     {
-        myText.text = "Winrate over " + Simulation.games + " fights = " + Simulation.winRate + "%";
+        myText.text = "Winrate over " + RaidSimulation.games + " fights = " + RaidSimulation.winRate + "%";
     }
 
     public void OnClickInitRaid()
     {
 		IsRunning = true;
 
-        Simulation.hero[0] = hero_1.GetHeroStruct();
-        Simulation.hero[1] = hero_2.GetHeroStruct();
-        Simulation.hero[2] = hero_3.GetHeroStruct();
-        Simulation.hero[3] = hero_4.GetHeroStruct();
-        Simulation.hero[4] = hero_5.GetHeroStruct();
+        RaidSimulation.hero[0] = hero_1.GetHeroStruct();
+        RaidSimulation.hero[1] = hero_2.GetHeroStruct();
+        RaidSimulation.hero[2] = hero_3.GetHeroStruct();
+        RaidSimulation.hero[3] = hero_4.GetHeroStruct();
+        RaidSimulation.hero[4] = hero_5.GetHeroStruct();
 
         int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
         bossDiff = bossName.value;
         switch (difficultyChecker)
         {
             case 0:
-                Simulation.difficultyModifier = 70;
+                RaidSimulation.difficultyModifier = 70;
                 break;
             case 1:
-                Simulation.difficultyModifier = 115;
+                RaidSimulation.difficultyModifier = 115;
                 break;
             case 2:
-                Simulation.difficultyModifier = 160;
+                RaidSimulation.difficultyModifier = 160;
                 break;
             case 10:
-                Simulation.difficultyModifier = 105;
+                RaidSimulation.difficultyModifier = 105;
                 break;
             case 11:
-                Simulation.difficultyModifier = 156;
+                RaidSimulation.difficultyModifier = 156;
                 break;
             case 12:
-                Simulation.difficultyModifier = 207;
+                RaidSimulation.difficultyModifier = 207;
                 break;
             case 20:
-                Simulation.difficultyModifier = 150;
+                RaidSimulation.difficultyModifier = 150;
                 break;
             case 21:
-                Simulation.difficultyModifier = 207;
+                RaidSimulation.difficultyModifier = 207;
                 break;
             case 22:
-                Simulation.difficultyModifier = 265;
+                RaidSimulation.difficultyModifier = 265;
                 break;
             default:
                 break;
         }
 
-		StartCoroutine(Simulation.simulation(callback => {
+		StartCoroutine(RaidSimulation.Simulation(callback => {
 			IsRunning = false;
 		}));
     }
@@ -151,17 +152,17 @@ public class Launch : MonoBehaviour
     public void OnClickInitWB()
     {
         int difficultyChecker = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
-        WorldBossSimulation wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);      
+        wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);
         if (wbName.value == 1)
         {
-            wbSim.heroes = new Hero[3];
+            wbSim.heroes = new Character[3];
             wbSim.heroes[0] = hero_1.GetHeroStruct();
             wbSim.heroes[1] = hero_2.GetHeroStruct();
             wbSim.heroes[2] = hero_3.GetHeroStruct();
         }
         else
         {
-            wbSim.heroes = new Hero[5];
+            wbSim.heroes = new Character[5];
             wbSim.heroes[0] = hero_1.GetHeroStruct();
             wbSim.heroes[1] = hero_2.GetHeroStruct();
             wbSim.heroes[2] = hero_3.GetHeroStruct();

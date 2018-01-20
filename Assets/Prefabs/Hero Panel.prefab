@@ -874,7 +874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1181972972819054
 GameObject:
   m_ObjectHideFlags: 1
@@ -1161,7 +1161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1239092152364342
 GameObject:
   m_ObjectHideFlags: 1
@@ -1624,7 +1624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1353244080286366
 GameObject:
   m_ObjectHideFlags: 1
@@ -3238,7 +3238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1638797277752656
 GameObject:
   m_ObjectHideFlags: 1
@@ -4938,7 +4938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1960194084555948
 GameObject:
   m_ObjectHideFlags: 1
@@ -5281,13 +5281,25 @@ MonoBehaviour:
   staminaRunes: {fileID: 114092540842876664}
   agilityRunes: {fileID: 114295290509173180}
   empowerRunes: {fileID: 114753591125363160}
-  unitySkill: {fileID: 114222507950437674}
-  bushidoBonus: {fileID: 114974532279583554}
-  divinityBonus: {fileID: 114516743129622990}
   pet: {fileID: 114781756299108762}
   weapon: {fileID: 114121502330569540}
   metaRune: {fileID: 114858162959270250}
   divinity: {fileID: 114624173847277052}
+  NecrosisBonus: {fileID: 114969227441249454}
+  HysteriaBonus: {fileID: 114422412529261462}
+  NightVisageBonus: {fileID: 114288374883414398}
+  ConsumptionBonus: {fileID: 114945963789896436}
+  AresBonus: {fileID: 114870031094166888}
+  BushidoBonus: {fileID: 114471562997907966}
+  LunarBonus: {fileID: 114092436575117742}
+  UnityBonus: {fileID: 114681462688352766}
+  DivinityBonus: {fileID: 114529203274901626}
+  ObliterationBonus: {fileID: 114290175665695910}
+  MaruBonus: {fileID: 114696768377053678}
+  ConductionBonus: {fileID: 114424221167670366}
+  IllustriousBonus: {fileID: 114358845651171032}
+  TatersBonus: {fileID: 114882375687266666}
+  GateKeeperBonus: {fileID: 114834988366641718}
 --- !u!114 &114007651283454746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6517,7 +6529,7 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 114232211594746912}
-  toggleTransition: 1
+  toggleTransition: 0
   graphic: {fileID: 114706699859897854}
   m_Group: {fileID: 0}
   onValueChanged:

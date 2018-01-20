@@ -8974,12 +8974,12 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 1191.9667
+      value: 764.5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -8989,7 +8989,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 665
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -14265,12 +14265,12 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 817.8333
+      value: 512.5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -14280,7 +14280,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 665
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -25674,7 +25674,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 69.566666
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -25699,7 +25699,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -25709,7 +25709,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -25724,14 +25724,6 @@ Prefab:
     - target: {fileID: 1422584195785634, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
       propertyPath: m_Name
       value: Hero Panel 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1631184941078206, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1959129337966352, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
@@ -28238,12 +28230,12 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 443.7
+      value: 260.5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -28253,7 +28245,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 665
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -30027,12 +30019,12 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 1566.1
+      value: 1016.5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -30042,7 +30034,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 665
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -30224,13 +30216,25 @@ MonoBehaviour:
   staminaRunes: {fileID: 0}
   agilityRunes: {fileID: 0}
   empowerRunes: {fileID: 0}
-  unitySkill: {fileID: 0}
-  bushidoBonus: {fileID: 0}
-  divinityBonus: {fileID: 0}
   pet: {fileID: 0}
   weapon: {fileID: 0}
   metaRune: {fileID: 0}
   divinity: {fileID: 0}
+  NecrosisBonus: {fileID: 0}
+  HysteriaBonus: {fileID: 0}
+  NightVisageBonus: {fileID: 0}
+  ConsumptionBonus: {fileID: 0}
+  AresBonus: {fileID: 0}
+  BushidoBonus: {fileID: 0}
+  LunarBonus: {fileID: 0}
+  UnityBonus: {fileID: 0}
+  DivinityBonus: {fileID: 0}
+  ObliterationBonus: {fileID: 0}
+  MaruBonus: {fileID: 0}
+  ConductionBonus: {fileID: 0}
+  IllustriousBonus: {fileID: 0}
+  TatersBonus: {fileID: 0}
+  GateKeeperBonus: {fileID: 0}
 --- !u!114 &1985021868
 MonoBehaviour:
   m_ObjectHideFlags: 0

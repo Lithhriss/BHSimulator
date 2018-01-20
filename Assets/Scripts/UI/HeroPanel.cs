@@ -29,21 +29,43 @@ public class HeroPanel : MonoBehaviour
     public InputField agilityRunes;
     public InputField empowerRunes;
 
-    public Toggle unitySkill;
-    public Toggle bushidoBonus;
-    public Toggle divinityBonus;
     // Pet
     public Dropdown pet;
     public Dropdown weapon;
     public Dropdown metaRune;
     public Dropdown divinity;
 
+
+    // mythic bonuses
+    public Toggle NecrosisBonus;
+    public Toggle HysteriaBonus;
+    public Toggle NightVisageBonus;
+    public Toggle ConsumptionBonus;
+
+    // set bonuses
+    public Toggle AresBonus;
+    public Toggle BushidoBonus;
+    public Toggle LunarBonus;
+    public Toggle UnityBonus;
+    public Dropdown DivinityBonus;
+    public Dropdown ObliterationBonus;
+    public Dropdown MaruBonus;
+    public Dropdown ConductionBonus;
+    public Dropdown IllustriousBonus;
+    public Dropdown TatersBonus;
+
+    public Toggle GateKeeperBonus;
+
+
+
+
+
     // Awake
     public void Awake()
     {
         // Predefines
         List<string> predefines = new List<string>() { "None" };
-        foreach (KeyValuePair<string, Hero> keyValuePair in Hero.predefined)
+        foreach (KeyValuePair<string, Character> keyValuePair in Character.predefined)
         {
             predefines.Add(keyValuePair.Key);
         }
@@ -52,19 +74,19 @@ public class HeroPanel : MonoBehaviour
 
         // Pets
         pet.ClearOptions();
-        pet.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.Pet))));
+        pet.AddOptions(new List<string>(Enum.GetNames(typeof(PetType))));
 
         // Weapons
         weapon.ClearOptions();
-        weapon.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.Weapon))));
+        weapon.AddOptions(new List<string>(Enum.GetNames(typeof(Character.Weapon))));
 
         //meta
         metaRune.ClearOptions();
-        metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.MetaRune))));
+        metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MetaRune))));
 
         //Divinity
         divinity.ClearOptions();
-        divinity.AddOptions(new List<string>(Enum.GetNames(typeof(Hero.DivinityBonus))));
+        divinity.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
     }
 
     // Predefine Switch
@@ -73,21 +95,21 @@ public class HeroPanel : MonoBehaviour
         string heroName = predefined.options[predefined.value].text;
 
         // Hero Load
-        Hero hero;
+        Character hero;
         if (heroName == "None")
         {
             // Empty Hero
-            hero = new Hero();
+            hero = new Character();
         }
         else
         {
-            hero = Hero.GetPredefined(heroName);
+            hero = Character.GetPredefined(heroName);
         }
 
 		SetFieldsFromHero(hero);
     }
 
-	public void SetFieldsFromHero(Hero hero)
+	public void SetFieldsFromHero(Character hero)
 	{
 		// Base Stats
 		power.text           = Convert.ToString(hero.power);
@@ -104,7 +126,7 @@ public class HeroPanel : MonoBehaviour
         empowerRunes.text    = Convert.ToString(hero.empowerChance);
         damageReduction.text = Convert.ToString(hero.damageReduction);
         //set bonuses
-        unitySkill.isOn    = hero.unity;
+        UnityBonus.isOn    = hero.unity;
 
 		// Runes
 		powerRunes.text    = Convert.ToString(hero.powerRunes);
@@ -151,9 +173,9 @@ public class HeroPanel : MonoBehaviour
 	}
 
     // Return a Hero struct
-    public Hero GetHeroStruct()
+    public Character GetHeroStruct()
     {
-        return new Hero {
+        return new Character {
             // Base Stats
             power           = Convert.ToInt32(power.text),
             stamina         = Convert.ToInt32(stamina.text),
@@ -174,8 +196,8 @@ public class HeroPanel : MonoBehaviour
             agilityRunes    = Convert.ToSingle(agilityRunes.text),
             //Set Bonuses
 
-            unity           = unitySkill.isOn,
-            bushidoBonus    = bushidoBonus.isOn,
+            unity           = UnityBonus.isOn,
+            bushidoBonus    = BushidoBonus.isOn,
 			divinityBonus   = GetDivinityBonusFromString(divinity.options[divinity.value].text),
 
             // Pet
@@ -185,128 +207,128 @@ public class HeroPanel : MonoBehaviour
         };
     }
 
-	public static Hero.DivinityBonus GetDivinityBonusFromString(String s)
+	public static Character.DivinityBonus GetDivinityBonusFromString(String s)
 	{
-		Hero.DivinityBonus divinityBonus;
+		Character.DivinityBonus divinityBonus;
 
 		switch (s)
 		{
 			case "Bonus_2_of_3":
-				divinityBonus = Hero.DivinityBonus.Bonus_2_of_3;
+				divinityBonus = Character.DivinityBonus.Bonus_2_of_3;
 				break;
 			case "Bonus_3_of_3":
-				divinityBonus = Hero.DivinityBonus.Bonus_3_of_3;
+				divinityBonus = Character.DivinityBonus.Bonus_3_of_3;
 				break;
 			default:
-				divinityBonus = Hero.DivinityBonus.None;
+				divinityBonus = Character.DivinityBonus.None;
 				break;
 		}
 
 		return divinityBonus;
 	}
 
-	public static Hero.MetaRune GetMetaRuneFromString(String s)
+	public static Character.MetaRune GetMetaRuneFromString(String s)
 	{
-		Hero.MetaRune metaRune;
+		Character.MetaRune metaRune;
 
 		switch (s)
 		{
 			case "Redirect":
-				metaRune = Hero.MetaRune.Redirect;
+				metaRune = Character.MetaRune.Redirect;
 				break;
 			default:
-				metaRune = Hero.MetaRune.None;
+				metaRune = Character.MetaRune.None;
 				break;
 		}
 
 		return metaRune;
 	}
 
-	public static Hero.Pet GetPetFromString(String s)
+	public static PetType GetPetFromString(String s)
 	{
-		Hero.Pet pet;
+		PetType pet;
 
 		switch (s)
 		{
 			case "Nemo":
-				pet = Hero.Pet.Nemo;
+				pet =PetType.Nemo;
 				break;
 
 			case "Boogie":
-				pet = Hero.Pet.Boogie;
+				pet =PetType.Boogie;
 				break;
 
 			case "Nelson":
-				pet = Hero.Pet.Nelson;
+				pet =PetType.Nelson;
 				break;
 
 			case "Gemmi":
-				pet = Hero.Pet.Gemmi;
+				pet =PetType.Gemmi;
 				break;
 
 			case "Crem":
-				pet = Hero.Pet.Crem;
+				pet =PetType.Crem;
 				break;
 
 			case "Boiguh":
-				pet = Hero.Pet.Boiguh;
+				pet =PetType.Boiguh;
 				break;
 
 			case "Nerder":
-				pet = Hero.Pet.Nerder;
+				pet =PetType.Nerder;
 				break;
 
             case "Buvboi":
-                pet = Hero.Pet.Buvboi;
+                pet =PetType.Buvboi;
                 break;
 
             case "Wuvboi":
-                pet = Hero.Pet.Wuvboi;
+                pet =PetType.Wuvboi;
                 break;
 
             case "Snut":
-                pet = Hero.Pet.Snut;
+                pet =PetType.Snut;
                 break;
 
             case "Quimby":
-                pet = Hero.Pet.Quimby;
+                pet =PetType.Quimby;
                 break;
 
             case "Skulldemort":
-                pet = Hero.Pet.Skulldemort;
+                pet =PetType.Skulldemort;
                 break;
 
             default:
-				pet = Hero.Pet.None;
+				pet =PetType.None;
 				break;
 		}
 
 		return pet;
 	}
 
-	public static Hero.Weapon GetWeaponFromString(String s)
+	public static Character.Weapon GetWeaponFromString(String s)
 	{
-		Hero.Weapon weapon;
+		Character.Weapon weapon;
         
         switch (s)
 		{
 			case "Axe":
-				weapon = Hero.Weapon.Axe;
+				weapon = Character.Weapon.Axe;
 				break;
 			case "Bow":
-				weapon = Hero.Weapon.Bow;
+				weapon = Character.Weapon.Bow;
 				break;
 			case "Spear":
-				weapon = Hero.Weapon.Spear;
+				weapon = Character.Weapon.Spear;
 				break;
 			case "Staff":
-				weapon = Hero.Weapon.Staff;
+				weapon = Character.Weapon.Staff;
 				break;
 			case "Sword":
-				weapon = Hero.Weapon.Sword;
+				weapon = Character.Weapon.Sword;
 				break;
 			default:
-				weapon = Hero.Weapon.None;
+				weapon = Character.Weapon.None;
 				break;
 		}
         return weapon;

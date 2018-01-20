@@ -70,7 +70,7 @@ public class HeroesImporter : MonoBehaviour
         return sb.ToString();
     }
 
-    private String GetCsvLineFromHero(Hero hero)
+    private String GetCsvLineFromHero(Character hero)
     {
         return String.Format(
             "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},END",
@@ -112,14 +112,14 @@ public class HeroesImporter : MonoBehaviour
         }
     }
 
-    public Hero GetHeroFromCsvLine(String csvLine)
+    public Character GetHeroFromCsvLine(String csvLine)
     {
-        Hero hero;
+        Character hero;
         String[] values;
 
         values = csvLine.Split(',');
 
-        hero = new Hero()
+        hero = new Character()
         {
             power = Convert.ToInt32(values[0]),
             stamina = Convert.ToInt32(values[1]),

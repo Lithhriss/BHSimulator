@@ -7,17 +7,17 @@ class PetLogic
 {
     private static void TeamHealPet(int l)
     {
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.072);
-        float healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.324 * Simulation.hero[l].power);
+        int healModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.072);
+        float healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.324 * RaidSimulation.hero[l].power);
 
-        bool critroll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critroll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critroll)
         {
-            healValue *= Simulation.hero[l].critDamage;
+            healValue *= RaidSimulation.hero[l].critDamage;
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             healValue *= 2;
         }
@@ -25,12 +25,12 @@ class PetLogic
         {
             for (int i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].hp > 0)
+                if (RaidSimulation.hero[i].hp > 0)
                 {
-                    Simulation.hero[i].hp += Convert.ToInt32(healValue);
-                    if (Simulation.hero[i].hp >= Simulation.hero[i].maxHp)
+                    RaidSimulation.hero[i].hp += Convert.ToInt32(healValue);
+                    if (RaidSimulation.hero[i].hp >= RaidSimulation.hero[i].maxHp)
                     {
-                        Simulation.hero[i].hp = Simulation.hero[i].maxHp;
+                        RaidSimulation.hero[i].hp = RaidSimulation.hero[i].maxHp;
                     }
                 }
             }
@@ -39,46 +39,46 @@ class PetLogic
 
     private static void OffPetProc(int l)
     {
-        int attackModifier = Convert.ToInt32(0.54 * Simulation.hero[l].power);
-        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 0.63);
+        int attackModifier = Convert.ToInt32(0.54 * RaidSimulation.hero[l].power);
+        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + RaidSimulation.hero[l].power * 0.63);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll((float)20);
 
         if (critRoll)
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[l].critDamage);
+            attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             attackValue *= 2;
         }
         if (petRoll)
         {
-            Simulation.hpDummy -= attackValue;
+            RaidSimulation.hpDummy -= attackValue;
         }
 
     }
 
     private static void SuperOffPetProc(int l)
     {
-        int attackModifier = Convert.ToInt32(Simulation.hero[l].power * 0.37);
-        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 1.668);
+        int attackModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.37);
+        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + RaidSimulation.hero[l].power * 1.668);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(10f);
 
         if (critRoll)
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[l].critDamage);
+            attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             attackValue *= 2;
         }
         if (petRoll)
         {
-            Simulation.hpDummy -= attackValue;
+            RaidSimulation.hpDummy -= attackValue;
         }
 
     }
@@ -87,17 +87,17 @@ class PetLogic
     {
         int i;
         int target = 0;
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.14);
-        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.66 * Simulation.hero[l].power);
+        int healModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.14);
+        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.66 * RaidSimulation.hero[l].power);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critRoll)
         {
-            healValue = Convert.ToInt32(healValue * Simulation.hero[l].critDamage);
+            healValue = Convert.ToInt32(healValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             healValue *= 2;
         }
@@ -106,10 +106,10 @@ class PetLogic
             for (i = 0; i < healValue; i++)
             {
                 target = Logic.HealLogic();
-                Simulation.hero[target].hp++;
-                if (Simulation.hero[target].hp > Simulation.hero[target].maxHp)
+                RaidSimulation.hero[target].hp++;
+                if (RaidSimulation.hero[target].hp > RaidSimulation.hero[target].maxHp)
                 {
-                    Simulation.hero[target].hp = Simulation.hero[target].maxHp;
+                    RaidSimulation.hero[target].hp = RaidSimulation.hero[target].maxHp;
                 }
             }
         }
@@ -119,17 +119,17 @@ class PetLogic
     {
         int i;
         int target = 0;
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.288);
-        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 1.296 * Simulation.hero[l].power);
+        int healModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.288);
+        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 1.296 * RaidSimulation.hero[l].power);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll((float)10);
 
         if (critRoll)
         {
-            healValue = Convert.ToInt32(healValue * Simulation.hero[l].critDamage);
+            healValue = Convert.ToInt32(healValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             healValue *= 2;
         }
@@ -138,10 +138,10 @@ class PetLogic
             for (i = 0; i < healValue; i++)
             {
                 target = Logic.HealLogic();
-                Simulation.hero[target].hp++;
-                if (Simulation.hero[target].hp > Simulation.hero[target].maxHp)
+                RaidSimulation.hero[target].hp++;
+                if (RaidSimulation.hero[target].hp > RaidSimulation.hero[target].maxHp)
                 {
-                    Simulation.hero[target].hp = Simulation.hero[target].maxHp;
+                    RaidSimulation.hero[target].hp = RaidSimulation.hero[target].maxHp;
                 }
             }
         }
@@ -150,17 +150,17 @@ class PetLogic
     private static void TeamShieldPet(int l)
     {
         int i;
-        int shieldModifier = Convert.ToInt32(Simulation.hero[l].power * 0.06);
-        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.27 * Simulation.hero[l].power);
+        int shieldModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.06);
+        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.27 * RaidSimulation.hero[l].power);
 
-        bool critroll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critroll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critroll)
         {
-            shieldValue *= Simulation.hero[l].critDamage;
+            shieldValue *= RaidSimulation.hero[l].critDamage;
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             shieldValue *= 2;
         }
@@ -168,12 +168,12 @@ class PetLogic
         {
             for (i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].hp > 0)
+                if (RaidSimulation.hero[i].hp > 0)
                 {
-                    Simulation.hero[i].shield += Convert.ToInt32(shieldValue);
-                    if (Simulation.hero[i].shield >= Simulation.hero[i].maxShield)
+                    RaidSimulation.hero[i].shield += Convert.ToInt32(shieldValue);
+                    if (RaidSimulation.hero[i].shield >= RaidSimulation.hero[i].maxShield)
                     {
-                        Simulation.hero[i].shield = Simulation.hero[i].maxShield;
+                        RaidSimulation.hero[i].shield = RaidSimulation.hero[i].maxShield;
                     }
                 }
             }
@@ -183,17 +183,17 @@ class PetLogic
     private static void SuperTeamShieldPet(int l)
     {
         int i;
-        int shieldModifier = Convert.ToInt32(Simulation.hero[l].power * 0.12);
-        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.54 * Simulation.hero[l].power);
+        int shieldModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.12);
+        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.54 * RaidSimulation.hero[l].power);
 
-        bool critroll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critroll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(10f);
 
         if (critroll)
         {
-            shieldValue *= Simulation.hero[l].critDamage;
+            shieldValue *= RaidSimulation.hero[l].critDamage;
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             shieldValue *= 2;
         }
@@ -201,12 +201,12 @@ class PetLogic
         {
             for (i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].hp > 0)
+                if (RaidSimulation.hero[i].hp > 0)
                 {
-                    Simulation.hero[i].shield += Convert.ToInt32(shieldValue);
-                    if (Simulation.hero[i].shield >= Simulation.hero[i].maxShield)
+                    RaidSimulation.hero[i].shield += Convert.ToInt32(shieldValue);
+                    if (RaidSimulation.hero[i].shield >= RaidSimulation.hero[i].maxShield)
                     {
-                        Simulation.hero[i].shield = Simulation.hero[i].maxShield;
+                        RaidSimulation.hero[i].shield = RaidSimulation.hero[i].maxShield;
                     }
                 }
             }
@@ -216,49 +216,49 @@ class PetLogic
 
     private static void SuperSelfHealPet(int l)
     {
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.454);
-        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.89 * Simulation.hero[l].power);
+        int healModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.454);
+        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.89 * RaidSimulation.hero[l].power);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll((float)10);
 
         if (critRoll)
         {
-            healValue = Convert.ToInt32(healValue * Simulation.hero[l].critDamage);
+            healValue = Convert.ToInt32(healValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             healValue *= 2;
         }
         if (petRoll)
         {
-            Simulation.hero[l].hp += healValue;
-            if (Simulation.hero[l].hp > Simulation.hero[l].maxHp)
+            RaidSimulation.hero[l].hp += healValue;
+            if (RaidSimulation.hero[l].hp > RaidSimulation.hero[l].maxHp)
             {
-                Simulation.hero[l].hp = Simulation.hero[l].maxHp;
+                RaidSimulation.hero[l].hp = RaidSimulation.hero[l].maxHp;
             }
         }
     }
 
     private static void TargetWeakestOffPet(int l)
     {
-        int attackModifier = Convert.ToInt32(Simulation.hero[l].power * 0.64);
-        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 0.48);
+        int attackModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.64);
+        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + RaidSimulation.hero[l].power * 0.48);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critRoll)
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[l].critDamage);
+            attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             attackValue *= 2;
         }
         if (petRoll)
         {
-            Simulation.hpDummy -= attackValue;
+            RaidSimulation.hpDummy -= attackValue;
         }
 
     }
@@ -266,44 +266,44 @@ class PetLogic
     private static void TargetWeakestHealPet(int l)
     {
         int target = 0;
-        int healModifier = Convert.ToInt32(Simulation.hero[l].power * 0.288);
-        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.576 * Simulation.hero[l].power);
+        int healModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.288);
+        int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.576 * RaidSimulation.hero[l].power);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critRoll)
         {
-            healValue = Convert.ToInt32(healValue * Simulation.hero[l].critDamage);
+            healValue = Convert.ToInt32(healValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             healValue *= 2;
         }
         if (petRoll)
         {
             target = Logic.HealLogic();
-            Simulation.hero[target].hp += healValue;
-            if (Simulation.hero[target].hp > Simulation.hero[target].maxHp)
+            RaidSimulation.hero[target].hp += healValue;
+            if (RaidSimulation.hero[target].hp > RaidSimulation.hero[target].maxHp)
             {
-                Simulation.hero[target].hp = Simulation.hero[target].maxHp;
+                RaidSimulation.hero[target].hp = RaidSimulation.hero[target].maxHp;
             }
         }
     }
 
     private static void TeamHealShieldpet(int l)
     {
-        int regenModifier = Convert.ToInt32(Simulation.hero[l].power * 0.034);
-        float regenValue = Convert.ToInt32(UnityEngine.Random.Range(0, regenModifier) + 0.153 * Simulation.hero[l].power);
+        int regenModifier = Convert.ToInt32(RaidSimulation.hero[l].power * 0.034);
+        float regenValue = Convert.ToInt32(UnityEngine.Random.Range(0, regenModifier) + 0.153 * RaidSimulation.hero[l].power);
 
-        bool critroll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critroll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critroll)
         {
-            regenValue *= Simulation.hero[l].critDamage;
+            regenValue *= RaidSimulation.hero[l].critDamage;
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             regenValue *= 2;
         }
@@ -311,17 +311,17 @@ class PetLogic
         {
             for (int i = 0; i < 5; i++)
             {
-                if (Simulation.hero[i].hp > 0)
+                if (RaidSimulation.hero[i].hp > 0)
                 {
-                    Simulation.hero[i].hp += Convert.ToInt32(regenValue);
-                    if (Simulation.hero[i].hp >= Simulation.hero[i].maxHp)
+                    RaidSimulation.hero[i].hp += Convert.ToInt32(regenValue);
+                    if (RaidSimulation.hero[i].hp >= RaidSimulation.hero[i].maxHp)
                     {
-                        Simulation.hero[i].hp = Simulation.hero[i].maxHp;
+                        RaidSimulation.hero[i].hp = RaidSimulation.hero[i].maxHp;
                     }
-                    Simulation.hero[i].shield += Convert.ToInt32(regenValue);
-                    if (Simulation.hero[i].shield >= Simulation.hero[i].maxShield)
+                    RaidSimulation.hero[i].shield += Convert.ToInt32(regenValue);
+                    if (RaidSimulation.hero[i].shield >= RaidSimulation.hero[i].maxShield)
                     {
-                        Simulation.hero[i].shield = Simulation.hero[i].maxShield;
+                        RaidSimulation.hero[i].shield = RaidSimulation.hero[i].maxShield;
                     }
                 }
             }
@@ -330,114 +330,114 @@ class PetLogic
 
     private static void RandomOffPet(int l)
     {
-        int attackModifier = Convert.ToInt32(1.76 * Simulation.hero[l].power);
-        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + Simulation.hero[l].power * 0.22);
+        int attackModifier = Convert.ToInt32(1.76 * RaidSimulation.hero[l].power);
+        int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + RaidSimulation.hero[l].power * 0.22);
 
-        bool critRoll = Logic.RNGroll(Simulation.hero[l].critChance);
+        bool critRoll = Logic.RNGroll(RaidSimulation.hero[l].critChance);
         bool petRoll = Logic.RNGroll((float)20);
 
         if (critRoll)
         {
-            attackValue = Convert.ToInt32(attackValue * Simulation.hero[l].critDamage);
+            attackValue = Convert.ToInt32(attackValue * RaidSimulation.hero[l].critDamage);
         }
-        if (Logic.RNGroll(Simulation.hero[l].empowerChance))
+        if (Logic.RNGroll(RaidSimulation.hero[l].empowerChance))
         {
             attackValue *= 2;
         }
         if (petRoll)
         {
-            Simulation.hpDummy -= attackValue;
+            RaidSimulation.hpDummy -= attackValue;
         }
     }
 
     public static void PetSelection(int k)
     {
-        switch (Simulation.hero[k].pet)
+        switch (RaidSimulation.hero[k].pet)
         {
-            case Hero.Pet.Nelson:
+            case PetType.Nelson:
                 OffPetProc(k);
                 break;
-            case Hero.Pet.Gemmi:
+            case PetType.Gemmi:
                 TeamHealPet(k);
                 break;
-            case Hero.Pet.Boogie:
+            case PetType.Boogie:
                 SpreadHealPet(k);
                 break;
-            case Hero.Pet.Nemo:
+            case PetType.Nemo:
                 SuperOffPetProc(k);
                 break;
-            case Hero.Pet.Crem:
+            case PetType.Crem:
                 SuperSpreadHealPet(k);
                 break;
-            case Hero.Pet.Boiguh:
+            case PetType.Boiguh:
                 TeamShieldPet(k);
                 break;
-            case Hero.Pet.Nerder:
+            case PetType.Nerder:
                 SuperSelfHealPet(k);
                 break;
-            case Hero.Pet.Quimby:
+            case PetType.Quimby:
                 TargetWeakestOffPet(k);
                 break;
-            case Hero.Pet.Snut:
+            case PetType.Snut:
                 SuperTeamShieldPet(k);
                 break;
-            case Hero.Pet.Wuvboi:
+            case PetType.Wuvboi:
                 TeamHealShieldpet(k);
                 break;
-            case Hero.Pet.Buvboi:
+            case PetType.Buvboi:
                 RandomOffPet(k);
                 break;
-            case Hero.Pet.Skulldemort:
+            case PetType.Skulldemort:
                 TargetWeakestHealPet(k);
                 break;
         }
     }
 
     #region New Code
-    public static void PetSelection(Hero hero, Hero[] heroes, Enemy[] enemies)
+    public static void PetSelection(Character author, Character[] party, Character[] opponents)
     {
-        switch (hero.pet)
+        switch (author.pet)
         {
-            case Hero.Pet.Nelson:
-                OffPetProc(hero, enemies);
+            case PetType.Nelson:
+                OffPetProc(author, opponents);
                 break;
-            case Hero.Pet.Gemmi:
-                TeamHealPet(hero, heroes);
+            case PetType.Gemmi:
+                TeamHealPet(author, party);
                 break;
-            case Hero.Pet.Boogie:
-                SpreadHealPet(hero, heroes);
+            case PetType.Boogie:
+                SpreadHealPet(author, party);
                 break;
-            case Hero.Pet.Nemo:
-                SuperOffPetProc(hero, enemies);
+            case PetType.Nemo:
+                SuperOffPetProc(author, opponents);
                 break;
-            case Hero.Pet.Crem:
-                SuperSpreadHealPet(hero, heroes);
+            case PetType.Crem:
+                SuperSpreadHealPet(author, party);
                 break;
-            case Hero.Pet.Boiguh:
-                TeamShieldPet(hero, heroes);
+            case PetType.Boiguh:
+                TeamShieldPet(author, party);
                 break;
-            case Hero.Pet.Nerder:
-                SuperSelfHealPet(hero);
+            case PetType.Nerder:
+                SuperSelfHealPet(author);
                 break;
-            case Hero.Pet.Quimby:
-                TargetWeakestOffPet(hero, enemies);
+            case PetType.Quimby:
+                TargetWeakestOffPet(author, opponents);
                 break;
-            case Hero.Pet.Snut:
-                SuperTeamShieldPet(hero, heroes);
+            case PetType.Snut:
+                SuperTeamShieldPet(author, party);
                 break;
-            case Hero.Pet.Wuvboi:
-                TeamHealShieldpet(hero, heroes);
+            case PetType.Wuvboi:
+                TeamHealShieldpet(author, party);
                 break;
-            case Hero.Pet.Buvboi:
-                RandomOffPet(hero, enemies);
+            case PetType.Buvboi:
+                RandomOffPet(author, opponents);
                 break;
-            case Hero.Pet.Skulldemort:
-                TargetWeakestHealPet(hero, heroes);
+            case PetType.Skulldemort:
+                TargetWeakestHealPet(author, party);
                 break;
         }
 
     }
-    private static void TeamHealPet(Hero hero, Hero[] heroes)
+    private static void TeamHealPet(Character hero, Character[] heroes)
     {
         int healModifier = Convert.ToInt32(hero.power * 0.072);
         float healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.324 * hero.power);
@@ -468,7 +468,7 @@ class PetLogic
             }
         }
     }
-    private static void OffPetProc(Hero hero, Enemy[] enemies)
+    private static void OffPetProc(Character hero, Character[] enemies)
     {
         int attackModifier = Convert.ToInt32(0.54 * hero.power);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + hero.power * 0.63);
@@ -497,7 +497,7 @@ class PetLogic
         }
 
     }
-    private static void SuperOffPetProc(Hero hero, Enemy[] enemies)
+    private static void SuperOffPetProc(Character hero, Character[] enemies)
     {
         int attackModifier = Convert.ToInt32(hero.power * 0.37);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + hero.power * 1.668);
@@ -526,7 +526,7 @@ class PetLogic
         }
 
     }
-    private static void SpreadHealPet(Hero hero, Hero[] heroes)
+    private static void SpreadHealPet(Character hero, Character[] heroes)
     {
         int i;
         int target = 0;
@@ -548,7 +548,7 @@ class PetLogic
         {
             for (i = 0; i < healValue; i++)
             {
-                target = Logic.HealLogic(heroes);
+                target = Logic.HealFindWeakestPerc(heroes);
                 heroes[target].hp++;
                 if (heroes[target].hp > heroes[target].maxHp)
                 {
@@ -557,7 +557,7 @@ class PetLogic
             }
         }
     }
-    private static void SuperSpreadHealPet(Hero hero, Hero[] heroes)
+    private static void SuperSpreadHealPet(Character hero, Character[] heroes)
     {
         int i;
         int target = 0;
@@ -579,7 +579,7 @@ class PetLogic
         {
             for (i = 0; i < healValue; i++)
             {
-                target = Logic.HealLogic(heroes);
+                target = Logic.HealFindWeakestPerc(heroes);
                 heroes[target].hp++;
                 if (heroes[target].hp > heroes[target].maxHp)
                 {
@@ -588,7 +588,7 @@ class PetLogic
             }
         }
     }
-    private static void TeamShieldPet(Hero hero, Hero[] heroes)
+    private static void TeamShieldPet(Character hero, Character[] heroes)
     {
         int i;
         int shieldModifier = Convert.ToInt32(hero.power * 0.06);
@@ -620,7 +620,7 @@ class PetLogic
             }
         }
     }
-    private static void SuperTeamShieldPet(Hero hero, Hero[] heroes)
+    private static void SuperTeamShieldPet(Character hero, Character[] heroes)
     {
         int i;
         int shieldModifier = Convert.ToInt32(hero.power * 0.12);
@@ -652,7 +652,7 @@ class PetLogic
             }
         }
     }
-    private static void SuperSelfHealPet(Hero hero)
+    private static void SuperSelfHealPet(Character hero)
     {
         int healModifier = Convert.ToInt32(hero.power * 0.454);
         int healValue = Convert.ToInt32(UnityEngine.Random.Range(0, healModifier) + 0.89 * hero.power);
@@ -677,7 +677,7 @@ class PetLogic
             }
         }
     }
-    private static void TargetWeakestOffPet(Hero hero, Enemy[] enemies)
+    private static void TargetWeakestOffPet(Character hero, Character[] enemies)
     {
         int attackModifier = Convert.ToInt32(hero.power * 0.64);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + hero.power * 0.48);
@@ -704,7 +704,7 @@ class PetLogic
         }
 
     }
-    private static void TargetWeakestHealPet(Hero hero, Hero[] heroes)
+    private static void TargetWeakestHealPet(Character hero, Character[] heroes)
     {
         int target = 0;
         int healModifier = Convert.ToInt32(hero.power * 0.288);
@@ -723,7 +723,7 @@ class PetLogic
         }
         if (petRoll)
         {
-            target = Logic.HealLogic(heroes);
+            target = Logic.HealFindWeakestPerc(heroes);
             heroes[target].hp += healValue;
             if (heroes[target].hp > heroes[target].maxHp)
             {
@@ -731,7 +731,7 @@ class PetLogic
             }
         }
     }
-    private static void TeamHealShieldpet(Hero hero, Hero[] heroes)
+    private static void TeamHealShieldpet(Character hero, Character[] heroes)
     {
         int regenModifier = Convert.ToInt32(hero.power * 0.034);
         float regenValue = Convert.ToInt32(UnityEngine.Random.Range(0, regenModifier) + 0.153 * hero.power);
@@ -767,7 +767,7 @@ class PetLogic
             }
         }
     }
-    private static void RandomOffPet(Hero hero, Enemy[] enemies)
+    private static void RandomOffPet(Character hero, Character[] enemies)
     {
         int attackModifier = Convert.ToInt32(1.76 * hero.power);
         int attackValue = Convert.ToInt32(UnityEngine.Random.Range(0, attackModifier) + hero.power * 0.22);

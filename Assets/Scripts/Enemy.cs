@@ -5,6 +5,7 @@ using System;
 
 public class Enemy {
 
+    public string name;
     // Base Stats
     public int power;
     public int stamina;
@@ -40,9 +41,11 @@ public class Enemy {
     public double priority;
 
     // state
-    public bool alive;
+    public bool alive { get { return hp > 0; }}
+    public bool drain;
+    public bool selfInjure;
 
-    public Enemy(float pow, float sta, float agi, float crit, float critdmg, float emp, float ds, float block, float evade, float deflect, float absorb, float prunes, float starunes, float agirunes, float redrunes, int diffMod, double prior)
+    public Enemy(float pow, float sta, float agi, float crit, float critdmg, float emp, float ds, float block, float evade, float deflect, float absorb, float prunes, float starunes, float agirunes, float redrunes, int diffMod, double prior, string nam)
     {
         power = Convert.ToInt32(pow * diffMod);
         stamina = Convert.ToInt32(sta * diffMod);
@@ -60,6 +63,9 @@ public class Enemy {
         agilityRunes = (100f + agirunes) / 100f;
         damageReduction =(100f - redrunes) / 100f;
         priority = prior;
+        name = nam;
+        drain = false;
+        selfInjure = false;
     }
 
     public void Initialise()
@@ -72,11 +78,18 @@ public class Enemy {
         turnRate = Logic.TurnRate(power, agility);
         interval = 100 / turnRate;
         counter = 0;
-        alive = true;
     }
     public void IncrementCounter()
     {
         counter++;
+    }
+    public void SubstractCounter()
+    {
+        counter -= interval;
+    }
+    public void IncrementSp()
+    {
+        sp++;
     }
 
 }
