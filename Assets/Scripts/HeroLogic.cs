@@ -602,6 +602,7 @@ class HeroLogic
 
 
     #region New Code
+    public static void WeaponSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         int weapon = (int)hero.weapon;
         switch (weapon)
@@ -652,6 +653,7 @@ class HeroLogic
         }
     }
 
+    public static void SwordSkillSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         
         int attackValue = 0;
@@ -785,6 +787,7 @@ class HeroLogic
         }
     }
 
+    public static void SpearSkillSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         
         int attackValue = 0;
@@ -891,6 +894,7 @@ class HeroLogic
 
     }
 
+    public static void BowSkillSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         
         int attackValue = 0;
@@ -1025,6 +1029,7 @@ class HeroLogic
         }
     }
 
+    public static void StaffSkillSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         
         int attackValue = 0;
@@ -1059,6 +1064,7 @@ class HeroLogic
         }
         else if (skillRoll >= 15 && skillRoll < 80)
         {
+            hero.sp -= 2;
             attackValue = SkillList.StHeal1sp(hero);
             int target = Logic.HealFindWeakestPerc(heroes);
             heroes[target].hp += attackValue;
@@ -1132,6 +1138,7 @@ class HeroLogic
         }
     }
 
+    public static void AxeSkillSelection(Character hero, Character[] heroes, Character[] enemies)
     {
         
         int attackValue = 0;
@@ -1164,8 +1171,12 @@ class HeroLogic
                 attackValue = SkillList.AAoeDrain1sp(hero);
                 if (isCrit)
                 {
-                    attackValue = SkillList.AClosest_1sp(hero);
-                    Logic.HeroDamageApplication(hero, heroes, enemies, attackValue);
+                    attackValue = Convert.ToInt32(attackValue * hero.critDamage);
+                }
+                if (isEmp) attackValue *= 2;
+
+                if (enemies[i].hp > 0)
+                {
                     Logic.HeroDamageApplication(hero, heroes, enemies, attackValue, enemies[i]);
                 }
 
