@@ -10,6 +10,16 @@ public class Launch : MonoBehaviour
 	public static event RunEvent onRun;
 	public static Launch instance;
     WorldBossSimulation wbSim;
+    private bool isRaid;
+    private bool isWb;
+    private float winrateToShow;
+    private int totalGameToShow;
+    private GameMode gameMode;
+    public enum GameMode
+    {
+        Raid,
+        Wb
+    }
 
     private static Dictionary<int, int> WBDictionary = new Dictionary<int, int>()
     {
@@ -88,6 +98,8 @@ public class Launch : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+        isRaid = false;
+        isWb = false;
 	}
 
     void Start()
@@ -96,18 +108,28 @@ public class Launch : MonoBehaviour
 
     void Update()
     {
-        myText.text = "Winrate over " + RaidSimulation.games + " fights = " + RaidSimulation.winRate + "%";
+        switch (gameMode)
+        {
+            case GameMode.Raid:
+                winrateToShow = RaidSimulation.winRate;
+                break;
+            case GameMode.Wb:
+                winrateToShow = wbSim.winRate;
+                break;
+        }
+        myText.text = "Winrate over " + totalGameToShow + " fights = " + winrateToShow + "%";
     }
 
     public void OnClickInitRaid()
     {
 		IsRunning = true;
-
-        RaidSimulation.hero[0] = hero_1.GetHeroStruct();
-        RaidSimulation.hero[1] = hero_2.GetHeroStruct();
-        RaidSimulation.hero[2] = hero_3.GetHeroStruct();
-        RaidSimulation.hero[3] = hero_4.GetHeroStruct();
-        RaidSimulation.hero[4] = hero_5.GetHeroStruct();
+        gameMode = GameMode.Raid;
+        totalGameToShow = RaidSimulation.games;
+        RaidSimulation.hero[0] = hero_1.GetHero();
+        RaidSimulation.hero[1] = hero_2.GetHero();
+        RaidSimulation.hero[2] = hero_3.GetHero();
+        RaidSimulation.hero[3] = hero_4.GetHero();
+        RaidSimulation.hero[4] = hero_5.GetHero();
 
         int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
         bossDiff = bossName.value;
@@ -147,27 +169,30 @@ public class Launch : MonoBehaviour
 		StartCoroutine(RaidSimulation.Simulation(callback => {
 			IsRunning = false;
 		}));
+        isRaid = false;
     }
 
     public void OnClickInitWB()
     {
         int difficultyChecker = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
         wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);
+        totalGameToShow = wbSim.Games;
+        gameMode = GameMode.Wb;
         if (wbName.value == 1)
         {
             wbSim.heroes = new Character[3];
-            wbSim.heroes[0] = hero_1.GetHeroStruct();
-            wbSim.heroes[1] = hero_2.GetHeroStruct();
-            wbSim.heroes[2] = hero_3.GetHeroStruct();
+            wbSim.heroes[0] = hero_1.GetHero();
+            wbSim.heroes[1] = hero_2.GetHero();
+            wbSim.heroes[2] = hero_3.GetHero();
         }
         else
         {
             wbSim.heroes = new Character[5];
-            wbSim.heroes[0] = hero_1.GetHeroStruct();
-            wbSim.heroes[1] = hero_2.GetHeroStruct();
-            wbSim.heroes[2] = hero_3.GetHeroStruct();
-            wbSim.heroes[3] = hero_4.GetHeroStruct();
-            wbSim.heroes[4] = hero_5.GetHeroStruct();
+            wbSim.heroes[0] = hero_1.GetHero();
+            wbSim.heroes[1] = hero_2.GetHero();
+            wbSim.heroes[2] = hero_3.GetHero();
+            wbSim.heroes[3] = hero_4.GetHero();
+            wbSim.heroes[4] = hero_5.GetHero();
         }
         StartCoroutine(wbSim.Simulation(wbName.value, callback => { IsRunning = false; }));
     }

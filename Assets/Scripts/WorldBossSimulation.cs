@@ -14,13 +14,14 @@ public class WorldBossSimulation
     public int redirectCount = 0;
     private int DifficultyModifier;
     public float winRate;
+    public int Games = 1000;
     Random rand;
     private bool isNotHero = false;
     private bool isHero = true;
 
     private bool heroesAlive;
     private bool enemiesAlive;
-
+    private bool matchOver = false;
     //private Character[] OrlagDpsFams;
     //private Character[] OrlagTankFams;
     //private Character[] OrlagBossFams;
@@ -107,10 +108,10 @@ public class WorldBossSimulation
 
     public IEnumerator Simulation(int boss, System.Action<float> callback)
     {
+        slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
         int counterMax = 100;
         redirectCount = 0;
-        bool matchOver = false;
 
         
         int games = 1000;
@@ -140,6 +141,7 @@ public class WorldBossSimulation
             {
                 for (int i = 0; i < counterMax; i++)
                 {
+                    UpdateGameStatus();
                     foreach (Character hero in heroes)
                     {
                         if (hero.alive)
@@ -147,17 +149,14 @@ public class WorldBossSimulation
                             hero.IncrementCounter();
                             if (hero.counter > hero.interval)
                             {
+                                if (UpdateGameStatus()) break;
                                 Logic.HpPerc(heroes);
+                                Logic.HpPerc(enemies);
                                 hero.IncrementSp();
                                 PetLogic.PetSelection(hero, heroes, enemies);
+                                if (UpdateGameStatus()) break;
                                 hero.ChooseSkill(heroes, enemies);
                                 hero.SubstractCounter();
-                                UpdateAliveStatus();
-                                if (!heroesAlive || !enemiesAlive)
-                                {
-                                    matchOver = true;
-                                    break;
-                                }
                             }
                         }
                     }
@@ -169,17 +168,14 @@ public class WorldBossSimulation
                             enemy.IncrementCounter();
                             if (enemy.counter > enemy.interval)
                             {
+                                if (UpdateGameStatus()) break;
                                 Logic.HpPerc(enemies);
+                                Logic.HpPerc(heroes);
                                 enemy.IncrementSp();
                                 PetLogic.PetSelection(enemy, enemies, heroes);
+                                if (UpdateGameStatus()) break;
                                 enemy.ChooseSkill(enemies, heroes);
                                 enemy.SubstractCounter();
-                                UpdateAliveStatus();
-                                if (!heroesAlive || !enemiesAlive)
-                                {
-                                    matchOver = true;
-                                    break;
-                                }
                             }
                         }
                     }
@@ -235,6 +231,10 @@ public class WorldBossSimulation
                 enemies[1] = bossPlaceholder;
                 enemies[0] = placeholder;
             }
+        }
+        foreach (Character mob in enemies)
+        {
+            mob.InitialiseMobs();
         }
     }
     private Character GetOrlagBoss(int index)
@@ -317,7 +317,7 @@ public class WorldBossSimulation
         }
     }
 
-    public static int GetOpponentCount(Character[] opponents)
+    public static int GetPartyCount(Character[] opponents)
     {
         return opponents.Count(member => member.alive);
     }
@@ -326,9 +326,11 @@ public class WorldBossSimulation
         return opponents.Count(member => member.alive) > 2;
     }
 
-    public void UpdateAliveStatus()
+    public bool UpdateGameStatus()
     {
-        heroesAlive = GetOpponentCount(heroes) > 0;
-        enemiesAlive = GetOpponentCount(enemies) > 0;
+        heroesAlive = GetPartyCount(heroes) > 0;
+        enemiesAlive = GetPartyCount(enemies) > 0;
+        matchOver = (!heroesAlive || !enemiesAlive);
+        return matchOver;
     }
 }

@@ -24,7 +24,14 @@ public class Character
     public static Random random = new Random(Guid.NewGuid().GetHashCode());
 
 
-    public bool isHero;
+    public bool _isHero
+    {
+        get
+        {
+            if (weapon != Weapon.None) return true;
+            else return false;
+        }
+    }
     public string name;
     // Base Stats
     public int power;
@@ -38,6 +45,7 @@ public class Character
     public int hp;
     public int maxHp;
     public int sp;
+    private float spBonus;
     public int shield;
     public int maxShield;
     public float hpPerc;
@@ -78,6 +86,7 @@ public class Character
     public bool hysteriaBonus;
     public bool nightVisageBonus;
     public bool consumptionBonus;
+    public bool decayBonus;
 
     // Pet
     public string pets;
@@ -98,7 +107,8 @@ public class Character
     public enum MetaRune
     {
         None,
-        Redirect
+        Redirect,
+        spRegen
 
     }
     public DivinityBonus divinityBonus;
@@ -178,14 +188,13 @@ public class Character
         drain = false;
         selfInjure = false;
         name = nam;
-        isHero = ishero;
     }
     public Character()
     { }
 
     // Predefined 
     public static readonly Dictionary<string, Character> predefined = new Dictionary<string, Character>() {
-        /*{
+        {
             "Default Hero",
             new Character {
                 // Base Stats
@@ -205,7 +214,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.None,
+                pet           = PetType.None,
                 weapon        = Weapon.None,
                 metaRune      = MetaRune.None,
                 // set bonuses
@@ -233,7 +242,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 4f,
                 // Pet
-                pet           = Pet.Gemmi,
+                pet           = PetType.Gemmi,
                 weapon        = Weapon.Sword,
                 metaRune      = MetaRune.None,
                 // set bonuses
@@ -246,9 +255,9 @@ public class Character
             "Default Tank",
             new Character {
                 // Base Stats
-                power         = 500,
+                power         = 700,
                 stamina       = 1000,
-                agility       = 100,
+                agility       = 400,
                 // Specials
                 critChance    = 10,
                 critDamage    = 50f,
@@ -262,40 +271,40 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Boiguh,
-                weapon        = Weapon.Axe,
+                pet           = PetType.Boogie,
+                weapon        = Weapon.Staff,
                 metaRune      = MetaRune.Redirect,
                 // set bonuses
-                unity         = false,
-                bushidoBonus  = false,
-                divinityBonus = DivinityBonus.None
+                obliterationBonus = ObliterationBonus.Bonus_4_of_4,
+                decayBonus = true
             }
         },
         {
             "Shadown88",
             new Character {
                 // Base Stats
-                power         = 1085,
-                stamina       = 135,
-                agility       = 69,
+                power         = 1350,
+                stamina       = 540,
+                agility       = 480,
                 // Specials
                 critChance    = 15f,
-                critDamage    = 50f,
-                dsChance      = 18f,
+                critDamage    = 100f,
+                dsChance      = 10f,
                 blockChance   = 0f,
                 evadeChance   = 2.5f,
                 deflectChance = 0f,
                 absorbChance  = 0f,
                 // Runes
-                powerRunes    = 15.5f,
+                powerRunes    = 10.5f,
                 staminaRunes  = 0f,
-                agilityRunes  = 0f,
+                agilityRunes  = 10f,
                 // Pet
-                pet           = Pet.Gemmi,
-                weapon        = Weapon.Bow,
-                metaRune      = MetaRune.None,
+                pet           = PetType.Boiguh,
+                weapon        = Weapon.Spear,
+                metaRune      = MetaRune.spRegen,
                 // set bonuses
-                unity         = true,
+                necrosisBonus = true,
+                conductionBonus = ConductionBonus.Bonus_4_of_4
                 //divinityBonus = true
             }
         },
@@ -319,7 +328,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 2.5f,
                 // Pet
-                pet           = Pet.Nelson,
+                pet           = PetType.Nelson,
                 weapon        = Weapon.Bow
             }
         },
@@ -343,7 +352,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Nelson,
+                pet           = PetType.Nelson,
                 weapon        = Weapon.Bow
             }
         },
@@ -367,7 +376,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Gemmi,
+                pet           = PetType.Gemmi,
                 weapon        = Weapon.Bow
             }
         },
@@ -391,20 +400,21 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = Pet.Gemmi,
+                pet           = PetType.Gemmi,
                 weapon        = Weapon.Bow,
                 metaRune      = MetaRune.Redirect
             }
-        }*/
+        }
 
     };
 
     public void InitialiseHero()
     {
-        //powerRunes = (100f + powerRunes) / 100f;
-        //agilityRunes = (100f + agilityRunes) / 100f;
-        //critDamage = (100f + critDamage) / 100f;
-        //staminaRunes = (100f + staminaRunes) / 100f;
+        powerRunes = (100f + powerRunes) / 100f;
+        agilityRunes = (100f + agilityRunes) / 100f;
+        critDamage = (100f + critDamage) / 100f;
+        staminaRunes = (100f + staminaRunes) / 100f;
+        damageReduction = (100f - damageReduction) / 100f;
         turnRate = Logic.TurnRate(power, agility);
         power = Convert.ToInt32(power * powerRunes);
         turnRate *= agilityRunes;
@@ -415,6 +425,22 @@ public class Character
         counter = 0;
         sp = 0;
         drain = false;
+        AttributeHeroSkills();
+    }
+
+    public void InitialiseMobs()
+    {
+        turnRate = Logic.TurnRate(power, agility);
+        power = Convert.ToInt32(power * powerRunes);
+        turnRate *= agilityRunes;
+        hp = Convert.ToInt32(stamina * 10 * staminaRunes);
+        maxHp = hp;
+        maxShield = Convert.ToInt32(maxHp / 2);
+        interval = 100 / turnRate;
+        counter = 0;
+        sp = 0;
+        drain = false;
+        AttributeMobSkills();
     }
 
     private void AttributeHeroSkills()
@@ -448,7 +474,7 @@ public class Character
                 break;
             case Weapon.Staff:
                 skillList.Add(new Skill(0.82f, 0.2f, 65, 2, SkillType.TargetHeal));
-                skillList.Add(new Skill(1.42f, 0.2f, 5, 2, SkillType.Closest));
+                skillList.Add(new Skill(1.42f, 0.2f, 5, 2, SkillType.Weakest));
                 skillList.Add(new Skill(0.8f, 0.2f, 10, 4, SkillType.AOE));
                 skillList.Add(new Skill(2.25f, 0.2f, 10, 6, SkillType.Target));
                 break;
@@ -548,7 +574,8 @@ public class Character
                 skillList.Add(new Skill(1.95f, 0.3f, 25, 2, SkillType.Random));
                 skillList.Add(new Skill(1f, 0.3f, 50, 4, SkillType.Drain));
                 break;
-            case "TankNether":;
+            case "TankNether":
+                ;
                 skillList.Add(new Skill(1.57f, 0.2f, 20, 2, SkillType.Furthest));
                 skillList.Add(new Skill(2.29f, 0.2f, 70, 4, SkillType.Closest));
                 break;
@@ -578,6 +605,19 @@ public class Character
     public void IncrementSp()
     {
         sp++;
+        if (necrosisBonus)
+        {
+            if (Logic.RNGroll(10f))  sp += 2;
+        }
+        if (metaRune == MetaRune.spRegen && hpPerc > 0.99f)
+        {
+            spBonus += 0.5f;
+            if (spBonus >= 1f)
+            {
+                spBonus--;
+                sp++;
+            }
+        }
     }
     public void SubstractCounter()
     {
@@ -586,18 +626,19 @@ public class Character
     public void ChooseSkill(Character[] party, Character[] opponents)
     {
         bool isAoeAccepted = WorldBossSimulation.IsAoeEnabled(opponents);
+        bool isHealingNeeded = Logic.IsHealingNeeded(party);
         int skillRange;
         int skillRoll;
         int skillInc = 0;
 
-        skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsAOE == false) || (skill.IsAOE == isAoeAccepted)).Sum(skill => skill.Cost));
+        skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (((!skill.IsAOE) || (skill.IsAOE == isAoeAccepted)) || (!skill.IsHealing) || (skill.IsHealing == isHealingNeeded))).Sum(skill => skill.Weight));
         skillRoll = random.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
-            if (skillList[i].Cost <= sp && ((skillList[i].IsAOE == false) || (skillList[i].IsAOE == isAoeAccepted)))
+            if (skillList[i].Cost <= sp && (((!skillList[i].IsAOE) || (skillList[i].IsAOE == isAoeAccepted)) || (!skillList[i].IsHealing) || (skillList[i].IsHealing == isHealingNeeded)))
             {
-                skillInc += skillList[i].Cost;
-                if (skillRange < skillInc)
+                skillInc += skillList[i].Weight;
+                if (skillRoll < skillInc)
                 {
                     sp -= skillList[i].Cost;
                     skillList[i].ApplySkill(this, party, opponents);
@@ -613,42 +654,3 @@ public class Character
         return predefined[name];
     }
 }
-
-
-/*
- 
-        if (GetOpponentCount > 2)
-        {
-            skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp).Sum(skill => skill.Cost));
-            skillRoll = random.Next(skillRange);
-            for (int i = 0; i < skillList.Count; i++)
-            {
-                int skillInc = 0;
-                if (skillList[i].Cost <= sp)
-                {
-                    skillInc += skillList[i].Cost;
-                    if (skillRange < skillInc)
-                    {
-                        //execute skill
-                    }
-                }
-            }
-        }
-        else
-        {
-            skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && !skill.IsAOE).Sum(skill => skill.Cost));
-            skillRoll = random.Next(skillRange);
-            for (int i = 0; i < skillList.Count; i++)
-            {
-                int skillInc = 0;
-                if (skillList[i].Cost <= sp && !skillList[i].IsAOE)
-                {
-                    skillInc += skillList[i].Cost;
-                    if (skillRange < skillInc)
-                    {
-                        //execute skill
-                    }
-                }
-            }
-        }
- */

@@ -64,7 +64,7 @@ public class HeroesImporter : MonoBehaviour
         sb = new StringBuilder();
         for (var i = 0; i < heroes.Length; i++)
         {
-            sb.AppendLine(GetCsvLineFromHero(heroes[i].GetHeroStruct()));
+            sb.AppendLine(GetCsvLineFromHero(heroes[i].GetHero()));
         }
 
         return sb.ToString();
@@ -73,7 +73,7 @@ public class HeroesImporter : MonoBehaviour
     private String GetCsvLineFromHero(Character hero)
     {
         return String.Format(
-            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},END",
+            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},END",
             hero.power,
             hero.stamina,
             hero.agility,
@@ -89,12 +89,24 @@ public class HeroesImporter : MonoBehaviour
             hero.powerRunes,
             hero.staminaRunes,
             hero.agilityRunes,
-            hero.unity,
-            hero.bushidoBonus,
-            hero.divinityBonus,
             hero.metaRune,
             hero.weapon,
-            hero.pet
+            hero.pet,
+            hero.necrosisBonus,
+            hero.hysteriaBonus,
+            hero.nightVisageBonus,
+            hero.consumptionBonus,
+            hero.decayBonus,
+            hero.aresBonus,
+            hero.bushidoBonus,
+            hero.lunarBonus,
+            hero.unity,
+            hero.divinityBonus,
+            hero.obliterationBonus,
+            hero.maruBonus,
+            hero.conductionBonus,
+            hero.illustriousBonus,
+            hero.gateKeeperBonus
         );
     }
 
@@ -136,14 +148,26 @@ public class HeroesImporter : MonoBehaviour
             powerRunes = Convert.ToSingle(values[12]),
             staminaRunes = Convert.ToSingle(values[13]),
             agilityRunes = Convert.ToSingle(values[14]),
-            unity = Convert.ToBoolean(values[15]),
-            bushidoBonus = Convert.ToBoolean(values[16]),
-            divinityBonus = HeroPanel.GetDivinityBonusFromString(values[17]),
-            metaRune = HeroPanel.GetMetaRuneFromString(values[18]),
-            pet = HeroPanel.GetPetFromString(values[20]),
-            weapon = HeroPanel.GetWeaponFromString(values[19])
+            metaRune = HeroPanel.GetMetaRuneFromString(values[15]),
+            pet = HeroPanel.GetPetFromString(values[16]),
+            weapon = HeroPanel.GetWeaponFromString(values[17]),
+            necrosisBonus = Convert.ToBoolean(values[18]),
+            hysteriaBonus = Convert.ToBoolean(values[19]),
+            nightVisageBonus = Convert.ToBoolean(values[20]),
+            consumptionBonus = Convert.ToBoolean(values[21]),
+            decayBonus = Convert.ToBoolean(values[22]),
+            aresBonus = Convert.ToBoolean(values[23]),
+            bushidoBonus = Convert.ToBoolean(values[24]),
+            lunarBonus = Convert.ToBoolean(values[25]),
+            unity = Convert.ToBoolean(values[26]),
+            divinityBonus = HeroPanel.GetDivinityBonusFromString(values[27]),
+            obliterationBonus = HeroPanel.GetOblitBonusFromString(values[28]),
+            maruBonus = HeroPanel.GetMarutBonusFromString(values[29]),
+            conductionBonus = HeroPanel.GetConducBonusFromString(values[30]),
+            illustriousBonus = HeroPanel.GetIllustBonusFromString(values[31]),
+            gateKeeperBonus = Convert.ToBoolean(values[32])
         };
-        Debug.Log(values[20] + "$");
+        Debug.Log(values[32] + "$");
         return hero;
     }
 }

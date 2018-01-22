@@ -41,6 +41,7 @@ public class HeroPanel : MonoBehaviour
     public Toggle HysteriaBonus;
     public Toggle NightVisageBonus;
     public Toggle ConsumptionBonus;
+    public Toggle DecayBonus;
 
     // set bonuses
     public Toggle AresBonus;
@@ -85,8 +86,8 @@ public class HeroPanel : MonoBehaviour
         metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MetaRune))));
 
         //Divinity
-        divinity.ClearOptions();
-        divinity.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
+        DivinityBonus.ClearOptions();
+        DivinityBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
     }
 
     // Predefine Switch
@@ -127,9 +128,23 @@ public class HeroPanel : MonoBehaviour
         damageReduction.text = Convert.ToString(hero.damageReduction);
         //set bonuses
         UnityBonus.isOn    = hero.unity;
+        AresBonus.isOn = hero.aresBonus;
+        BushidoBonus.isOn = hero.bushidoBonus;
+        LunarBonus.isOn = hero.lunarBonus;
+        GateKeeperBonus.isOn = hero.gateKeeperBonus;
 
-		// Runes
-		powerRunes.text    = Convert.ToString(hero.powerRunes);
+
+
+        //mythic bonuses
+        NecrosisBonus.isOn = hero.necrosisBonus;
+        HysteriaBonus.isOn = hero.hysteriaBonus;
+        NightVisageBonus.isOn = hero.nightVisageBonus;
+        ConsumptionBonus.isOn = hero.consumptionBonus;
+        DecayBonus.isOn = hero.decayBonus;
+
+
+        // Runes
+        powerRunes.text    = Convert.ToString(hero.powerRunes);
 		staminaRunes.text  = Convert.ToString(hero.staminaRunes);
 		agilityRunes.text  = Convert.ToString(hero.agilityRunes);
 		// Pet
@@ -162,46 +177,113 @@ public class HeroPanel : MonoBehaviour
 			}
 		}
 		// divinity
-		for (int i = 0; i < divinity.options.Count; i++)
+		for (int i = 0; i < DivinityBonus.options.Count; i++)
 		{
-			if (divinity.options[i].text == hero.divinityBonus.ToString())
+			if (DivinityBonus.options[i].text == hero.divinityBonus.ToString())
 			{
-				divinity.value = i;
+                DivinityBonus.value = i;
 				break;
 			}
 		}
-	}
+
+        // oblit
+        for (int i = 0; i < ObliterationBonus.options.Count; i++)
+        {
+            if (ObliterationBonus.options[i].text == hero.obliterationBonus.ToString())
+            {
+                ObliterationBonus.value = i;
+                break;
+            }
+        }
+
+        // maru
+        for (int i = 0; i < MaruBonus.options.Count; i++)
+        {
+            if (MaruBonus.options[i].text == hero.maruBonus.ToString())
+            {
+                MaruBonus.value = i;
+                break;
+            }
+        }
+
+        // conduction
+        for (int i = 0; i < ConductionBonus.options.Count; i++)
+        {
+            if (ConductionBonus.options[i].text == hero.conductionBonus.ToString())
+            {
+                ConductionBonus.value = i;
+                break;
+            }
+        }
+
+        // illus
+        for (int i = 0; i < IllustriousBonus.options.Count; i++)
+        {
+            if (IllustriousBonus.options[i].text == hero.illustriousBonus.ToString())
+            {
+                IllustriousBonus.value = i;
+                break;
+            }
+        }
+
+        // taters
+        for (int i = 0; i < TatersBonus.options.Count; i++)
+        {
+            if (TatersBonus.options[i].text == hero.tatersBonus.ToString())
+            {
+                TatersBonus.value = i;
+                break;
+            }
+        }
+
+    }
 
     // Return a Hero struct
-    public Character GetHeroStruct()
+    public Character GetHero()
     {
         return new Character {
             // Base Stats
-            power           = Convert.ToInt32(power.text),
-            stamina         = Convert.ToInt32(stamina.text),
-            agility         = Convert.ToInt32(agility.text),
+            power = Convert.ToInt32(power.text),
+            stamina = Convert.ToInt32(stamina.text),
+            agility = Convert.ToInt32(agility.text),
             // Specials
-            critChance      = Convert.ToSingle(critChance.text),
-            critDamage      = Convert.ToSingle(critDamage.text),
-            dsChance        = Convert.ToSingle(dsChance.text),
-            blockChance     = Convert.ToSingle(blockChance.text),
-            evadeChance     = Convert.ToSingle(evadeChance.text),
-            deflectChance   = Convert.ToSingle(deflectChance.text),
-            absorbChance    = Convert.ToSingle(absorbChance.text),
-            empowerChance   = Convert.ToSingle(empowerRunes.text),
+            critChance = Convert.ToSingle(critChance.text),
+            critDamage = Convert.ToSingle(critDamage.text),
+            dsChance = Convert.ToSingle(dsChance.text),
+            blockChance = Convert.ToSingle(blockChance.text),
+            evadeChance = Convert.ToSingle(evadeChance.text),
+            deflectChance = Convert.ToSingle(deflectChance.text),
+            absorbChance = Convert.ToSingle(absorbChance.text),
+            empowerChance = Convert.ToSingle(empowerRunes.text),
             damageReduction = Convert.ToSingle(damageReduction.text),
             // Runes
-            powerRunes      = Convert.ToSingle(powerRunes.text),
-            staminaRunes    = Convert.ToSingle(staminaRunes.text),
-            agilityRunes    = Convert.ToSingle(agilityRunes.text),
+            powerRunes = Convert.ToSingle(powerRunes.text),
+            staminaRunes = Convert.ToSingle(staminaRunes.text),
+            agilityRunes = Convert.ToSingle(agilityRunes.text),
             //Set Bonuses
 
-            unity           = UnityBonus.isOn,
-            bushidoBonus    = BushidoBonus.isOn,
-			divinityBonus   = GetDivinityBonusFromString(divinity.options[divinity.value].text),
+            unity = UnityBonus.isOn,
+            bushidoBonus = BushidoBonus.isOn,
+            lunarBonus = LunarBonus.isOn,
+            aresBonus = AresBonus.isOn,
+            gateKeeperBonus = GateKeeperBonus.isOn,
+			divinityBonus   = GetDivinityBonusFromString(DivinityBonus.options[DivinityBonus.value].text),
+            obliterationBonus = GetOblitBonusFromString(ObliterationBonus.options[ObliterationBonus.value].text),
+            maruBonus = GetMarutBonusFromString(MaruBonus.options[MaruBonus.value].text),
+            conductionBonus = GetConducBonusFromString(ConductionBonus.options[ConductionBonus.value].text),
+            illustriousBonus = GetIllustBonusFromString(IllustriousBonus.options[IllustriousBonus.value].text),
+            tatersBonus = GetTatersBonusFromString(TatersBonus.options[TatersBonus.value].text),
+            //Mythic
 
-            // Pet
-			metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
+            necrosisBonus = NecrosisBonus.isOn,
+            hysteriaBonus = HysteriaBonus.isOn,
+            nightVisageBonus = NightVisageBonus.isOn,
+            consumptionBonus = ConsumptionBonus.isOn,
+            decayBonus = DecayBonus.isOn,
+
+
+        // Pet
+            metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
 			pet             = GetPetFromString(pet.options[pet.value].text),
 			weapon          = GetWeaponFromString(weapon.options[weapon.value].text)
         };
@@ -227,7 +309,117 @@ public class HeroPanel : MonoBehaviour
 		return divinityBonus;
 	}
 
-	public static Character.MetaRune GetMetaRuneFromString(String s)
+    public static Character.ObliterationBonus GetOblitBonusFromString(String s)
+    {
+        Character.ObliterationBonus oblitBonus;
+
+        switch (s)
+        {
+            case "Bonus_2_of_4":
+                oblitBonus = Character.ObliterationBonus.Bonus_2_of_4;
+                break;
+            case "Bonus_3_of_4":
+                oblitBonus = Character.ObliterationBonus.Bonus_3_of_4;
+                break;
+            case "Bonus_4_of_4":
+                oblitBonus = Character.ObliterationBonus.Bonus_4_of_4;
+                break;
+            default:
+                oblitBonus = Character.ObliterationBonus.None;
+                break;
+        }
+
+        return oblitBonus;
+    }
+
+    public static Character.MARUBonus GetMarutBonusFromString(String s)
+    {
+        Character.MARUBonus maruBonus;
+
+        switch (s)
+        {
+            case "Bonus_2_of_4":
+                maruBonus = Character.MARUBonus.Bonus_2_of_4;
+                break;
+            case "Bonus_3_of_4":
+                maruBonus = Character.MARUBonus.Bonus_3_of_4;
+                break;
+            case "Bonus_4_of_4":
+                maruBonus = Character.MARUBonus.Bonus_4_of_4;
+                break;
+            default:
+                maruBonus = Character.MARUBonus.None;
+                break;
+        }
+
+        return maruBonus;
+    }
+
+    public static Character.ConductionBonus GetConducBonusFromString(String s)
+    {
+        Character.ConductionBonus conducBonus;
+
+        switch (s)
+        {
+            case "Bonus_2_of_4":
+                conducBonus = Character.ConductionBonus.Bonus_2_of_4;
+                break;
+            case "Bonus_3_of_4":
+                conducBonus = Character.ConductionBonus.Bonus_3_of_4;
+                break;
+            case "Bonus_4_of_4":
+                conducBonus = Character.ConductionBonus.Bonus_4_of_4;
+                break;
+            default:
+                conducBonus = Character.ConductionBonus.None;
+                break;
+        }
+
+        return conducBonus;
+    }
+
+    public static Character.TatersBonus GetTatersBonusFromString(String s)
+    {
+        Character.TatersBonus tatersBonus;
+
+        switch (s)
+        {
+            case "Bonus_2_of_3":
+                tatersBonus = Character.TatersBonus.Bonus_2_of_3;
+                break;
+            case "Bonus_3_of_3":
+                tatersBonus = Character.TatersBonus.Bonus_3_of_3;
+                break;
+            default:
+                tatersBonus = Character.TatersBonus.None;
+                break;
+        }
+
+        return tatersBonus;
+    }
+
+    public static Character.IllustriousBonus GetIllustBonusFromString(String s)
+    {
+        Character.IllustriousBonus illustBonus;
+
+        switch (s)
+        {
+            case "Bonus_2_of_3":
+                illustBonus = Character.IllustriousBonus.Bonus_2_of_3;
+                break;
+            case "Bonus_3_of_3":
+                illustBonus = Character.IllustriousBonus.Bonus_3_of_3;
+                break;
+            default:
+                illustBonus = Character.IllustriousBonus.None;
+                break;
+        }
+
+        return illustBonus;
+    }
+
+
+    public static Character.MetaRune GetMetaRuneFromString(String s)
 	{
 		Character.MetaRune metaRune;
 
@@ -236,7 +428,10 @@ public class HeroPanel : MonoBehaviour
 			case "Redirect":
 				metaRune = Character.MetaRune.Redirect;
 				break;
-			default:
+            case "spRegen":
+                metaRune = Character.MetaRune.spRegen;
+                break;
+            default:
 				metaRune = Character.MetaRune.None;
 				break;
 		}
@@ -327,7 +522,13 @@ public class HeroPanel : MonoBehaviour
 			case "Sword":
 				weapon = Character.Weapon.Sword;
 				break;
-			default:
+            case "Laser":
+                weapon = Character.Weapon.Laser;
+                break;
+            case "DemonStaff":
+                weapon = Character.Weapon.DemonStaff;
+                break;
+            default:
 				weapon = Character.Weapon.None;
 				break;
 		}

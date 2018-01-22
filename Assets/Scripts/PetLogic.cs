@@ -588,33 +588,33 @@ class PetLogic
             }
         }
     }
-    private static void TeamShieldPet(Character hero, Character[] heroes)
+    private static void TeamShieldPet(Character author, Character[] party)
     {
         int i;
-        int shieldModifier = Convert.ToInt32(hero.power * 0.06);
-        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.27 * hero.power);
+        int shieldModifier = Convert.ToInt32(author.power * 0.06);
+        float shieldValue = Convert.ToInt32(UnityEngine.Random.Range(0, shieldModifier) + 0.27 * author.power);
 
-        bool critroll = Logic.RNGroll(hero.critChance);
+        bool critroll = Logic.RNGroll(author.critChance);
         bool petRoll = Logic.RNGroll(20f);
 
         if (critroll)
         {
-            shieldValue *= hero.critDamage;
+            shieldValue *= author.critDamage;
         }
-        if (Logic.RNGroll(hero.empowerChance))
+        if (Logic.RNGroll(author.empowerChance))
         {
             shieldValue *= 2;
         }
         if (petRoll)
         {
-            for (i = 0; i < 5; i++)
+            for (i = 0; i < party.Length; i++)
             {
-                if (heroes[i].hp > 0)
+                if (party[i].hp > 0)
                 {
-                    heroes[i].shield += Convert.ToInt32(shieldValue);
-                    if (heroes[i].shield >= heroes[i].maxShield)
+                    party[i].shield += Convert.ToInt32(shieldValue);
+                    if (party[i].shield >= party[i].maxShield)
                     {
-                        heroes[i].shield = heroes[i].maxShield;
+                        party[i].shield = party[i].maxShield;
                     }
                 }
             }
@@ -639,7 +639,7 @@ class PetLogic
         }
         if (petRoll)
         {
-            for (i = 0; i < 5; i++)
+            for (i = 0; i < heroes.Length; i++)
             {
                 if (heroes[i].hp > 0)
                 {
@@ -749,7 +749,7 @@ class PetLogic
         }
         if (petRoll)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < heroes.Length; i++)
             {
                 if (heroes[i].hp > 0)
                 {

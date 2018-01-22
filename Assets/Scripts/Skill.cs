@@ -32,6 +32,23 @@ public class Skill
     public float Range;
     public int Weight;
     public int Cost;
+    public bool IsHealing
+    {
+        get
+        {
+            switch (skillType)
+            {
+                case SkillType.AOEHeal:
+                case SkillType.SelfHeal:
+                case SkillType.SpreadHeal:
+                case SkillType.TargetHeal:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
     public bool IsAOE
     {
         get
@@ -75,7 +92,7 @@ public class Skill
         int attackModifier = Convert.ToInt32(Value * Range * character.power);
         int returnValue = 0;
         int mod = Convert.ToInt32(Math.Pow(-1, random.Next(2)));
-        returnValue = Convert.ToInt32(character.power * Value + random.Next(attackModifier)* mod);
+        returnValue = Convert.ToInt32(character.power * Value + random.Next(attackModifier) * mod);
 
         if (IsCrit)
         {
@@ -87,13 +104,18 @@ public class Skill
         }
         return returnValue;
     }
-    
+
     public void ApplySkill(Character author, Character[] party, Character[] opponents)
     {
         int amountToCast = 1;
+        if (author.gateKeeperBonus)
+        {
+            if (Logic.RNGroll(0.5f)) amountToCast += 3;
+        }
         if (Logic.RNGroll(author.dsChance)) amountToCast++;
         while (amountToCast != 0)
         {
+            if (WorldBossSimulation.GetPartyCount(opponents) == 0) return;
             StoreRandomFactors(author);
             switch (skillType)
             {
@@ -165,11 +187,20 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectBack(opponents), author, opponents, party, ref absorbProc);
-        if (!party.Contains(target))
+        //if (!party.Contains(target))
+        //{
+        //    Character[] placeholder = party;
+        //    party = opponents;
+        //    opponents = placeholder;
+        //}
+        Character[] receivingParty;
+        if (party.Contains(target))
         {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            receivingParty = party;
+        }
+        else
+        {
+            receivingParty = opponents;
         }
         //apply damage
         int attackValue = GetValue(author);
@@ -180,7 +211,7 @@ public class Skill
         }
         else
         {
-            Logic.DamageApplication(attackValue, target, author, party, opponents);
+            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
 
     }
@@ -189,11 +220,14 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-        if (!party.Contains(target))
+        Character[] receivingParty;
+        if (party.Contains(target))
         {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            receivingParty = party;
+        }
+        else
+        {
+            receivingParty = opponents;
         }
         //apply damage
 
@@ -205,7 +239,7 @@ public class Skill
         }
         else
         {
-            Logic.DamageApplication(attackValue, target, author, party, opponents);
+            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
 
     }
@@ -215,11 +249,14 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
-        if (!party.Contains(target))
+        Character[] receivingParty;
+        if (party.Contains(target))
         {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            receivingParty = party;
+        }
+        else
+        {
+            receivingParty = opponents;
         }
         //apply damage
         int attackValue = GetValue(author);
@@ -230,7 +267,7 @@ public class Skill
         }
         else
         {
-            Logic.DamageApplication(attackValue, target, author, party, opponents);
+            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
 
     }
@@ -239,11 +276,14 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectWeakest(opponents), author, opponents, party, ref absorbProc);
-        if (!party.Contains(target))
+        Character[] receivingParty;
+        if (party.Contains(target))
         {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            receivingParty = party;
+        }
+        else
+        {
+            receivingParty = opponents;
         }
         //apply damage
         int attackValue = GetValue(author);
@@ -254,7 +294,7 @@ public class Skill
         }
         else
         {
-            Logic.DamageApplication(attackValue, target, author, party, opponents);
+            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
 
     }
@@ -263,6 +303,30 @@ public class Skill
     {
         int target = Logic.HealFindWeakestPerc(party);
         int attackValue = GetValue(author);
+        if (author.lunarBonus)
+        {
+            attackValue = Convert.ToInt32(attackValue * 1.15f);
+        }
+        if (party[target].decayBonus)
+        {
+            if (Logic.RNGroll(5f)) attackValue *= 2;
+        }
+        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+        {
+            party[target].shield = Convert.ToInt32(attackValue * 0.1);
+            if (party[target].shield > party[target].maxShield) party[target].shield = party[target].maxShield;
+        }
+        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+        {
+            if (party[target].maxHp - party[target].hp < attackValue)
+            {
+                attackValue -= (party[target].maxHp - party[target].hp);
+                party[target].hp = party[target].maxHp;
+                party[target].shield += attackValue;
+                if (party[target].shield > party[target].maxShield) party[target].shield = party[target].maxShield;
+                attackValue = 0;
+            }
+        }
         party[target].hp += attackValue;
         if (party[target].hp > party[target].maxHp) party[target].hp = party[target].maxHp;
     }
@@ -271,8 +335,32 @@ public class Skill
         for (int i = 0; i < party.Length; i++)
         {
             int attackValue = GetValue(author);
+            if (author.lunarBonus)
+            {
+                attackValue = Convert.ToInt32(attackValue * 1.15f);
+            }
             if (party[i].alive)
             {
+                if (party[i].decayBonus)
+                {
+                    if (Logic.RNGroll(5f)) attackValue *= 2;
+                }
+                if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+                {
+                    party[i].shield = Convert.ToInt32(attackValue * 0.1);
+                    if (party[i].shield > party[i].maxShield) party[i].shield = party[i].maxShield;
+                }
+                if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+                {
+                    if (party[i].maxHp - party[i].hp < attackValue)
+                    {
+                        attackValue -= (party[i].maxHp - party[i].hp);
+                        party[i].hp = party[i].maxHp;
+                        party[i].shield += attackValue;
+                        if (party[i].shield > party[i].maxShield) party[i].shield = party[i].maxShield;
+                        attackValue = 0;
+                    }
+                }
                 party[i].hp += attackValue;
                 if (party[i].hp > party[i].maxHp) party[i].hp = party[i].maxHp;
             }
@@ -282,10 +370,18 @@ public class Skill
     {
         int target = Logic.HealFindWeakestPerc(party);
         int healingValue = GetValue(author);
+        if (author.lunarBonus)
+        {
+            healingValue = Convert.ToInt32(healingValue * 1.15f);
+        }
         for (int i = 0; i < healingValue; i++)
         {
             target = Logic.HealFindWeakestPerc(party);
             party[target].hp++;
+            if (party[target].decayBonus)
+            {
+                if (Logic.RNGroll(5f)) party[target].hp++;
+            }
             if (party[target].hp > party[target].maxHp)
             {
                 party[target].hp = party[target].maxHp;
@@ -295,7 +391,31 @@ public class Skill
     private void SelfHealSkill(Character author)
     {
         int attackValue = GetValue(author);
-        author.hp += attackValue;
+        if (author.decayBonus)
+        {
+            if (Logic.RNGroll(5f)) attackValue *= 2;
+        }
+        if (author.lunarBonus)
+        {
+            attackValue = Convert.ToInt32(attackValue * 1.15f);
+        }
+        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+        {
+            author.shield = Convert.ToInt32(attackValue * 0.1);
+            if (author.shield > author.maxShield) author.shield = author.maxShield;
+        }
+        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+        {
+            if (author.maxHp - author.hp < attackValue)
+            {
+                attackValue -= (author.maxHp - author.hp);
+                author.hp = author.maxHp;
+                author.shield += attackValue;
+                if (author.shield > author.maxShield) author.shield = author.maxShield;
+                attackValue = 0;
+            }
+        }
+            author.hp += attackValue;
         if (author.hp > author.maxHp) author.hp = author.maxHp;
     }
     private void AoeSkill(Character author, Character[] party, Character[] opponents)
@@ -306,11 +426,14 @@ public class Skill
             if (opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                if (!party.Contains(target))
+                Character[] receivingParty;
+                if (party.Contains(target))
                 {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    receivingParty = party;
+                }
+                else
+                {
+                    receivingParty = opponents;
                 }
                 int attackValue = GetValue(author);
                 if (absorbProc)
@@ -320,13 +443,7 @@ public class Skill
                 }
                 else
                 {
-                    Logic.DamageApplication(attackValue, target, author, party, opponents);
-                }
-                if (!party.Contains(author))
-                {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
                 }
                 absorbProc = false;
             }
@@ -341,11 +458,14 @@ public class Skill
             if (i < opponents.Length && opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                if (!party.Contains(target))
+                Character[] receivingParty;
+                if (party.Contains(target))
                 {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    receivingParty = party;
+                }
+                else
+                {
+                    receivingParty = opponents;
                 }
                 int attackValue = GetValue(author);
                 if (absorbProc)
@@ -355,13 +475,7 @@ public class Skill
                 }
                 else
                 {
-                    Logic.DamageApplication(attackValue, target, author, party, opponents);
-                }
-                if (!party.Contains(author))
-                {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
                 }
                 absorbProc = false;
             }
@@ -376,11 +490,14 @@ public class Skill
             if (i < opponents.Length && opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                if (!party.Contains(target))
+                Character[] receivingParty;
+                if (party.Contains(target))
                 {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    receivingParty = party;
+                }
+                else
+                {
+                    receivingParty = opponents;
                 }
                 int attackValue = GetValue(author);
                 if (absorbProc)
@@ -390,13 +507,7 @@ public class Skill
                 }
                 else
                 {
-                    Logic.DamageApplication(attackValue, target, author, party, opponents);
-                }
-                if (!party.Contains(author))
-                {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
                 }
                 absorbProc = false;
             }
@@ -406,11 +517,14 @@ public class Skill
     {
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
-        if (!party.Contains(target))
+        Character[] receivingParty;
+        if (party.Contains(target))
         {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            receivingParty = party;
+        }
+        else
+        {
+            receivingParty = opponents;
         }
         //apply damage
         int attackValue = GetValue(author);
@@ -421,13 +535,7 @@ public class Skill
         }
         else
         {
-            Logic.DamageApplication(attackValue, target, author, party, opponents);
-        }
-        if (!party.Contains(author))
-        {
-            Character[] placeholder = party;
-            party = opponents;
-            opponents = placeholder;
+            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
         absorbProc = false;
         for (int i = 0; i < 4; i++)
@@ -435,11 +543,13 @@ public class Skill
             if (Logic.CountAlive(opponents) > 1)
             {
                 target = Logic.RedirectDeflectLoop(Logic.SelectRicochet(opponents, target), author, opponents, party, ref absorbProc);
-                if (!party.Contains(target))
+                if (party.Contains(target))
                 {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    receivingParty = party;
+                }
+                else
+                {
+                    receivingParty = opponents;
                 }
                 //apply damage
                 attackValue = GetValue(author);
@@ -450,13 +560,7 @@ public class Skill
                 }
                 else
                 {
-                    Logic.DamageApplication(attackValue, target, author, party, opponents);
-                }
-                if (!party.Contains(author))
-                {
-                    Character[] placeholder = party;
-                    party = opponents;
-                    opponents = placeholder;
+                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
                 }
                 absorbProc = false;
             }
