@@ -632,9 +632,11 @@ public class Character
         int skillInc = 0;
 
         skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (((!skill.IsAOE) || (skill.IsAOE == isAoeAccepted)) || (!skill.IsHealing) || (skill.IsHealing == isHealingNeeded))).Sum(skill => skill.Weight));
+		//skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded))).Sum(skill => skill.Weight);
         skillRoll = random.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
+			//if (skillList[i].Cost <= sp && (skillList[i].IsTarget || skillList[i].IsAOE == isAoeAccepted || (skillList[i].IsHealing == isHealingNeeded))
             if (skillList[i].Cost <= sp && (((!skillList[i].IsAOE) || (skillList[i].IsAOE == isAoeAccepted)) || (!skillList[i].IsHealing) || (skillList[i].IsHealing == isHealingNeeded)))
             {
                 skillInc += skillList[i].Weight;

@@ -32,7 +32,7 @@ public class Skill
     public float Range;
     public int Weight;
     public int Cost;
-    public bool IsHealing
+    public bool? IsHealing
     {
         get
         {
@@ -44,12 +44,12 @@ public class Skill
                 case SkillType.TargetHeal:
                     return true;
                 default:
-                    return false;
+					return null;
             }
         }
     }
 
-    public bool IsAOE
+    public bool? IsAOE
     {
         get
         {
@@ -59,13 +59,32 @@ public class Skill
                 case SkillType.AOEDrain:
                 case SkillType.Pierce3:
                 case SkillType.Pierce2:
-                case SkillType.AOEHeal:
                     return true;
                 default:
-                    return false;
+					return null;
             }
         }
     }
+	private bool? IsTarget
+	{ 
+		get 
+		{
+			switch (skillType)
+			{ 
+				case SkillType.AOE:
+                case SkillType.AOEDrain:
+                case SkillType.Pierce3:
+                case SkillType.Pierce2:
+                case SkillType.AOEHeal:
+                case SkillType.SelfHeal:
+                case SkillType.SpreadHeal:
+                case SkillType.TargetHeal:
+					return null;
+				default:
+					return true;
+			}
+		}
+	}
     private bool IsCrit;
     private bool IsEmp;
     public static Random random = new Random(Guid.NewGuid().GetHashCode());
