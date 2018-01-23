@@ -26,13 +26,19 @@ public enum SkillType
     Revive
 
 }
+public enum Boolean
+{
+    True,
+    False,
+    Null
+}
 public class Skill
 {
     public float Value;
     public float Range;
     public int Weight;
     public int Cost;
-    public bool? IsHealing
+    public Boolean IsHealing
     {
         get
         {
@@ -42,14 +48,13 @@ public class Skill
                 case SkillType.SelfHeal:
                 case SkillType.SpreadHeal:
                 case SkillType.TargetHeal:
-                    return true;
+                    return Boolean.True;
                 default:
-					return null;
+					return Boolean.Null;
             }
         }
     }
-
-    public bool? IsAOE
+    public Boolean IsAOE
     {
         get
         {
@@ -59,13 +64,13 @@ public class Skill
                 case SkillType.AOEDrain:
                 case SkillType.Pierce3:
                 case SkillType.Pierce2:
-                    return true;
+                    return Boolean.True;
                 default:
-					return null;
+					return Boolean.Null;
             }
         }
     }
-	private bool? IsTarget
+	public Boolean IsTarget
 	{ 
 		get 
 		{
@@ -79,10 +84,10 @@ public class Skill
                 case SkillType.SelfHeal:
                 case SkillType.SpreadHeal:
                 case SkillType.TargetHeal:
-					return null;
-				default:
-					return true;
-			}
+                    return Boolean.Null;
+                default:
+                    return Boolean.True;
+            }
 		}
 	}
     private bool IsCrit;
@@ -317,7 +322,6 @@ public class Skill
         }
 
     }
-
     private void TargetHealSkill(Character author, Character[] party)
     {
         int target = Logic.HealFindWeakestPerc(party);

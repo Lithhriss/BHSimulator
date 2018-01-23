@@ -378,14 +378,14 @@ class Logic
 
     #region New Code
 
-    public static bool IsHealingNeeded(Character[] party)
+    public static Boolean IsHealingNeeded(Character[] party)
     {
         HpPerc(party);
         foreach (var member in party)
         {
-            if (member.alive && member.hpPerc < 0.95f) return true;
+            if (member.alive && member.hpPerc < 0.95f) return Boolean.True;
         }
-        return false;
+        return Boolean.False;
     }
     public static void HitAbsorbed(int attackValue, Character target)
     {
@@ -615,7 +615,25 @@ class Logic
     }
     public static Character SelectWeakest(Character[] party)
     {
-        return party.OrderBy(hero => hero.hp).First();
+        Character returnChar = party[0];
+        foreach (var member in party)
+        {
+            if (member.alive)
+            {
+                if (returnChar.alive)
+                {
+                    if (member.hp < returnChar.hp)
+                    {
+                        returnChar = member;
+                    }
+                }
+                else
+                {
+                    returnChar = member;
+                }
+            }
+        }
+        return returnChar;
     }
     public static Character SelectRicochet(Character[] party, Character currentTarget)
     {

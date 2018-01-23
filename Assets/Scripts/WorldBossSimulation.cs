@@ -19,9 +19,27 @@ public class WorldBossSimulation
     private bool isNotHero = false;
     private bool isHero = true;
 
-    private bool heroesAlive;
-    private bool enemiesAlive;
-    private bool matchOver = false;
+    private bool heroesAlive
+    {
+        get
+        {
+            return GetPartyCount(heroes) > 0;
+        }
+    }
+    private bool enemiesAlive
+    {
+        get
+        {
+            return GetPartyCount(enemies) > 0;
+        }
+    }
+    private bool matchOver
+    {
+        get
+        {
+            return !heroesAlive || !enemiesAlive;
+        }
+    }
     //private Character[] OrlagDpsFams;
     //private Character[] OrlagTankFams;
     //private Character[] OrlagBossFams;
@@ -129,8 +147,6 @@ public class WorldBossSimulation
         }
         for (p = 0; p < games; p++)
         {
-            heroesAlive = true;
-            enemiesAlive = true;
             SetupEnemies(boss);
             foreach (Character hero in heroes)
             {
@@ -141,7 +157,6 @@ public class WorldBossSimulation
             {
                 for (int i = 0; i < counterMax; i++)
                 {
-                    UpdateGameStatus();
                     foreach (Character hero in heroes)
                     {
                         if (hero.alive)
@@ -149,12 +164,11 @@ public class WorldBossSimulation
                             hero.IncrementCounter();
                             if (hero.counter > hero.interval)
                             {
-                                if (UpdateGameStatus()) break;
                                 Logic.HpPerc(heroes);
                                 Logic.HpPerc(enemies);
                                 hero.IncrementSp();
                                 PetLogic.PetSelection(hero, heroes, enemies);
-                                if (UpdateGameStatus()) break;
+                                if (matchOver) break;
                                 hero.ChooseSkill(heroes, enemies);
                                 hero.SubstractCounter();
                             }
@@ -168,12 +182,11 @@ public class WorldBossSimulation
                             enemy.IncrementCounter();
                             if (enemy.counter > enemy.interval)
                             {
-                                if (UpdateGameStatus()) break;
                                 Logic.HpPerc(enemies);
                                 Logic.HpPerc(heroes);
                                 enemy.IncrementSp();
                                 PetLogic.PetSelection(enemy, enemies, heroes);
-                                if (UpdateGameStatus()) break;
+                                if (matchOver) break;
                                 enemy.ChooseSkill(enemies, heroes);
                                 enemy.SubstractCounter();
                             }
@@ -321,16 +334,9 @@ public class WorldBossSimulation
     {
         return opponents.Count(member => member.alive);
     }
-    public static bool IsAoeEnabled(Character[] opponents)
+    public static Boolean IsAoeEnabled(Character[] opponents)
     {
-        return opponents.Count(member => member.alive) > 2;
-    }
-
-    public bool UpdateGameStatus()
-    {
-        heroesAlive = GetPartyCount(heroes) > 0;
-        enemiesAlive = GetPartyCount(enemies) > 0;
-        matchOver = (!heroesAlive || !enemiesAlive);
-        return matchOver;
+        if (opponents.Count(member => member.alive) > 2) return Boolean.True;
+        else return Boolean.False;
     }
 }
