@@ -257,9 +257,9 @@ public class WorldBossSimulation
             case 0:
                 return new Character(9, 22, 9, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 5f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "BlueOrc");
             case 1:
-                return new Character(18, 11, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 0.9, isNotHero, "GreenOrc");
+                return new Character(11, 18, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 0.9, isNotHero, "GreenOrc");
             default:
-                return new Character(20, 10, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "PurpleOrc");
+                return new Character(10, 20, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, DifficultyModifier, 1.9, isNotHero, "PurpleOrc");
         }
     }
     private Character GetOrlagMix(int index)
