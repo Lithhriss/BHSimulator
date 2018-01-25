@@ -21,7 +21,8 @@ public enum SkillType
     Pierce3,
     Pierce2,
     Execute,
-    Ricochet,
+    Ricochet4,
+    Ricochet2,
     Unity,
     Revive
 
@@ -193,8 +194,11 @@ public class Skill
                     TargetSkill(author, party, opponents);
                     author.selfInjure = false;
                     break;
-                case SkillType.Ricochet:
-                    RicochetSkill(author, party, opponents);
+                case SkillType.Ricochet4:
+                    RicochetSkill(author, party, opponents, 4);
+                    break;
+                case SkillType.Ricochet2:
+                    RicochetSkill(author, party, opponents, 2);
                     break;
                 case SkillType.Unity:
                     SpreadHealSkill(author, party);
@@ -536,7 +540,7 @@ public class Skill
             }
         }
     }
-    private void RicochetSkill(Character author, Character[] party, Character[] opponents)
+    private void RicochetSkill(Character author, Character[] party, Character[] opponents, int bounce)
     {
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
@@ -561,7 +565,7 @@ public class Skill
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
         absorbProc = false;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < bounce; i++)
         {
             if (Logic.CountAlive(opponents) > 1)
             {

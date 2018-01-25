@@ -479,7 +479,7 @@ public class Character
                 skillList.Add(new Skill(2.25f, 0.2f, 10, 6, SkillType.Target));
                 break;
             case Weapon.Laser:
-                skillList.Add(new Skill(0.39f, 0.5f, 15, 2, SkillType.Ricochet));
+                skillList.Add(new Skill(0.39f, 0.5f, 15, 2, SkillType.Ricochet4));
                 skillList.Add(new Skill(1.35f, 0.5f, 15, 2, SkillType.Target));
                 skillList.Add(new Skill(1.72f, 0.5f, 30, 2, SkillType.Closest));
                 skillList.Add(new Skill(1.2f, 0.5f, 30, 2, SkillType.SpreadHeal));
@@ -584,6 +584,24 @@ public class Character
                 skillList.Add(new Skill(1.95f, 0.3f, 10, 2, SkillType.Random));
                 skillList.Add(new Skill(1f, 0.3f, 35, 4, SkillType.Drain));
                 skillList.Add(new Skill(0.4f, 0.3f, 35, 4, SkillType.AOEHeal));
+                break;
+            case "Kaleido":
+                skillList.Add(new Skill(1.72f, 0.4f, 20, 2, SkillType.Closest));
+                skillList.Add(new Skill(1.57f, 0.4f, 20, 2, SkillType.Furthest));
+                skillList.Add(new Skill(1.80f, 0.4f, 25, 4, SkillType.Target));
+                skillList.Add(new Skill(1.1f, 0.4f, 25, 4, SkillType.TargetHeal));
+                break;
+            case "Woodbeard":
+                skillList.Add(new Skill(1.72f, 0.3f, 15, 2, SkillType.Closest));
+                skillList.Add(new Skill(0.97f, 0.3f, 35, 2, SkillType.Pierce2));
+                skillList.Add(new Skill(0.3f, 0.3f, 30, 2, SkillType.AOEDrain));
+                skillList.Add(new Skill(2.7f, 0.3f, 10, 4, SkillType.Execute));
+                break;
+            case "Robomech":
+                skillList.Add(new Skill(0.52f, 0.2f, 5, 2, SkillType.Closest));
+                skillList.Add(new Skill(0.6f, 0.2f, 5, 2, SkillType.AOE));
+                skillList.Add(new Skill(1.9f, 0.2f, 50, 4, SkillType.Weakest));
+                skillList.Add(new Skill(1.2f, 0.2f, 30, 4, SkillType.AOEHeal));
                 break;
         }
     }

@@ -40,87 +40,12 @@ public class WorldBossSimulation
             return !heroesAlive || !enemiesAlive;
         }
     }
-    //private Character[] OrlagDpsFams;
-    //private Character[] OrlagTankFams;
-    //private Character[] OrlagBossFams;
-    //private Character[] OrlagAllFams;
 
-    //private Character[] NetherDpsFams;
-    //private Character[] NetherTankFams;
-    //private Character[] NetherBossFams;
 
 
     public WorldBossSimulation(int difficultyModifier)
     {
         rand = new Random(Guid.NewGuid().GetHashCode());
-        /*
-        OrlagBossFams = new Character[3]
-        {
-            //blue
-            new Character(9, 22, 9, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 5f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "BlueOrc"),
-            //green
-            new Character(18, 11, 11, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "GreenOrc"),
-            //purple
-            new Character(20, 10, 10, 10f, 50f, 10f, 10f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "PurpleOrc")
-        };
-        OrlagDpsFams = new Character[3]
-        {
-            //tilge
-            new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "ArcherOrc"),
-            //velk
-            new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageOrc"),
-            //drek
-            new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "AssassinOrc")
-        };
-        OrlagTankFams = new Character[2]
-        {
-            //meatwall
-            new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4, isNotHero, "MeatOrc"),
-            //garekk
-            new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "BruiserOrc"),
-
-        };
-        OrlagAllFams = new Character[5]
-        {
-            //tilge
-            new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "ArcherOrc"),
-            //velk
-            new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageOrc"),
-            //drek
-            new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "AssassinOrc"),
-            //meatwall
-            new Character(0.4f, 11f, 0.6f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 10f, 0f, 0f, 0f, 0f, difficultyModifier, 4, isNotHero, "MeatOrc"),
-            //garekk
-            new Character(2.2f, 7f, 2.8f, 10f, 50f, 0f, 0f, 15f, 2.5f, 4.5f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "BruiserOrc")
-        };
-
-        NetherBossFams = new Character[3]
-        {
-            //blue
-            new Character (7f, 18f, 7f, 10f, 50f, 0f, 0f, 0f, 12.5f, 6f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2.9, isNotHero, "BlueNether"),
-            //purple
-            new Character(7.5f, 17f, 7.5f, 30f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "PurpleNether"),
-            //yellow
-            new Character (8f, 16f, 8f, 50f, 50, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "YellowNether")
-        };
-        NetherDpsFams = new Character[5]
-        {
-            //d3mon
-            new Character(4f, 6f, 4f, 10f, 250f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "DemonNether"),
-            //Omo
-            new Character(4f, 5f, 4f, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "ImpNether"),
-            //Clavid
-            new Character(5.5f, 3f, 5.5f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageNether"),
-            //Zorgim
-            new Character(5f, 4.5f, 5f, 10f, 50f, 0f, 0f, 0f, 2,5f, 0f, 15f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "BeastNether"),
-            //tankfam
-            new Character(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "TankNether")
-        };
-        NetherTankFams = new Character[1]
-        {
-            new Character(3.5f, 7f, 3.5f, 10f, 50f, 0f, 0f, 20f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 3, isNotHero, "TankNether")
-        };
-        */
         DifficultyModifier = difficultyModifier;
     }
 

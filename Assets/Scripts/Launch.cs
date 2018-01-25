@@ -10,6 +10,7 @@ public class Launch : MonoBehaviour
 	public static event RunEvent onRun;
 	public static Launch instance;
     WorldBossSimulation wbSim;
+    RaidSimulation rdSim;
     private bool isRaid;
     private bool isWb;
     private float winrateToShow;
@@ -17,6 +18,7 @@ public class Launch : MonoBehaviour
     private GameMode gameMode;
     public enum GameMode
     {
+        None,
         Raid,
         Wb
     }
@@ -111,7 +113,7 @@ public class Launch : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.Raid:
-                winrateToShow = RaidSimulation.winRate;
+                winrateToShow = rdSim.winRate;
                 break;
             case GameMode.Wb:
                 winrateToShow = wbSim.winRate;
@@ -124,49 +126,51 @@ public class Launch : MonoBehaviour
     {
 		IsRunning = true;
         gameMode = GameMode.Raid;
-        totalGameToShow = RaidSimulation.games;
-        RaidSimulation.hero[0] = hero_1.GetHero();
-        RaidSimulation.hero[1] = hero_2.GetHero();
-        RaidSimulation.hero[2] = hero_3.GetHero();
-        RaidSimulation.hero[3] = hero_4.GetHero();
-        RaidSimulation.hero[4] = hero_5.GetHero();
+        rdSim = new RaidSimulation();
+        totalGameToShow = rdSim.games;
+
+        rdSim.heroes[0] = hero_1.GetHero();
+        rdSim.heroes[1] = hero_2.GetHero();
+        rdSim.heroes[2] = hero_3.GetHero();
+        rdSim.heroes[3] = hero_4.GetHero();
+        rdSim.heroes[4] = hero_5.GetHero();
 
         int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
         bossDiff = bossName.value;
         switch (difficultyChecker)
         {
             case 0:
-                RaidSimulation.difficultyModifier = 70;
+                rdSim.difficultyModifier = 70;
                 break;
             case 1:
-                RaidSimulation.difficultyModifier = 115;
+                rdSim.difficultyModifier = 115;
                 break;
             case 2:
-                RaidSimulation.difficultyModifier = 160;
+                rdSim.difficultyModifier = 160;
                 break;
             case 10:
-                RaidSimulation.difficultyModifier = 105;
+                rdSim.difficultyModifier = 105;
                 break;
             case 11:
-                RaidSimulation.difficultyModifier = 156;
+                rdSim.difficultyModifier = 156;
                 break;
             case 12:
-                RaidSimulation.difficultyModifier = 207;
+                rdSim.difficultyModifier = 207;
                 break;
             case 20:
-                RaidSimulation.difficultyModifier = 150;
+                rdSim.difficultyModifier = 150;
                 break;
             case 21:
-                RaidSimulation.difficultyModifier = 207;
+                rdSim.difficultyModifier = 207;
                 break;
             case 22:
-                RaidSimulation.difficultyModifier = 265;
+                rdSim.difficultyModifier = 265;
                 break;
             default:
                 break;
         }
 
-		StartCoroutine(RaidSimulation.Simulation(callback => {
+		StartCoroutine(rdSim.Simulation(bossDiff, callback => {
 			IsRunning = false;
 		}));
         isRaid = false;

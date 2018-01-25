@@ -9488,7 +9488,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 764.5
+      value: 764.1884
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -14983,7 +14983,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 512.5
+      value: 512.27747
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -27095,7 +27095,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 8.5
+      value: 8.455505
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -29878,7 +29878,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 260.5
+      value: 260.36646
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
@@ -30866,12 +30866,10 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.51
   m_Text: "24/01/18 - I have decided to add a Dev Log to keep you guys updated with
-    development.\nBugs fixed : Purple and Green Bosses had their power and stamina
-    values inverted.\n\nFuture content : \n- Release GvG at some point\n- Add more
-    pets (currently only Legendary Pets are)\n- Add Superstition bonus and Enrage
-    (I have no clue how it is procced atm)\n- Integrate new code architecture on the
-    Raid simulator. It is still using the old one which could explain why certain
-    setups have lower winrate than in game."
+    development.\n- Bugs fixed : Purple and Green Bosses had their power and stamina
+    values inverted.\n- Raid Simulator integrated in new architecture.\n\nFuture content
+    : \n- Release GvG at some point\n- Add more pets (currently only Legendary Pets
+    are)\n- Add Superstition bonus and Enrage (I have no clue how it is procced atm)"
 --- !u!222 &1908194760
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31747,7 +31745,7 @@ Prefab:
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 1016.5
+      value: 1016.0994
       objectReference: {fileID: 0}
     - target: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
         type: 2}
