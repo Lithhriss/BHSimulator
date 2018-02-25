@@ -66,7 +66,7 @@ class PetLogic
         }
         if (petRoll)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < heroes.Length; i++)
             {
                 if (heroes[i].hp > 0)
                 {
@@ -398,11 +398,14 @@ class PetLogic
         {
             while (true)
             {
-                int target = UnityEngine.Random.Range(0, 4);
-                if (enemies[target].hp > 0)
+                int target = UnityEngine.Random.Range(0, enemies.Length);
+                if (WorldBossSimulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
                 {
                     enemies[target].hp -= attackValue;
+                    return;
                 }
+                else return;
+
             }
         }
     }

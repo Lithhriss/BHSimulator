@@ -298,6 +298,7 @@ class Logic
             {
                 break;
             }
+            newTarget = party[random.Next(party.Length)];
         }
         return newTarget;
     }
