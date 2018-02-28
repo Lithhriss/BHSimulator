@@ -210,37 +210,40 @@ public class Skill
         }
     }
 
-    private void FurthestSkill(Character author, Character[] party, Character[] opponents)
+    private void DamageLogic(Character author, Character[] party, Character[] opponents, Character target, bool absorbProc)
     {
-        //find target 
-        bool absorbProc = false;
-        Character target = Logic.RedirectDeflectLoop(Logic.SelectBack(opponents), author, opponents, party, ref absorbProc);
-        //if (!party.Contains(target))
-        //{
-        //    Character[] placeholder = party;
-        //    party = opponents;
-        //    opponents = placeholder;
-        //}
         Character[] receivingParty;
+        Character[] sendingParty;
         if (party.Contains(target))
         {
             receivingParty = party;
+            sendingParty = opponents;
         }
         else
         {
             receivingParty = opponents;
+            sendingParty = party;
         }
         //apply damage
         int attackValue = GetValue(author);
         if (absorbProc)
         {
-            PetLogic.PetSelection(author, party, opponents);
+            author.pet.PetSelection(author, party, opponents, PetProcType.PerHit);
             Logic.HitAbsorbed(attackValue, target);
+            target.pet.PetSelection(target, receivingParty, sendingParty, PetProcType.GetHit);
         }
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
         }
+    }
+
+    private void FurthestSkill(Character author, Character[] party, Character[] opponents)
+    {
+        //find target 
+        bool absorbProc = false;
+        Character target = Logic.RedirectDeflectLoop(Logic.SelectBack(opponents), author, opponents, party, ref absorbProc);
+        DamageLogic(author, party, opponents, target, absorbProc);
 
     }
     private void ClosestSkill(Character author, Character[] party, Character[] opponents)
@@ -248,27 +251,7 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-        Character[] receivingParty;
-        if (party.Contains(target))
-        {
-            receivingParty = party;
-        }
-        else
-        {
-            receivingParty = opponents;
-        }
-        //apply damage
-
-        int attackValue = GetValue(author);
-        if (absorbProc)
-        {
-            PetLogic.PetSelection(author, party, opponents);
-            Logic.HitAbsorbed(attackValue, target);
-        }
-        else
-        {
-            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-        }
+        DamageLogic(author, party, opponents, target, absorbProc);
 
     }
     //until moki input, random and target will be treated as similar skills
@@ -277,26 +260,7 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
-        Character[] receivingParty;
-        if (party.Contains(target))
-        {
-            receivingParty = party;
-        }
-        else
-        {
-            receivingParty = opponents;
-        }
-        //apply damage
-        int attackValue = GetValue(author);
-        if (absorbProc)
-        {
-            PetLogic.PetSelection(author, party, opponents);
-            Logic.HitAbsorbed(attackValue, target);
-        }
-        else
-        {
-            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-        }
+        DamageLogic(author, party, opponents, target, absorbProc);
 
     }
     private void WeakestSkill(Character author, Character[] party, Character[] opponents)
@@ -304,27 +268,7 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectWeakest(opponents), author, opponents, party, ref absorbProc);
-        Character[] receivingParty;
-        if (party.Contains(target))
-        {
-            receivingParty = party;
-        }
-        else
-        {
-            receivingParty = opponents;
-        }
-        //apply damage
-        int attackValue = GetValue(author);
-        if (absorbProc)
-        {
-            PetLogic.PetSelection(author, party, opponents);
-            Logic.HitAbsorbed(attackValue, target);
-        }
-        else
-        {
-            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-        }
-
+        DamageLogic(author, party, opponents, target, absorbProc);
     }
     private void TargetHealSkill(Character author, Character[] party)
     {
@@ -453,25 +397,7 @@ public class Skill
             if (opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                Character[] receivingParty;
-                if (party.Contains(target))
-                {
-                    receivingParty = party;
-                }
-                else
-                {
-                    receivingParty = opponents;
-                }
-                int attackValue = GetValue(author);
-                if (absorbProc)
-                {
-                    PetLogic.PetSelection(author, party, opponents);
-                    Logic.HitAbsorbed(attackValue, target);
-                }
-                else
-                {
-                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-                }
+                DamageLogic(author, party, opponents, target, absorbProc);
                 absorbProc = false;
             }
         }
@@ -485,25 +411,7 @@ public class Skill
             if (i < opponents.Length && opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                Character[] receivingParty;
-                if (party.Contains(target))
-                {
-                    receivingParty = party;
-                }
-                else
-                {
-                    receivingParty = opponents;
-                }
-                int attackValue = GetValue(author);
-                if (absorbProc)
-                {
-                    PetLogic.PetSelection(author, party, opponents);
-                    Logic.HitAbsorbed(attackValue, target);
-                }
-                else
-                {
-                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-                }
+                DamageLogic(author, party, opponents, target, absorbProc);
                 absorbProc = false;
             }
         }
@@ -517,25 +425,7 @@ public class Skill
             if (i < opponents.Length && opponents[i].alive)
             {
                 Character target = Logic.RedirectDeflectLoop(Logic.SelectFront(opponents), author, opponents, party, ref absorbProc);
-                Character[] receivingParty;
-                if (party.Contains(target))
-                {
-                    receivingParty = party;
-                }
-                else
-                {
-                    receivingParty = opponents;
-                }
-                int attackValue = GetValue(author);
-                if (absorbProc)
-                {
-                    PetLogic.PetSelection(author, party, opponents);
-                    Logic.HitAbsorbed(attackValue, target);
-                }
-                else
-                {
-                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-                }
+                DamageLogic(author, party, opponents, target, absorbProc);
                 absorbProc = false;
             }
         }
@@ -544,51 +434,14 @@ public class Skill
     {
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
-        Character[] receivingParty;
-        if (party.Contains(target))
-        {
-            receivingParty = party;
-        }
-        else
-        {
-            receivingParty = opponents;
-        }
-        //apply damage
-        int attackValue = GetValue(author);
-        if (absorbProc)
-        {
-            PetLogic.PetSelection(author, party, opponents);
-            Logic.HitAbsorbed(attackValue, target);
-        }
-        else
-        {
-            Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-        }
+        DamageLogic(author, party, opponents, target, absorbProc);
         absorbProc = false;
         for (int i = 0; i < bounce; i++)
         {
             if (Logic.CountAlive(opponents) > 1)
             {
                 target = Logic.RedirectDeflectLoop(Logic.SelectRicochet(opponents, target), author, opponents, party, ref absorbProc);
-                if (party.Contains(target))
-                {
-                    receivingParty = party;
-                }
-                else
-                {
-                    receivingParty = opponents;
-                }
-                //apply damage
-                attackValue = GetValue(author);
-                if (absorbProc)
-                {
-                    PetLogic.PetSelection(author, party, opponents);
-                    Logic.HitAbsorbed(attackValue, target);
-                }
-                else
-                {
-                    Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-                }
+                DamageLogic(author, party, opponents, target, absorbProc);
                 absorbProc = false;
             }
             else { break; }

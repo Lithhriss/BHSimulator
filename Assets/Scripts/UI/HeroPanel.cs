@@ -33,6 +33,7 @@ public class HeroPanel : MonoBehaviour
     public Dropdown pet;
     public Dropdown petType;
     public Dropdown petProcType;
+    public Dropdown petLevel;
     public InputField PetProcChance;
     public Dropdown weapon;
     public Dropdown metaRune;
@@ -167,15 +168,30 @@ public class HeroPanel : MonoBehaviour
 		// Pet
 		for (int i = 0; i < pet.options.Count; i++)
 		{
-			if (pet.options[i].text == hero.pet.ToString())
+			if (pet.options[i].text == hero.petName.ToString())
 			{
 				pet.value = i;
 				break;
 			}
 		}
+        for (int i = 0; i < petLevel.options.Count; i++)
+        {
+            if (petLevel.options[i].text == hero.PetLevel.ToString())
+            {
+                petLevel.value = i;
+            }
+        }
+        for (int i = 0; i < petProcType.options.Count; i++)
+        {
+            if (petProcType.options[i].text == hero.petProcType.ToString())
+            {
+                petProcType.value = i;
+            }
+        }
 
-		//weapon
-		for (int i = 0; i < weapon.options.Count; i++)
+
+        //weapon
+        for (int i = 0; i < weapon.options.Count; i++)
 		{
 			if (weapon.options[i].text == hero.weapon.ToString())
 			{
@@ -301,8 +317,9 @@ public class HeroPanel : MonoBehaviour
 
         // Pet
             metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
-			pet             = GetPetFromString(pet.options[pet.value].text),
+			petName            = GetPetFromString(pet.options[pet.value].text),
             petProcType     = GetProcTypeFromString(petProcType.options[petProcType.value].text),
+            PetLevel        = GetPetLevelFromString(petLevel.options[petLevel.value].text),
 			weapon          = GetWeaponFromString(weapon.options[weapon.value].text)
         };
     }
@@ -463,53 +480,122 @@ public class HeroPanel : MonoBehaviour
 
 		switch (s)
 		{
-			case "Nemo":
-				pet =PetType.Nemo;
-				break;
-
-			case "Boogie":
-				pet =PetType.Boogie;
-				break;
-
-			case "Nelson":
-				pet =PetType.Nelson;
-				break;
-
-			case "Gemmi":
-				pet =PetType.Gemmi;
-				break;
-
-			case "Crem":
-				pet =PetType.Crem;
-				break;
-
-			case "Boiguh":
-				pet =PetType.Boiguh;
-				break;
-
-			case "Nerder":
-				pet =PetType.Nerder;
-				break;
-
-            case "Buvboi":
-                pet =PetType.Buvboi;
+            case "Nelson":
+                pet = PetType.Nelson;
                 break;
-
-            case "Wuvboi":
-                pet =PetType.Wuvboi;
+            case "Gemmi":
+                pet = PetType.Gemmi;
                 break;
-
-            case "Snut":
-                pet =PetType.Snut;
+            case "Boogie":
+                pet = PetType.Boogie;
                 break;
-
+            case "Nemo":
+                pet = PetType.Nemo;
+                break;
+            case "Crem":
+                pet = PetType.Crem;
+                break;
+            case "Boiguh":
+                pet = PetType.Boiguh;
+                break;
+            case "Nerder":
+                pet = PetType.Nerder;
+                break;
             case "Quimby":
-                pet =PetType.Quimby;
+                pet = PetType.Quimby;
+                break;
+            case "Snut":
+                pet = PetType.Snut;
+                break;
+            case "Wuvboi":
+                pet = PetType.Wuvboi;
+                break;
+            case "Buvboi":
+                pet = PetType.Buvboi;
+                break;
+            case "Skulldemort":
+                pet = PetType.Skulldemort;
+                break;
+            case "Toebert":
+                pet = PetType.Toebert;
+                break;
+            case "Urgoff":
+                pet = PetType.Urgoff;
+                break;
+            case "Fuvboi":
+                pet = PetType.Fuvboi;
+                break;
+            case "Karlorr":
+                pet = PetType.Karlorr;
+                break;
+            case "Pumkwim":
+                pet = PetType.Pumkwim;
+                break;
+            case "EpicBoogie":
+                pet = PetType.EpicBoogie;
+                break;
+            case "EpicNemo":
+                pet = PetType.EpicNemo;
+                break;
+            case "EpicNerder":
+                pet = PetType.EpicNerder;
+                break;
+            case "EpicPumkwim":
+                pet = PetType.EpicPumkwim;
+                break;
+            case "EpicCrem":
+                pet = PetType.EpicCrem;
+                break;
+            case "EpicSnut":
+                pet = PetType.EpicSnut;
+                break;
+            case "Pritza":
+                pet = PetType.Pritza;
+                break;
+            case "Sparklez":
+                pet = PetType.Sparklez;
+                break;
+            case "Dug":
+                pet = PetType.Dug;
+                break;
+            case "Gumgum":
+                pet = PetType.Gumgum;
+                break;
+            case "Phony":
+                pet = PetType.Phony;
+                break;
+            case "Waldo":
+                pet = PetType.Waldo;
+                break;
+            case "Beanz":
+                pet = PetType.Beanz;
+                break;
+            case "Rutledge":
+                pet = PetType.Rutledge;
+                break;
+            case "Log":
+                pet = PetType.Log;
+                break;
+            case "Melvin":
+                pet = PetType.Melvin;
+                break;
+            case "Bryan":
+                pet = PetType.Bryan;
+                break;
+            case "Nacl":
+                pet = PetType.Nacl;
+                break;
+            case "Mewwo":
+                pet = PetType.Mewwo;
+                break;
+            case "Gusty":
+                pet = PetType.Gusty;
+                break;
+            case "Dot":
+                pet = PetType.Dot;
                 break;
 
-            case "Skulldemort":
-                pet =PetType.Skulldemort;
-                break;
+
 
             default:
 				pet =PetType.None;
@@ -538,6 +624,11 @@ public class HeroPanel : MonoBehaviour
                 break;
         }
         return petProcType;
+    }
+
+    public static int GetPetLevelFromString(String s)
+    {
+        return Int32.Parse(s);
     }
 
 	public static Character.Weapon GetWeaponFromString(String s)

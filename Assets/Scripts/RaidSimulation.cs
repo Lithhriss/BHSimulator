@@ -41,7 +41,6 @@ public class RaidSimulation
     public  IEnumerator Simulation(int boss, System.Action<float> callback)
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
-        UnityEngine.Debug.Log("simulatoin accessed");
         int p;
         redirectCount = 0;
 
@@ -83,7 +82,7 @@ public class RaidSimulation
                                 Logic.HpPerc(heroes);
                                 Logic.HpPerc(enemies);
                                 hero.IncrementSp();
-                                PetLogic.PetSelection(hero, heroes, enemies);
+                                if (hero.pet != null) hero.pet.PetSelection(hero, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 hero.ChooseSkill(heroes, enemies);
                                 hero.SubstractCounter();
@@ -101,7 +100,7 @@ public class RaidSimulation
                                 Logic.HpPerc(enemies);
                                 Logic.HpPerc(heroes);
                                 enemy.IncrementSp();
-                                PetLogic.PetSelection(enemy, enemies, heroes);
+                                if (enemy.pet != null) enemy.pet.PetSelection(enemy, enemies, heroes, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 enemy.ChooseSkill(enemies, heroes);
                                 enemy.SubstractCounter();

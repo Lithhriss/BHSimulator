@@ -73,7 +73,7 @@ public class HeroesImporter : MonoBehaviour
     private String GetCsvLineFromHero(Character hero)
     {
         return String.Format(
-            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},END",
+            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},END",
             hero.power,
             hero.stamina,
             hero.agility,
@@ -91,7 +91,9 @@ public class HeroesImporter : MonoBehaviour
             hero.agilityRunes,
             hero.metaRune,
             hero.weapon,
-            hero.pet,
+            hero.petName, // 17
+            hero.PetLevel,
+            hero.petProcType,
             hero.necrosisBonus,
             hero.hysteriaBonus,
             hero.nightVisageBonus,
@@ -150,24 +152,27 @@ public class HeroesImporter : MonoBehaviour
             agilityRunes = Convert.ToSingle(values[14]),
             metaRune = HeroPanel.GetMetaRuneFromString(values[15]),
             weapon = HeroPanel.GetWeaponFromString(values[16]),
-            pet = HeroPanel.GetPetFromString(values[17]),
-            necrosisBonus = Convert.ToBoolean(values[18]),
-            hysteriaBonus = Convert.ToBoolean(values[19]),
-            nightVisageBonus = Convert.ToBoolean(values[20]),
-            consumptionBonus = Convert.ToBoolean(values[21]),
-            decayBonus = Convert.ToBoolean(values[22]),
-            aresBonus = Convert.ToBoolean(values[23]),
-            bushidoBonus = Convert.ToBoolean(values[24]),
-            lunarBonus = Convert.ToBoolean(values[25]),
-            unity = Convert.ToBoolean(values[26]),
-            divinityBonus = HeroPanel.GetDivinityBonusFromString(values[27]),
-            obliterationBonus = HeroPanel.GetOblitBonusFromString(values[28]),
-            maruBonus = HeroPanel.GetMarutBonusFromString(values[29]),
-            conductionBonus = HeroPanel.GetConducBonusFromString(values[30]),
-            illustriousBonus = HeroPanel.GetIllustBonusFromString(values[31]),
-            gateKeeperBonus = Convert.ToBoolean(values[32])
+            petName = HeroPanel.GetPetFromString(values[17]),
+            PetLevel = HeroPanel.GetPetLevelFromString(values[18]),
+            petProcType = HeroPanel.GetProcTypeFromString(values[19]),
+            necrosisBonus = Convert.ToBoolean(values[20]),
+            hysteriaBonus = Convert.ToBoolean(values[21]),
+            nightVisageBonus = Convert.ToBoolean(values[22]),
+            consumptionBonus = Convert.ToBoolean(values[23]),
+            decayBonus = Convert.ToBoolean(values[24]),
+            aresBonus = Convert.ToBoolean(values[25]),
+            bushidoBonus = Convert.ToBoolean(values[26]),
+            lunarBonus = Convert.ToBoolean(values[27]),
+            unity = Convert.ToBoolean(values[28]),
+            divinityBonus = HeroPanel.GetDivinityBonusFromString(values[29]),
+            obliterationBonus = HeroPanel.GetOblitBonusFromString(values[30]),
+            maruBonus = HeroPanel.GetMarutBonusFromString(values[31]),
+            conductionBonus = HeroPanel.GetConducBonusFromString(values[32]),
+            illustriousBonus = HeroPanel.GetIllustBonusFromString(values[33]),
+            gateKeeperBonus = Convert.ToBoolean(values[34])
         };
-        Debug.Log(values[32] + "$");
+
+    
         return hero;
     }
 }

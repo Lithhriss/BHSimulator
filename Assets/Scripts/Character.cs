@@ -117,11 +117,11 @@ public class Character
     public bool decayBonus;
 
     // Pet
-    public Pet _pet;
+    public Pet pet;
     public int PetLevel;
     public PetProcType petProcType;
     public string pets;
-    public PetType pet;
+    public PetType petName;
     public Weapon weapon;
     public enum Weapon
     {
@@ -245,7 +245,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = PetType.None,
+                petName           = PetType.None,
                 weapon        = Weapon.None,
                 metaRune      = MetaRune.None,
                 // set bonuses
@@ -273,7 +273,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 4f,
                 // Pet
-                pet           = PetType.Gemmi,
+                petName           = PetType.Gemmi,
                 weapon        = Weapon.Sword,
                 metaRune      = MetaRune.None,
                 // set bonuses
@@ -302,7 +302,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = PetType.Boogie,
+                petName           = PetType.Boogie,
                 weapon        = Weapon.Staff,
                 metaRune      = MetaRune.Redirect,
                 // set bonuses
@@ -330,7 +330,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 10f,
                 // Pet
-                pet           = PetType.Boiguh,
+                petName           = PetType.Boiguh,
                 weapon        = Weapon.Spear,
                 metaRune      = MetaRune.spRegen,
                 // set bonuses
@@ -359,7 +359,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 2.5f,
                 // Pet
-                pet           = PetType.Nelson,
+                petName           = PetType.Nelson,
                 weapon        = Weapon.Bow
             }
         },
@@ -383,7 +383,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = PetType.Nelson,
+                petName           = PetType.Nelson,
                 weapon        = Weapon.Bow
             }
         },
@@ -407,7 +407,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = PetType.Gemmi,
+                petName           = PetType.Gemmi,
                 weapon        = Weapon.Bow
             }
         },
@@ -431,7 +431,7 @@ public class Character
                 staminaRunes  = 0f,
                 agilityRunes  = 0f,
                 // Pet
-                pet           = PetType.Gemmi,
+                petName           = PetType.Gemmi,
                 weapon        = Weapon.Bow,
                 metaRune      = MetaRune.Redirect
             }
@@ -457,74 +457,142 @@ public class Character
         sp = 0;
         drain = false;
         AttributeHeroSkills();
+        InitialisePet();
     }
 
     private void InitialisePet()
     {
-        switch (pet)
+        switch (petName)
         {
             case PetType.Gemmi:
-                _pet = new Pet((20f + PetLevel * 0.5f), 36f, 10f, PetAbilty.TeamHeal, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 36f, 10f, PetAbilty.TeamHeal, PetProcType.AllType);
                 break;
             case PetType.Nelson:
-                _pet = new Pet((20f + PetLevel * 0.5f), 95f, 30f, PetAbilty.ClosestAttack, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 95f, 30f, PetAbilty.ClosestAttack, PetProcType.AllType);
                 break;
             case PetType.Boiguh:
-                _pet = new Pet((20f + PetLevel * 0.5f), 30f, 10f, PetAbilty.TeamShield, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 30f, 10f, PetAbilty.TeamShield, PetProcType.AllType);
                 break;
             case PetType.Quimby:
-                _pet = new Pet((20f + PetLevel * 0.5f), 80f, 40f, PetAbilty.WeakestAttack, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 80f, 40f, PetAbilty.WeakestAttack, PetProcType.AllType);
                 break;
             case PetType.Wuvboi:
-                _pet = new Pet((20f + PetLevel * 0.5f), 17f, 10f, PetAbilty.TeamHealShield, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 17f, 10f, PetAbilty.TeamHealShield, PetProcType.AllType);
                 break;
             case PetType.Buvboi:
-                _pet = new Pet((20f + PetLevel * 0.5f), 115f, 80f, PetAbilty.RandomAttack, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 115f, 80f, PetAbilty.RandomAttack, PetProcType.AllType);
                 break;
             case PetType.Skulldemort:
-                _pet = new Pet((20f + PetLevel * 0.5f), 72f, 20f, PetAbilty.WeakestHeal, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 72f, 20f, PetAbilty.WeakestHeal, PetProcType.AllType);
                 break;
             case PetType.Fuvboi:
-                _pet = new Pet((10f + PetLevel * 0.25f), 34f, 20f, PetAbilty.TeamHealShield, PetProcType.AllType);
+                pet = new Pet((10f + PetLevel * 0.25f), 34f, 20f, PetAbilty.TeamHealShield, PetProcType.AllType);
                 break;
-            case PetType.Toebert: //modify
+            case PetType.Toebert:
                 float toeBertScaling = 11.35f;
                 if (petProcType != PetProcType.AllType)
                 {
                     if (petProcType == PetProcType.PerHit) toeBertScaling = 10.4f;
                     else toeBertScaling = 11.7f;
                 }
-                _pet = new Pet((petProcType == PetProcType.AllType? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), toeBertScaling, 10f, PetAbilty.TeamHealShield, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), toeBertScaling, 10f, PetAbilty.TeamHealShield, petProcType);
                 break;
             case PetType.Urgoff:
                 float urgoffScaling = 48f;
                 if (petProcType == PetProcType.PerHit) urgoffScaling = 43f;
-                _pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
                 break;
             case PetType.Karlorr:
-                _pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), 53f, 10f, PetAbilty.TeamHeal, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), 53f, 10f, PetAbilty.TeamHeal, petProcType);
                 break;
             case PetType.Boogie:
-                _pet = new Pet((20f + PetLevel * 0.5f), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
                 break;
             case PetType.Nemo:
-                _pet = new Pet((10f + PetLevel * 0.25f), 190f, 10f, PetAbilty.ClosestAttack, PetProcType.AllType);
+                pet = new Pet((10f + PetLevel * 0.25f), 190f, 10f, PetAbilty.ClosestAttack, PetProcType.AllType);
                 break;
             case PetType.Nerder:
-                _pet = new Pet((10f + PetLevel * 0.25f), 108f, 20f, PetAbilty.SpreahHeal, PetProcType.AllType);
+                pet = new Pet((10f + PetLevel * 0.25f), 108f, 20f, PetAbilty.SelfHeal, PetProcType.AllType);
                 break;
             case PetType.Crem:
-                _pet = new Pet((10f + PetLevel * 0.25f), 144, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
+                pet = new Pet((10f + PetLevel * 0.25f), 144, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
                 break;
             case PetType.Snut:
-                _pet = new Pet((10f + PetLevel * 025f), 60, 10f, PetAbilty.TeamShield, PetProcType.AllType);
+                pet = new Pet((10f + PetLevel * 025f), 60, 10f, PetAbilty.TeamShield, PetProcType.AllType);
                 break;
             case PetType.Pumkwim:
-                _pet = new Pet((20f + PetLevel * 0.5f), 54f, 40f, PetAbilty.AOEAttack, PetProcType.AllType);
+                pet = new Pet((20f + PetLevel * 0.5f), 54f, 40f, PetAbilty.AOEAttack, PetProcType.AllType);
                 break;
-
+                //epic
+            case PetType.EpicBoogie:
+                pet = new Pet((30f + PetLevel), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.GetHit);
+                break;
+            case PetType.EpicNemo:
+                pet = new Pet((15f + PetLevel * 0.5f), 190f, 10f, PetAbilty.ClosestAttack, PetProcType.GetHit);
+                break;
+            case PetType.EpicNerder:
+                pet = new Pet((15f + PetLevel * 0.5f), 108f, 20f, PetAbilty.SelfHeal, PetProcType.PerHit);
+                break;
+            case PetType.EpicPumkwim:
+                pet = new Pet((30f + PetLevel), 54f, 40f, PetAbilty.AOEAttack, PetProcType.GetHit);
+                break;
+            case PetType.EpicCrem:
+                pet = new Pet((15f + PetLevel * 0.5f), 144f, 10f, PetAbilty.SpreahHeal, PetProcType.PerTurn);
+                break;
+            case PetType.EpicSnut:
+                pet = new Pet((15f + PetLevel * 0.5f), 52, 10f, PetAbilty.TeamShield, PetProcType.PerHit);
+                break;
+            case PetType.Pritza:
+                pet = new Pet((30f + PetLevel), 95f, 30f, PetAbilty.ClosestAttack, PetProcType.PerTurn);
+                break;
+            case PetType.Sparklez:
+                pet = new Pet((30f + PetLevel), 85f, 30f, PetAbilty.ClosestAttack, PetProcType.PerHit);
+                break;
+            case PetType.Dug:
+                pet = new Pet((30f + PetLevel), 95f, 30f, PetAbilty.ClosestAttack, PetProcType.GetHit);
+                break;
+            case PetType.Gumgum:
+                pet = new Pet((30f + PetLevel), 36f, 10f, PetAbilty.TeamHeal, PetProcType.PerTurn);
+                break;
+            case PetType.Phony:
+                pet = new Pet((30f + PetLevel), 32f, 10f, PetAbilty.TeamHeal, PetProcType.PerHit);
+                break;
+            case PetType.Waldo:
+                pet = new Pet((30f + PetLevel), 36f, 10f, PetAbilty.TeamHeal, PetProcType.GetHit);
+                break;
+            case PetType.Beanz:
+                pet = new Pet((30f + PetLevel), 30f, 10f, PetAbilty.TeamShield, PetProcType.PerTurn);
+                break;
+            case PetType.Rutledge:
+                pet = new Pet((30f + PetLevel), 26f, 10f, PetAbilty.TeamShield, PetProcType.PerHit);
+                break;
+            case PetType.Log:
+                pet = new Pet((30f + PetLevel), 30f, 10f, PetAbilty.TeamShield, PetProcType.GetHit);
+                break;
+            case PetType.Melvin:
+                pet = new Pet((30f + PetLevel), 80f, 40f, PetAbilty.WeakestAttack, PetProcType.PerTurn);
+                break;
+            case PetType.Bryan:
+                pet = new Pet((30f + PetLevel), 70f, 40f, PetAbilty.WeakestAttack, PetProcType.PerHit);
+                break;
+            case PetType.Nacl:
+                pet = new Pet((30f + PetLevel), 80f, 40f, PetAbilty.WeakestAttack, PetProcType.GetHit);
+                break;
+            case PetType.Mewwo:
+                pet = new Pet((45f + PetLevel * 1.5f), 11f, 10f, PetAbilty.TeamHealShield, PetProcType.PerTurn);
+                break;
+            case PetType.Gusty:
+                pet = new Pet((45f + PetLevel * 1.5f), 9.7f, 10f, PetAbilty.TeamHealShield, PetProcType.PerHit);
+                break;
+            case PetType.Dot:
+                pet = new Pet((45f + PetLevel * 1.5f), 11f, 10f, PetAbilty.TeamHealShield, PetProcType.GetHit);
+                break;
+            default:
+                pet = new Pet();
+                break;
         }
     }
+
     public void InitialiseMobs()
     {
         turnRate = Logic.TurnRate(power, agility);
@@ -538,6 +606,7 @@ public class Character
         sp = 0;
         drain = false;
         AttributeMobSkills();
+        pet = new Pet();
     }
 
     private void AttributeHeroSkills()

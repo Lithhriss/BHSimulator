@@ -92,7 +92,7 @@ public class WorldBossSimulation
                                 Logic.HpPerc(heroes);
                                 Logic.HpPerc(enemies);
                                 hero.IncrementSp();
-                                PetLogic.PetSelection(hero, heroes, enemies);
+                                hero.pet.PetSelection(hero, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 hero.ChooseSkill(heroes, enemies);
                                 hero.SubstractCounter();
@@ -110,7 +110,7 @@ public class WorldBossSimulation
                                 Logic.HpPerc(enemies);
                                 Logic.HpPerc(heroes);
                                 enemy.IncrementSp();
-                                PetLogic.PetSelection(enemy, enemies, heroes);
+                                enemy.pet.PetSelection(enemy, enemies, heroes, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 enemy.ChooseSkill(enemies, heroes);
                                 enemy.SubstractCounter();

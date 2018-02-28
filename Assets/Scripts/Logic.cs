@@ -302,54 +302,6 @@ class Logic
         }
         return newTarget;
     }
-    public static void HeroDamageApplication(Character hero, Character[] heroes, Character[] enemies, int attackValue, Character target)
-    {
-        bool bossEvade = RNGroll(2.5f);
-        if (!bossEvade)
-        {
-            PetLogic.PetSelection(hero, heroes, enemies);
-            if ((int)hero.weapon == 3)
-            {
-                switch ((int)hero.divinityBonus)
-                {
-                    case 1:
-                        attackValue = Convert.ToInt32(attackValue * 1.05);
-                        break;
-                    case 2:
-                        attackValue = Convert.ToInt32(attackValue * 1.05);
-                        if (target.hp < Convert.ToInt32(target.maxHp / 4))
-                        {
-                            attackValue = Convert.ToInt32(attackValue * 1.30);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (hero.bushidoBonus)
-            {
-                attackValue = Convert.ToInt32(attackValue * 1.10);
-            }
-            target.hp -= attackValue;
-            if (hero.drain)
-            {
-                hero.hp += attackValue;
-                if (hero.hp > hero.maxHp)
-                {
-                    hero.hp = hero.maxHp;
-                }
-            }
-            if (hero.lifeSteal > 0f)
-            {
-                hero.hp = hero.hp + Convert.ToInt32(attackValue * hero.lifeSteal);
-                if (hero.hp > hero.maxHp)
-                {
-                    hero.hp = hero.maxHp;
-                }
-            }
-        }
-
-    }
     public static void DamageApplication(int attackValue, Character target, Character author, Character[] party, Character[] opponents)
     {
         int scenario = DefensiveProcCase(target);
@@ -361,14 +313,14 @@ class Logic
             case 1: //block
                 isBlocked = true;
                 Hit(attackValue, target, author, isBlocked, opponents, party);
-                if (target.alive) PetLogic.PetSelection(target, opponents, party);
+                if (target.alive) target.pet.PetSelection(target, opponents, party, PetProcType.GetHit);
                 break;
             default: //normal
                 Hit(attackValue, target, author, isBlocked, opponents, party);
-                if (target.alive) PetLogic.PetSelection(target, opponents, party);
+                if (target.alive) target.pet.PetSelection(target, opponents, party, PetProcType.GetHit);
                 break;
         }
-        PetLogic.PetSelection(author, party, opponents);
+        author.pet.PetSelection(author, party, opponents, PetProcType.PerHit);
     }
 
 }
