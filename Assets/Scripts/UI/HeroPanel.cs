@@ -31,6 +31,9 @@ public class HeroPanel : MonoBehaviour
 
     // Pet
     public Dropdown pet;
+    public Dropdown petType;
+    public Dropdown petProcType;
+    public InputField PetProcChance;
     public Dropdown weapon;
     public Dropdown metaRune;
     public Dropdown divinity;
@@ -59,7 +62,18 @@ public class HeroPanel : MonoBehaviour
 
 
 
-
+    public void ShowProcTypeOnSpecificPet()
+    {
+        if (pet.options[pet.value].text == PetType.Toebert.ToString() ||
+            pet.options[pet.value].text == PetType.Urgoff.ToString())
+        {
+            petProcType.gameObject.SetActive(true);
+        }
+        else
+        {
+            petProcType.gameObject.SetActive(false);
+        }
+    }
 
     // Awake
     public void Awake()
@@ -76,6 +90,9 @@ public class HeroPanel : MonoBehaviour
         // Pets
         pet.ClearOptions();
         pet.AddOptions(new List<string>(Enum.GetNames(typeof(PetType))));
+        petProcType.ClearOptions();
+        petProcType.AddOptions(new List<string>(Enum.GetNames(typeof(PetProcType))));
+        petProcType.gameObject.SetActive(false);
 
         // Weapons
         weapon.ClearOptions();
@@ -285,6 +302,7 @@ public class HeroPanel : MonoBehaviour
         // Pet
             metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
 			pet             = GetPetFromString(pet.options[pet.value].text),
+            petProcType     = GetProcTypeFromString(petProcType.options[petProcType.value].text),
 			weapon          = GetWeaponFromString(weapon.options[weapon.value].text)
         };
     }
@@ -500,6 +518,27 @@ public class HeroPanel : MonoBehaviour
 
 		return pet;
 	}
+
+    public static PetProcType GetProcTypeFromString(String s)
+    {
+        PetProcType petProcType = PetProcType.AllType;
+        switch (s)
+        {
+            case "PerHit":
+                petProcType = PetProcType.PerHit;
+                break;
+            case "OnHit":
+                petProcType = PetProcType.GetHit;
+                break;
+            case "PerTurn":
+                petProcType = PetProcType.PerTurn;
+                break;
+            case "AllType":
+                petProcType = PetProcType.AllType;
+                break;
+        }
+        return petProcType;
+    }
 
 	public static Character.Weapon GetWeaponFromString(String s)
 	{
