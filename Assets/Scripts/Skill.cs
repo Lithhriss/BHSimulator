@@ -272,34 +272,34 @@ public class Skill
     }
     private void TargetHealSkill(Character author, Character[] party)
     {
-        int target = Logic.HealFindWeakestPerc(party);
+        Character target = Logic.HealFindWeakestPerc(party);
         int attackValue = GetValue(author);
         if (author.lunarBonus)
         {
             attackValue = Convert.ToInt32(attackValue * 1.15f);
         }
-        if (party[target].decayBonus)
+        if (target.decayBonus)
         {
             if (Logic.RNGroll(5f)) attackValue *= 2;
         }
         if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
         {
-            party[target].shield = Convert.ToInt32(attackValue * 0.1);
-            if (party[target].shield > party[target].maxShield) party[target].shield = party[target].maxShield;
+            target.shield = Convert.ToInt32(attackValue * 0.1);
+            if (target.shield > target.maxShield) target.shield = target.maxShield;
         }
         if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
         {
-            if (party[target].maxHp - party[target].hp < attackValue)
+            if (target.maxHp - target.hp < attackValue)
             {
-                attackValue -= (party[target].maxHp - party[target].hp);
-                party[target].hp = party[target].maxHp;
-                party[target].shield += attackValue;
-                if (party[target].shield > party[target].maxShield) party[target].shield = party[target].maxShield;
+                attackValue -= (target.maxHp - target.hp);
+                target.hp = target.maxHp;
+                target.shield += attackValue;
+                if (target.shield > target.maxShield) target.shield = target.maxShield;
                 attackValue = 0;
             }
         }
-        party[target].hp += attackValue;
-        if (party[target].hp > party[target].maxHp) party[target].hp = party[target].maxHp;
+        target.hp += attackValue;
+        if (target.hp > target.maxHp) target.hp = target.maxHp;
     }
     private void AoeHealSkill(Character author, Character[] party)
     {
@@ -339,23 +339,23 @@ public class Skill
     }
     private void SpreadHealSkill(Character author, Character[] party)
     {
-        int target = Logic.HealFindWeakestPerc(party);
+        Character target = Logic.HealFindWeakestPerc(party);
         int healingValue = GetValue(author);
         if (author.lunarBonus)
         {
             healingValue = Convert.ToInt32(healingValue * 1.15f);
         }
-        for (int i = 0; i < healingValue; i++)
+        for (int i = 0; i < 10; i++)
         {
             target = Logic.HealFindWeakestPerc(party);
-            party[target].hp++;
-            if (party[target].decayBonus)
+            target.hp += healingValue / 10;
+            if (target.decayBonus)
             {
-                if (Logic.RNGroll(5f)) party[target].hp++;
+                if (Logic.RNGroll(5f)) target.hp += healingValue / 10;
             }
-            if (party[target].hp > party[target].maxHp)
+            if (target.hp > target.maxHp)
             {
-                party[target].hp = party[target].maxHp;
+                target.hp = target.maxHp;
             }
         }
     }

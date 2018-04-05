@@ -52,14 +52,7 @@ public class Character
     public static Random random = new Random(Guid.NewGuid().GetHashCode());
 
 
-    public bool _isHero
-    {
-        get
-        {
-            if (weapon != Weapon.None) return true;
-            else return false;
-        }
-    }
+    public bool _isHero;
     public string name;
     // Base Stats
     public int power;
@@ -76,7 +69,7 @@ public class Character
     private float spBonus;
     public int shield;
     public int maxShield;
-    public float hpPerc;
+    public float hpPerc { get { return (float)hp / (float)maxHp;} }
     public float turnRate;
     public float interval;
     public float counter;
@@ -503,7 +496,7 @@ public class Character
                 pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
                 break;
             case PetType.Karlorr:
-                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), 53f, 10f, PetAbilty.TeamHeal, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), 53f, 10f, PetAbilty.WeakestAttack, petProcType);
                 break;
             case PetType.Boogie:
                 pet = new Pet((20f + PetLevel * 0.5f), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
@@ -595,6 +588,7 @@ public class Character
 
     public void InitialiseMobs()
     {
+        _isHero = false;
         turnRate = Logic.TurnRate(power, agility);
         power = Convert.ToInt32(power * powerRunes);
         turnRate *= agilityRunes;
@@ -783,7 +777,8 @@ public class Character
 
     public void IncrementCounter()
     {
-        counter++;
+        counter += turnRate;
+        //counter++;
     }
 
     public void IncrementSp()
@@ -793,7 +788,7 @@ public class Character
         {
             if (Logic.RNGroll(10f))  sp += 2;
         }
-        if (metaRune == MetaRune.spRegen && hpPerc > 0.99f)
+        if (metaRune == MetaRune.spRegen && hp == maxHp)
         {
             spBonus += 0.5f;
             if (spBonus >= 1f)
@@ -803,9 +798,9 @@ public class Character
             }
         }
     }
-    public void SubstractCounter()
+    public void SubstractCounter(float value)
     {
-        counter -= interval;
+        counter -= value;
     }
     public void ChooseSkill(Character[] party, Character[] opponents)
     {

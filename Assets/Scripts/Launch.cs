@@ -41,9 +41,9 @@ public class Launch : MonoBehaviour
         {31, 90 },
         {32, 135 },
 
-        {40, 70 },
-        {41, 134 },
-        {42, 198 },
+        {40, 61 },
+        {41, 122 },
+        {42, 183 },
 
 
         {100, 10 },
@@ -62,9 +62,9 @@ public class Launch : MonoBehaviour
         {131, 90 },
         {132, 135 },
 
-        {140, 70 },
-        {141, 132 },
-        {142, 194 }
+        {140, 61 },
+        {141, 122 },
+        {142, 183 }
 
 
     };
@@ -169,7 +169,6 @@ public class Launch : MonoBehaviour
             default:
                 break;
         }
-
 		StartCoroutine(rdSim.Simulation(bossDiff, callback => {
 			IsRunning = false;
 		}));

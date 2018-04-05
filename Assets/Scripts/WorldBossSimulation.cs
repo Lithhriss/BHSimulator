@@ -53,7 +53,6 @@ public class WorldBossSimulation
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
-        int counterMax = 100;
         redirectCount = 0;
 
         
@@ -61,6 +60,7 @@ public class WorldBossSimulation
         int gameDivider = Convert.ToInt32(games / 100);
         float win = 0;
         float lose = 0;
+
 
         foreach (Character hero in heroes)
         {  //initialisation
@@ -72,52 +72,52 @@ public class WorldBossSimulation
         }
         for (p = 0; p < games; p++)
         {
+            float trCounter = 0;
             SetupEnemies(boss);
+            Character[] charArray = new Character[heroes.Length + enemies.Length];
+            int charIndex = 0;
             foreach (Character hero in heroes)
             {
                 hero.Revive();
+                trCounter += hero.turnRate;
+                charArray[charIndex] = hero;
+                charIndex++;
             }
+            foreach (Character enemy in enemies)
+            {
+                trCounter += enemy.turnRate;
+                charArray[charIndex] = enemy;
+                charIndex++;
+            }
+            charArray = charArray.OrderByDescending(chr => chr.turnRate).ToArray();
 
             while (heroesAlive && enemiesAlive)
             {
-                for (int i = 0; i < counterMax; i++)
+                foreach (Character character in charArray)
                 {
-                    foreach (Character hero in heroes)
+                    if (character.alive)
                     {
-                        if (hero.alive)
+                        character.IncrementCounter();
+                        if (character.counter > trCounter)
                         {
-                            hero.IncrementCounter();
-                            if (hero.counter > hero.interval)
+                            Logic.HpPerc(heroes);
+                            Logic.HpPerc(enemies);
+                            character.IncrementSp();
+                            if (character._isHero)
                             {
-                                Logic.HpPerc(heroes);
-                                Logic.HpPerc(enemies);
-                                hero.IncrementSp();
-                                hero.pet.PetSelection(hero, heroes, enemies, PetProcType.PerTurn);
+                                if (character.pet != null) character.pet.PetSelection(character, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
-                                hero.ChooseSkill(heroes, enemies);
-                                hero.SubstractCounter();
+                                character.ChooseSkill(heroes, enemies);
                             }
+                            else
+                            {
+                                if (character.pet != null) character.pet.PetSelection(character, enemies, heroes, PetProcType.PerTurn);
+                                if (matchOver) break;
+                                character.ChooseSkill(enemies, heroes);
+                            }
+                            character.SubstractCounter(trCounter);
                         }
                     }
-                    if (matchOver) break;
-                    foreach (Character enemy in enemies)
-                    {
-                        if (enemy.alive)
-                        {
-                            enemy.IncrementCounter();
-                            if (enemy.counter > enemy.interval)
-                            {
-                                Logic.HpPerc(enemies);
-                                Logic.HpPerc(heroes);
-                                enemy.IncrementSp();
-                                enemy.pet.PetSelection(enemy, enemies, heroes, PetProcType.PerTurn);
-                                if (matchOver) break;
-                                enemy.ChooseSkill(enemies, heroes);
-                                enemy.SubstractCounter();
-                            }
-                        }
-                    }
-                    if (matchOver) break;
                 }
             }
             if (heroesAlive)

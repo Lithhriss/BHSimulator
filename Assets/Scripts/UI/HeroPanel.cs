@@ -106,6 +106,19 @@ public class HeroPanel : MonoBehaviour
         //Divinity
         DivinityBonus.ClearOptions();
         DivinityBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
+
+        //oblit
+        ObliterationBonus.ClearOptions();
+        ObliterationBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ObliterationBonus))));
+        //maru
+        MaruBonus.ClearOptions();
+        MaruBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MARUBonus))));
+        //conduc
+        ConductionBonus.ClearOptions();
+        ConductionBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ConductionBonus))));
+        //illus
+        IllustriousBonus.ClearOptions();
+        IllustriousBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.IllustriousBonus))));
     }
 
     // Predefine Switch
@@ -317,10 +330,11 @@ public class HeroPanel : MonoBehaviour
 
         // Pet
             metaRune        = GetMetaRuneFromString(metaRune.options[metaRune.value].text),
-			petName            = GetPetFromString(pet.options[pet.value].text),
+			petName         = GetPetFromString(pet.options[pet.value].text),
             petProcType     = GetProcTypeFromString(petProcType.options[petProcType.value].text),
             PetLevel        = GetPetLevelFromString(petLevel.options[petLevel.value].text),
-			weapon          = GetWeaponFromString(weapon.options[weapon.value].text)
+			weapon          = GetWeaponFromString(weapon.options[weapon.value].text),
+            _isHero         = true
         };
     }
 
@@ -613,7 +627,7 @@ public class HeroPanel : MonoBehaviour
             case "PerHit":
                 petProcType = PetProcType.PerHit;
                 break;
-            case "OnHit":
+            case "GetHit":
                 petProcType = PetProcType.GetHit;
                 break;
             case "PerTurn":

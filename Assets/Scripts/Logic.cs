@@ -12,7 +12,7 @@ class Logic
         bool outcome;
         float chance = a * 10f;
         float roll = random.Next(1000);
-        if (roll <= chance)
+        if (roll < chance)
         {
             outcome = true;
         }
@@ -28,6 +28,7 @@ class Logic
         float tr = 0f;
         tr = ((agility + power) / 2f);
         tr = (float)Math.Pow(tr, 2);
+        if (power == 0) power = 1;
         tr = tr / (100f * power);
         return tr;
     }
@@ -37,7 +38,7 @@ class Logic
         HpPerc(party);
         foreach (var member in party)
         {
-            if (member.alive && member.hpPerc < 0.95f) return Boolean.True;
+            if (member.alive && member.hp < member.maxHp) return Boolean.True;
         }
         return Boolean.False;
     }
@@ -66,9 +67,9 @@ class Logic
         }
         if (target.bushidoBonus) attackModifier += 0.1f; 
         if (author.bushidoBonus) attackModifier += 0.1f;
-        if (author.nightVisageBonus && author.hpPerc >= 0.99f) attackModifier += 0.05f;
+        if (author.nightVisageBonus && author.hp == author.maxHp) attackModifier += 0.05f;
         if (WorldBossSimulation.GetPartyCount(opponents) == 1 && author.conductionBonus == Character.ConductionBonus.Bonus_4_of_4) attackModifier += 0.25f;
-        if (author.divinityBonus == Character.DivinityBonus.Bonus_3_of_3 && target.hpPerc <= 0.3f) attackModifier += 0.30f;
+        if (author.divinityBonus == Character.DivinityBonus.Bonus_3_of_3 && target.hp <= 0.3f * target.maxHp) attackModifier += 0.30f;
 
         attackValue = Convert.ToInt32(attackValue * attackModifier);
         if (isBlocked) attackValue = Convert.ToInt32(0.5 * attackValue);
@@ -148,7 +149,7 @@ class Logic
         int redirectCountLive = CountRedirect(party);
         while (redirectCountLive > 0)
         {//redirect loop will run only if at least one member has the rune
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < party.Length; i++)
             {
                 if (redirectCountLive == 0) break;
                 if (party[i].metaRune == Character.MetaRune.Redirect && party[i].redirect && party[i].alive)
@@ -200,19 +201,18 @@ class Logic
         {
             if (party[i].alive)
             {
-                party[i].hpPerc = (float)(party[i].hp) / (float)(party[i].maxHp);
+                //party[i].hpPerc = (float)(party[i].hp) / (float)(party[i].maxHp);
             }
             else
             {
-                party[i].hpPerc = 100;
+                //party[i].hpPerc = 100;
             }
         }
     }
-    public static int HealFindWeakestPerc(Character[] heroes)
+    public static Character HealFindWeakestPerc(Character[] heroes)
     {
         int i;
         int lowest = 0;
-        HpPerc(heroes);
         for (i = 0; i < heroes.Length - 1; i++)
         {
             if (heroes[lowest].hpPerc >= heroes[i + 1].hpPerc)
@@ -230,7 +230,7 @@ class Logic
                 }
             }
         }
-        return lowest;
+        return heroes[lowest];
     }
     public static Character SelectTarget(Character[] party)
     {
