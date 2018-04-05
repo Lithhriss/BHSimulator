@@ -134,9 +134,14 @@ public class Pet
     }
     private void SpreadHeal(Character[] party)
     {
+        Character target;
+        for (int i = 0; i < 10; i++)
         {
             target = Logic.HealFindWeakestPerc(party);
+            target.hp += Value / 10;
+            if (target.hp > target.maxHp)
             {
+                target.hp = target.maxHp;
             }
         }
     }
@@ -183,7 +188,11 @@ public class Pet
     }
     private void WeakestHeal(Character[] party)
     {
+        Character target = Logic.HealFindWeakestPerc(party);
+        target.hp += Value;
+        if (target.hp > target.maxHp)
         {
+            target.hp = target.maxHp;
         }
     }
     private void AoeAttack(Character[] enemies)
