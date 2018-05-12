@@ -45,6 +45,10 @@ public class Launch : MonoBehaviour
         {41, 122 },
         {42, 183 },
 
+        {50, 80 }, //to change
+        {51, 180 }, //to change
+        {52, 340 }, //to change
+
 
         {100, 10 },
         {101, 15 },
@@ -64,7 +68,12 @@ public class Launch : MonoBehaviour
 
         {140, 61 },
         {141, 122 },
-        {142, 183 }
+        {142, 183 },
+
+        {150, 80 }, //to change
+        {151, 170 }, //to change
+        {152, 320 }, //to change
+
 
 
     };
@@ -136,6 +145,7 @@ public class Launch : MonoBehaviour
         rdSim.heroes[4] = hero_5.GetHero();
 
         int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
+        Debug.Log(difficultyChecker);
         bossDiff = bossName.value;
         switch (difficultyChecker)
         {
@@ -165,6 +175,15 @@ public class Launch : MonoBehaviour
                 break;
             case 22:
                 rdSim.difficultyModifier = 265;
+                break;
+            case 30:
+                rdSim.difficultyModifier = 205; //to change
+                break;
+            case 31:
+                rdSim.difficultyModifier = 310; //to change
+                break;
+            case 32:
+                rdSim.difficultyModifier = 485; //to change
                 break;
             default:
                 break;

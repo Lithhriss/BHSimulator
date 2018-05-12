@@ -58,6 +58,7 @@ public class Character
     public int power;
     public int stamina;
     public int agility;
+    private float totalTS;
 
     public List<Skill> skillList = new List<Skill>();
     public double priority;
@@ -69,7 +70,7 @@ public class Character
     private float spBonus;
     public int shield;
     public int maxShield;
-    public float hpPerc { get { return (float)hp / (float)maxHp;} }
+    public float hpPerc { get { return (float)hp / (float)maxHp; } }
     public float turnRate;
     public float interval;
     public float counter;
@@ -79,10 +80,23 @@ public class Character
     public float critDamage;
     public float empowerChance;
     public float dsChance;
+    public float quadChance;
     public float blockChance;
     public float evadeChance;
     public float deflectChance;
     public float absorbChance;
+
+    //new
+    public float meterlessChance;
+    public float ricochetChance;
+    public float percToShield;
+    public float bonusHealing;
+
+    public bool overHeal;
+    public bool luminaryLife;
+    public bool taterBonus;
+    public bool illustriousRevive;
+    public bool spUsed;
 
     // Runes
     public float powerRunes;
@@ -94,20 +108,11 @@ public class Character
     // state
     public bool alive { get { return hp > 0; } }
     public bool drain;
-    public bool unity;
     public bool redirect;
     public bool redirectRune;
-    public bool bushidoBonus;
-    public bool aresBonus;
-    public bool lunarBonus;
+
     public bool selfInjure;
 
-    //mythic bonuses
-    public bool necrosisBonus;
-    public bool hysteriaBonus;
-    public bool nightVisageBonus;
-    public bool consumptionBonus;
-    public bool decayBonus;
 
     // Pet
     public Pet pet;
@@ -125,7 +130,8 @@ public class Character
         Staff,
         Axe,
         Laser,
-        DemonStaff
+        DemonStaff,
+        ShieldStaff
     }
     public MetaRune metaRune;
     public enum MetaRune
@@ -135,60 +141,16 @@ public class Character
         spRegen
 
     }
-    public DivinityBonus divinityBonus;
-    public enum DivinityBonus
-    {
-        None,
-        Bonus_2_of_3,
-        Bonus_3_of_3
-    }
 
-    //Set Bonuses
-    public ObliterationBonus obliterationBonus;
-    public enum ObliterationBonus
-    {
-        None,
-        Bonus_2_of_4,
-        Bonus_3_of_4,
-        Bonus_4_of_4
-    }
-
-    public MARUBonus maruBonus;
-    public enum MARUBonus
-    {
-        None,
-        Bonus_2_of_4,
-        Bonus_3_of_4,
-        Bonus_4_of_4
-    }
-
-    public ConductionBonus conductionBonus;
-    public enum ConductionBonus
-    {
-        None,
-        Bonus_2_of_4,
-        Bonus_3_of_4,
-        Bonus_4_of_4
-    }
-
-    public TatersBonus tatersBonus;
-    public enum TatersBonus
-    {
-        None,
-        Bonus_2_of_3,
-        Bonus_3_of_3
-    }
-
-    public IllustriousBonus illustriousBonus;
-    public enum IllustriousBonus
-    {
-        None,
-        Bonus_2_of_3,
-        Bonus_3_of_3
-    }
+    public bool nightWalkerUsed;
 
     //p2w bonuses
     public bool gateKeeperBonus;
+
+    //new
+
+    public Set[] setArray; //init the array when getting sets from UI
+    public MythicBonus[] mythicArray; // init the array when getting myths from UI
 
 
     public Character(float pow, float sta, float agi, float crit, float critdmg, float emp, float ds, float block, float evade, float deflect, float absorb, float prunes, float starunes, float agirunes, float redrunes, int diffMod, double prior, bool ishero, string nam = null)
@@ -196,6 +158,7 @@ public class Character
         power = Convert.ToInt32(pow * diffMod);
         stamina = Convert.ToInt32(sta * diffMod);
         agility = Convert.ToInt32(agi * diffMod);
+        totalTS = power + stamina + agility;
         critChance = crit;
         critDamage = (100f + critdmg) / 100f;
         empowerChance = emp;
@@ -212,9 +175,18 @@ public class Character
         drain = false;
         selfInjure = false;
         name = nam;
+        _isHero = ishero;
+        setArray = new Set[] { new Set(SetBonus.None, 0) };
+        mythicArray = new MythicBonus[] { MythicBonus.None };
+        bonusHealing = 1f;
     }
     public Character()
     { }
+
+    public void ZeroValues()
+    {
+
+    }
 
     // Predefined 
     public static readonly Dictionary<string, Character> predefined = new Dictionary<string, Character>() {
@@ -242,7 +214,7 @@ public class Character
                 weapon        = Weapon.None,
                 metaRune      = MetaRune.None,
                 // set bonuses
-                unity         = false,
+
                 //divinityBonus = true
             }
         },
@@ -270,9 +242,8 @@ public class Character
                 weapon        = Weapon.Sword,
                 metaRune      = MetaRune.None,
                 // set bonuses
-                unity         = true,
-                bushidoBonus  = true,
-                divinityBonus = DivinityBonus.Bonus_2_of_3
+
+
             }
         },
                {
@@ -299,8 +270,8 @@ public class Character
                 weapon        = Weapon.Staff,
                 metaRune      = MetaRune.Redirect,
                 // set bonuses
-                obliterationBonus = ObliterationBonus.Bonus_4_of_4,
-                decayBonus = true
+               
+                
             }
         },
         {
@@ -327,8 +298,7 @@ public class Character
                 weapon        = Weapon.Spear,
                 metaRune      = MetaRune.spRegen,
                 // set bonuses
-                necrosisBonus = true,
-                conductionBonus = ConductionBonus.Bonus_4_of_4
+                
                 //divinityBonus = true
             }
         },
@@ -434,6 +404,9 @@ public class Character
 
     public void InitialiseHero()
     {
+        totalTS = power + stamina + agility;
+        AttributePassiveSetBonuses();
+        AttributePassiveMythBonuses();
         powerRunes = (100f + powerRunes) / 100f;
         agilityRunes = (100f + agilityRunes) / 100f;
         critDamage = (100f + critDamage) / 100f;
@@ -449,6 +422,7 @@ public class Character
         counter = 0;
         sp = 0;
         drain = false;
+        nightWalkerUsed = false;
         AttributeHeroSkills();
         InitialisePet();
     }
@@ -488,15 +462,15 @@ public class Character
                     if (petProcType == PetProcType.PerHit) toeBertScaling = 10.4f;
                     else toeBertScaling = 11.7f;
                 }
-                pet = new Pet((petProcType == PetProcType.AllType? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), toeBertScaling, 10f, PetAbilty.TeamHealShield, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), toeBertScaling, 10f, PetAbilty.TeamHealShield, petProcType);
                 break;
             case PetType.Urgoff:
                 float urgoffScaling = 48f;
                 if (petProcType == PetProcType.PerHit) urgoffScaling = 43f;
-                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
                 break;
             case PetType.Karlorr:
-                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 61.5f + PetLevel * 1.5f), 53f, 10f, PetAbilty.WeakestAttack, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), 53f, 10f, PetAbilty.WeakestAttack, petProcType);
                 break;
             case PetType.Boogie:
                 pet = new Pet((20f + PetLevel * 0.5f), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.AllType);
@@ -516,7 +490,7 @@ public class Character
             case PetType.Pumkwim:
                 pet = new Pet((20f + PetLevel * 0.5f), 54f, 40f, PetAbilty.AOEAttack, PetProcType.AllType);
                 break;
-                //epic
+            //epic
             case PetType.EpicBoogie:
                 pet = new Pet((30f + PetLevel), 72f, 10f, PetAbilty.SpreahHeal, PetProcType.GetHit);
                 break;
@@ -588,7 +562,6 @@ public class Character
 
     public void InitialiseMobs()
     {
-        _isHero = false;
         turnRate = Logic.TurnRate(power, agility);
         power = Convert.ToInt32(power * powerRunes);
         turnRate *= agilityRunes;
@@ -650,8 +623,13 @@ public class Character
                 skillList.Add(new Skill(0.82f, 0.2f, 65, 2, SkillType.TargetHeal));
                 skillList.Add(new Skill(1.8f, 0.2f, 10, 4, SkillType.Target));
                 break;
+            case Weapon.ShieldStaff:
+                skillList.Add(new Skill(1.42f, 0.2f, 5, 2, SkillType.Weakest));
+                skillList.Add(new Skill(0.3f, 0.2f, 5, 2, SkillType.AOEDrain));
+                skillList.Add(new Skill(1.12f, 0.2f, 75, 2, SkillType.TargetHeal));
+                skillList.Add(new Skill(1.8f, 0.2f, 5, 4, SkillType.Target));
+                break;
         }
-        if (unity) skillList.Add(new Skill(0.9f, 0.2f, 10, 2, SkillType.Unity));
     }
 
     private void AttributeMobSkills()
@@ -763,6 +741,46 @@ public class Character
                 skillList.Add(new Skill(1.9f, 0.2f, 50, 4, SkillType.Weakest));
                 skillList.Add(new Skill(1.2f, 0.2f, 30, 4, SkillType.AOEHeal));
                 break;
+            case "DesertScorpion":
+                skillList.Add(new Skill(0.75f, 0.4f, 10, 2, SkillType.Drain));
+                skillList.Add(new Skill(1.12f, 0.4f, 10, 2, SkillType.SelfSHield));
+                skillList.Add(new Skill(2.1f, 0.4f, 70, 4, SkillType.Furthest));
+                break;
+            case "DesertFood":
+                skillList.Add(new Skill(1.95f, 0.4f, 10, 2, SkillType.Random));
+                skillList.Add(new Skill(1.2f, 0.4f, 10, 2, SkillType.SpreadHeal));
+                break;
+            case "DesertCactus":
+                skillList.Add(new Skill(1.12f, 0.3f, 45, 2, SkillType.SelfSHield));
+                skillList.Add(new Skill(1.35f, 0.3f, 45, 2, SkillType.Target));
+                break;
+            case "DesertVulture":
+                skillList.Add(new Skill(1.42f, 0.5f, 90, 2, SkillType.Weakest));
+                break;
+            case "ForestSpirit":
+                skillList.Add(new Skill(0.97f, 0.4f, 20, 2, SkillType.Pierce2));
+                skillList.Add(new Skill(0.82f, 0.4f, 20, 2, SkillType.TargetHeal));
+                skillList.Add(new Skill(1.9f, 0.4f, 50, 4, SkillType.Weakest));
+                break;
+            case "ForestRabbit":
+                skillList.Add(new Skill(1.57f, 0.2f, 20, 2, SkillType.Furthest));
+                skillList.Add(new Skill(1.8f, 0.2f, 70, 2, SkillType.Target));
+                break;
+            case "ForestTurtle":
+                skillList.Add(new Skill(1.95f, 0.3f, 45, 2, SkillType.Random));
+                skillList.Add(new Skill(1.12f, 0.3f, 45, 4, SkillType.TargetHeal));
+                break;
+            case "ForestGoo":
+                skillList.Add(new Skill(1.95f, 0.2f, 90, 2, SkillType.Random));
+                break;
+            case "Walogdr":
+                skillList.Add(new Skill(0.9f, 0.2f, 50, 2, SkillType.SpreadHeal));
+                skillList.Add(new Skill(1.42f, 0.2f, 25, 2, SkillType.Weakest));
+                skillList.Add(new Skill(1.95f, 0.2f, 5, 2, SkillType.Random));
+                skillList.Add(new Skill(1.80f, 0.2f, 5, 4, SkillType.Target));
+                skillList.Add(new Skill(3.45f, 0.2f, 5, 4, SkillType.Execute));
+                break;
+
         }
     }
 
@@ -773,6 +791,9 @@ public class Character
         counter = 0;
         sp = 0;
         redirect = true;
+        spUsed = false;
+        illustriousRevive = true;
+        luminaryLife = true;
     }
 
     public void IncrementCounter()
@@ -781,26 +802,315 @@ public class Character
         //counter++;
     }
 
-    public void IncrementSp()
+    public void AttributePassiveSetBonuses()
+    {
+        foreach (Set set in setArray)
+        {
+            if (set != null)
+            {
+                switch (set.GetBonus())
+                {
+                    //Raids
+                    case SetBonus.AresBonus:
+                        meterlessChance = 20f;
+                        break;
+                    case SetBonus.DivinityBonus:
+                        //not passive bonus
+                        break;
+                    case SetBonus.MaruBonus:
+                        percToShield = .10f;
+                        if (set.GetPieceCount() >= 3)
+                        {
+                            overHeal = true;
+                        }
+                        break;
+                    case SetBonus.NWBonus:
+                        absorbChance += 2f;
+                        // other bonuses are not passive
+                        break;
+
+                    //Trials
+                    case SetBonus.UnityBonus:
+                        skillList.Add(new Skill(0.9f, 0.2f, 10, 2, SkillType.Unity));
+                        break;
+                    case SetBonus.TrugdorBonus:
+                        dsChance += 4f;
+                        if (set.GetPieceCount() > 2)
+                        {
+                            ricochetChance = 7f;
+                        }
+                        break;
+                    case SetBonus.BushidoBonus:
+                        // not passive
+                        break;
+                    case SetBonus.TaldBonus:
+                        deflectChance += 3f;
+                        if (set.GetPieceCount() > 2)
+                        {
+                            absorbChance += 6f;
+                        }
+                        break;
+                    case SetBonus.ConducBonus:
+                        if (set.GetPieceCount() > 2)
+                        {
+                            empowerChance += 5f;
+                        }
+                        // other bonus not passive
+                        break;
+                    case SetBonus.LuminaryBonus:
+                        if (set.GetPieceCount() > 2)
+                        {
+                            bonusHealing += 0.15f;
+                        }
+                        //other bonus not passive
+                        break;
+
+                    //WB orlag
+                    case SetBonus.Lunarbonus:
+                        if (set.GetPieceCount() > 1)
+                        {
+                            bonusHealing += 0.15f;
+                        }
+                        break;
+                    case SetBonus.AgonyBonus:
+                        // other pbonuses not passive
+                        if (set.GetPieceCount() == 4)
+                        {
+                            ricochetChance = 10f;
+                        }
+                        break;
+
+                    //WB nether
+                    case SetBonus.IllustriousBonus:
+                        powerRunes += 4f;
+                        break;
+                    case SetBonus.TatersBonus:
+                        agilityRunes += 6f;
+                        if (set.GetPieceCount() > 2)
+                        {
+                            taterBonus = true;
+                        }
+                        break;
+                    case SetBonus.InfernoBonus:
+                        empowerChance += 4f;
+                        if (set.GetPieceCount() > 2) meterlessChance = 20f;
+                        //bonus not passive
+                        break;
+                }
+            }
+        }
+    }
+
+    public void AttributePassiveMythBonuses()
+    {
+        foreach (MythicBonus mythicBonus in mythicArray)
+        {
+            switch (mythicBonus)
+            {
+                case MythicBonus.Pewpew:
+                    ricochetChance = 3f;
+                    break;
+                case MythicBonus.Bub:
+                    absorbChance += 2f;
+                    break;
+                case MythicBonus.Cometfell:
+                    quadChance += 1f;
+                    break;
+                case MythicBonus.CryptTunic:
+                    deflectChance += 2f;
+                    break;
+                case MythicBonus.Nemesis:
+                    dsChance += 4f;
+                    break;
+                case MythicBonus.Bedlam:
+                    bonusHealing += 8f;
+                    break;
+            }
+        }
+    }
+
+    public bool FindSetBonus(SetBonus setBonus, int pieceCount)
+    {
+        foreach (Set set in setArray)
+        {
+            if (set.GetBonus() == setBonus && set.GetPieceCount() >= pieceCount) return true;
+        }
+        return false;
+    }
+
+    public bool FindMythBonus(MythicBonus _mythicBonus)
+    {
+        foreach (MythicBonus mythicBonus in mythicArray)
+        {
+            if (mythicBonus == _mythicBonus) return true;
+        }
+        return false;
+    }
+
+    public void ActivateOnTurnPassives()
+    {
+        if (FindSetBonus(SetBonus.TatersBonus, 3))
+        {
+
+        }
+        if (FindMythBonus(MythicBonus.EngulfintArtifact))
+        {
+            //shield team
+        }
+    }
+
+    public float ReturnPersonalAttackMods(Character target, Character[] opponents, Character[] party)
+    {
+        int position = Array.IndexOf(party, this);
+        float returnMod = 0f;
+
+        if (position != 0)
+        {
+            for (int i = position; i >= 0; i--)
+            {
+                if (party[i].alive)
+                {
+                    foreach (Set set in party[i].setArray)
+                    {
+                        if (set.GetBonus() == SetBonus.OblitBonus && set.GetPieceCount() > 2) returnMod += 0.05f;
+                    }
+                }
+            }
+
+            for (int i = position - 1; i < position + 1; i++)
+            {
+                if (!(i < 0 || i > party.Length) && party[i].alive)
+                {
+                    foreach (Set set in party[i].setArray)
+                    {
+                        if (set.GetBonus() == SetBonus.AgonyBonus) returnMod += 0.03f;
+                    }
+                }
+            }
+        }
+
+        foreach (Set set in setArray)
+        {
+            if (set != null)
+            {
+                switch (set.GetBonus())
+                {
+                    case SetBonus.DivinityBonus:
+                        if (weapon == Weapon.Sword) returnMod += 0.05f;
+                        if (set.GetPieceCount() > 2 && target.hp <= 0.3f * (float)target.maxHp) returnMod += 0.30f;
+                        break;
+                    case SetBonus.BushidoBonus:
+                        returnMod += 0.1f;
+                        break;
+                    case SetBonus.ConducBonus:
+                        if (set.GetPieceCount() > 3 && WorldBossSimulation.GetPartyCount(opponents) == 1) returnMod += 0.25f;
+                        break;
+                    case SetBonus.InfernoBonus:
+                        if (set.GetPieceCount() == 4 && spUsed) returnMod += 0.2f;
+                        break;
+
+                }
+            }
+        }
+
+        foreach (Set set in target.setArray)
+        {
+            if (set != null)
+            {
+                if (set.GetBonus() == SetBonus.BushidoBonus) returnMod += 0.1f;
+            }
+        }
+        if (FindMythBonus(MythicBonus.FishNBarrel)) returnMod -= 0.05f;
+        if (FindMythBonus(MythicBonus.NightVisage) && hp == maxHp) returnMod += 0.05f;
+        //add hysterya down the line
+        return returnMod;
+    }
+
+    public float ReturnPersonalDefenceMods(Character[] opponents)
+    {
+        int position = Array.IndexOf(opponents, this);
+        float returnMod = 0f;
+
+        if (position != 0)
+        {
+            for (int i = position; i >= 0; i--)
+            {
+                if (opponents[i].alive)
+                {
+                    foreach (Set set in opponents[i].setArray)
+                    {
+                        if (set.GetBonus() == SetBonus.OblitBonus) returnMod += 0.05f;
+                    }
+                }
+            }
+        }
+
+        foreach (Set set in setArray)
+        {
+            if (set != null)
+            {
+                switch (set.GetBonus())
+                {
+                    case SetBonus.OblitBonus:
+                        if (set.GetPieceCount() > 3 && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) returnMod += 0.15f;
+                        break;
+                    case SetBonus.NWBonus:
+                        if (set.GetPieceCount() > 3 && shield > 0) returnMod += 0.15f;
+                        break;
+
+
+                }
+            }
+        }
+        if (FindMythBonus(MythicBonus.FishNBarrel)) returnMod += 0.05f;
+
+        return returnMod;
+    }
+
+    public float GetTotalTs()
+    {
+        return totalTS;
+    }
+
+    public void GetTsFromHero(int ts)
+    {
+        power = Convert.ToInt32(ts * 1.1f * power / totalTS);
+        stamina = Convert.ToInt32(ts * 1.1f * stamina / totalTS);
+        agility = Convert.ToInt32(ts * 1.1f * agility / totalTS);
+    }
+
+    public void IncrementSp(Character[] party)
     {
         sp++;
-        if (necrosisBonus)
+        float spRegen = 0f;
+        if (FindMythBonus(MythicBonus.Necrosis))
         {
-            if (Logic.RNGroll(10f))  sp += 2;
+            if (Logic.RNGroll(10f)) sp += 2;
         }
-        if (metaRune == MetaRune.spRegen && hp == maxHp)
+        if (metaRune == MetaRune.spRegen && hp == maxHp) spRegen += 0.5f;
+
+        int position = Array.IndexOf(party, this);
+        for (int i = position - 1; i < position + 1; i++)
         {
-            spBonus += 0.5f;
-            if (spBonus >= 1f)
+            if (!(i < 0 || i > party.Length) && party[i].alive)
             {
-                spBonus--;
-                sp++;
+                foreach (Set set in party[i].setArray)
+                {
+                    if (set.GetBonus() == SetBonus.AgonyBonus && set.GetPieceCount() > 2) spRegen += 0.2f;
+                }
             }
+        }
+        spBonus += spRegen;
+        if (spBonus >= 1f)
+        {
+            spBonus--;
+            sp++;
         }
     }
     public void SubstractCounter(float value)
     {
         counter -= value;
+        //counter -= interval;
     }
     public void ChooseSkill(Character[] party, Character[] opponents)
     {
@@ -810,16 +1120,18 @@ public class Character
         int skillRoll;
         int skillInc = 0;
 
-		skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded)).Sum(skill => skill.Weight));
+        skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded)).Sum(skill => skill.Weight));
         skillRoll = random.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
-			if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded))
+            if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded))
             {
                 skillInc += skillList[i].Weight;
                 if (skillRoll < skillInc)
                 {
-                    sp -= skillList[i].Cost;
+                    if (Logic.RNGroll(meterlessChance)) sp -= skillList[i].Cost;
+                    if (skillList[i].Cost > 0) spUsed = true;
+                    else spUsed = false;
                     skillList[i].ApplySkill(this, party, opponents);
                     break;
                 }

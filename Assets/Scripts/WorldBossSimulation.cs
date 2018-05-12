@@ -100,17 +100,17 @@ public class WorldBossSimulation
                         character.IncrementCounter();
                         if (character.counter > trCounter)
                         {
-                            Logic.HpPerc(heroes);
-                            Logic.HpPerc(enemies);
-                            character.IncrementSp();
                             if (character._isHero)
                             {
+                                character.IncrementSp(heroes);
+                                character.ActivateOnTurnPassives();
                                 if (character.pet != null) character.pet.PetSelection(character, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(heroes, enemies);
                             }
                             else
                             {
+                                character.IncrementSp(enemies);
                                 if (character.pet != null) character.pet.PetSelection(character, enemies, heroes, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(enemies, heroes);
