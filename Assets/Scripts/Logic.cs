@@ -25,17 +25,17 @@ class Logic
 
     public static float TurnRate(int power, int agility)
     {
+        if (power == 0) power = 1;
         float tr = 0f;
         tr = ((agility + power) / 2f);
         tr = (float)Math.Pow(tr, 2);
-        if (power == 0) power = 1;
         tr = tr / (100f * power);
         return tr;
     }
 
     public static Boolean IsHealingNeeded(Character[] party)
     {
-        HpPerc(party);
+        //HpPerc(party);
         foreach (var member in party)
         {
             if (member.alive && member.hp < member.maxHp) return Boolean.True;
@@ -52,27 +52,54 @@ class Logic
     }
     public static void Hit(int attackValue, Character target, Character author, bool isBlocked, Character[] opponents, Character[] party)
     {
-        float attackModifier = 1f;
-        float reductionModifier = 0f;
-        if (target.obliterationBonus == Character.ObliterationBonus.Bonus_4_of_4 && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) reductionModifier += 0.15f;
-        int position = Array.IndexOf(opponents, target);
-        for (int i = position; i < 0; i--)
-        {
-            if (opponents[i].obliterationBonus == Character.ObliterationBonus.Bonus_2_of_4) reductionModifier += 0.05f;
-        }
-        position = Array.IndexOf(party, author);
-        for (int i = position; i < 0; i--)
-        {
-            if (party[i].obliterationBonus == Character.ObliterationBonus.Bonus_3_of_4) attackModifier += 0.05f;
-        }
-        if (target.bushidoBonus) attackModifier += 0.1f; 
-        if (author.bushidoBonus) attackModifier += 0.1f;
-        if (author.nightVisageBonus && author.hp == author.maxHp) attackModifier += 0.05f;
-        if (WorldBossSimulation.GetPartyCount(opponents) == 1 && author.conductionBonus == Character.ConductionBonus.Bonus_4_of_4) attackModifier += 0.25f;
-        if (author.divinityBonus == Character.DivinityBonus.Bonus_3_of_3 && target.hp <= 0.3f * target.maxHp) attackModifier += 0.30f;
+        float attackModifier = 1f + author.ReturnPersonalAttackMods(target, opponents, party);
+        float reductionModifier = 0f + target.ReturnPersonalDefenceMods(opponents);
+        int attackValuePrint = attackValue;
+        //oblit check
+        //int position = Array.IndexOf(opponents, target);
+        //if (position != 0)
+        //{
+        //    for (int i = position; i >= 0; i--)
+        //    {
+        //        if (opponents[i].alive
+        //            && (int)opponents[i].obliterationBonus >= (int)Character.ObliterationBonus.Bonus_2_of_4) reductionModifier += 0.05f;
+        //    }
+        //}
+        //position = Array.IndexOf(party, author);
+        //if (position != 0)
+        //{
+        //    for (int i = position; i >= 0; i--)
+        //    {
+        //        if (party[i].alive
+        //            && (int)party[i].obliterationBonus >= (int)Character.ObliterationBonus.Bonus_3_of_4)
+        //            attackModifier += 0.05f;
+        //    }
+        //}
+        //if (target.obliterationBonus == Character.ObliterationBonus.Bonus_4_of_4 
+        //    && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) reductionModifier += 0.15f;
+
+        ////night check
+        //if(target.nightWalkerBonus == Character.NightWalkerBonus.Bonus_4_of_4 
+        //    && target.shield > 0) reductionModifier += 0.15f;
+
+        //if (target.barrelBonus) reductionModifier += 0.05f;
+        //if (author.barrelBonus) attackModifier -= 0.05f;
+
+        //if (target.bushidoBonus) attackModifier += 0.1f;
+        //if (author.bushidoBonus) attackModifier += 0.1f;
+
+        //if (author.nightVisageBonus && author.hp == author.maxHp) attackModifier += 0.05f;
+
+        //if (WorldBossSimulation.GetPartyCount(opponents) == 1 
+        //    && author.conductionBonus == Character.ConductionBonus.Bonus_4_of_4) attackModifier += 0.25f;
+
+        //if (author.divinityBonus == Character.DivinityBonus.Bonus_3_of_3
+        //    && target.hp <= 0.3f * (float)target.maxHp) attackModifier += 0.30f;
 
         attackValue = Convert.ToInt32(attackValue * attackModifier);
+
         if (isBlocked) attackValue = Convert.ToInt32(0.5 * attackValue);
+
         attackValue = Convert.ToInt32(attackValue * (target.damageReduction - reductionModifier));
         if (author.drain)
         {
@@ -97,36 +124,46 @@ class Logic
             }
         }
         target.hp -= attackValue;
+        // when init if user doesn't have NW, set bool to true
+        if (target.hp < target.maxHp / 2
+            && !target.nightWalkerUsed)
+        {
+            target.nightWalkerUsed = true;
+            target.shield = target.maxShield;
+        }
         if (!target.alive)
         {
             target.hp = -1;
             target.hp += ConsumptionProc(opponents);
+            if (!target.alive)
+            {
+                if (target.luminaryLife)
+                {
+                    target.hp += attackValuePrint;
+                    target.luminaryLife = false;
+                }
+            }
         }
-        if (!target.alive && target.illustriousBonus == Character.IllustriousBonus.Bonus_3_of_3)
+        if (!target.alive
+            && target.FindSetBonus(SetBonus.IllustriousBonus, 3)
+            && target.illustriousRevive)
         {
             target.hp = target.power;
             if (target.hp > target.maxHp) target.hp = target.maxHp;
-            target.illustriousBonus = Character.IllustriousBonus.None;
+            target.illustriousRevive = false;
         }
     }
     public static int ConsumptionProc(Character[] party)
     {
-
-        if (party.Count(member => member.consumptionBonus) > 0)
+        foreach (Character member in party)
         {
-            foreach (var member in party)
+            if (member.alive && member.FindMythBonus(MythicBonus.Consumption))
             {
-                if (member.consumptionBonus && RNGroll(5f))
-                {
-                    return member.power;
-                }
+                if (RNGroll(5f)) return member.power;
             }
-            return 0;
         }
-        else
-        {
-            return 0;
-        }
+        return 0;
+
     }
     public static int CountAlive(Character[] party)
     {
@@ -140,7 +177,10 @@ class Logic
     {
         int scenario = 10;
         if (RNGroll(hero.blockChance)) { scenario = 1; }
-        if (RNGroll(hero.evadeChance)) { scenario = 0; }
+        if (hero.FindMythBonus(MythicBonus.HoodOfMenace) && hero.hp > 0.75f * hero.maxHp)
+        {
+            if (RNGroll(hero.evadeChance + 5f)) { scenario = 0; }
+        }
         return scenario;
     }
     public static Character RedirectSelection(Character target, Character[] party)
@@ -213,6 +253,7 @@ class Logic
     {
         int i;
         int lowest = 0;
+        //HpPerc(heroes);
         for (i = 0; i < heroes.Length - 1; i++)
         {
             if (heroes[lowest].hpPerc >= heroes[i + 1].hpPerc)
@@ -231,13 +272,15 @@ class Logic
             }
         }
         return heroes[lowest];
+
+        //return heroes.Where(hero => hero.alive).OrderBy(hero => hero.hpPerc).First();
     }
     public static Character SelectTarget(Character[] party)
     {
         while (true)
         {
             int target = random.Next(party.Length);
-            if (party[target].hp > 0) return party[target];
+            if (party[target].alive) return party[target];
         }
     }
     public static Character SelectBack(Character[] party)

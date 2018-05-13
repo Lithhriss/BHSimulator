@@ -26,6 +26,7 @@ public enum PetProcType
 
 public class Pet
 {
+    public static Random random = new Random(Guid.NewGuid().GetHashCode());
     private float ProcChance;
     private float Scaling;
     private float Range;
@@ -59,8 +60,8 @@ public class Pet
     {
         int attackModifier = Convert.ToInt32(Scaling * Range * author.power);
         int returnValue = 0;
-        int mod = Convert.ToInt32(Math.Pow(-1, UnityEngine.Random.Range(0, 2)));
-        returnValue = Convert.ToInt32(author.power * Scaling + UnityEngine.Random.Range(0, attackModifier) * mod);
+        int mod = Convert.ToInt32(Math.Pow(-1, random.Next(2)));
+        returnValue = Convert.ToInt32(author.power * Scaling + random.Next(attackModifier) * mod);
 
         if (IsCrit)
         {
@@ -229,7 +230,7 @@ public class Pet
     {
         while (true)
         {
-            int target = UnityEngine.Random.Range(0, enemies.Length);
+            int target = random.Next(enemies.Length);
             if (WorldBossSimulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
             {
                 enemies[target].hp -= Value;

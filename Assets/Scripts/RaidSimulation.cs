@@ -41,7 +41,10 @@ public class RaidSimulation
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
-
+        //if (boss == 3)
+        //{
+        //    enemies = new Character[2];
+        //}
         float win = 0;
         float lose = 0;
 
@@ -83,17 +86,17 @@ public class RaidSimulation
                         character.IncrementCounter();
                         if (character.counter > trCounter)
                         {
-                            Logic.HpPerc(heroes);
-                            Logic.HpPerc(enemies);
-                            character.IncrementSp();
                             if (character._isHero)
                             {
+                                character.IncrementSp(heroes);
+                                character.ActivateOnTurnPassives();
                                 if (character.pet != null) character.pet.PetSelection(character, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(heroes, enemies);
                             }
                             else
                             {
+                                character.IncrementSp(enemies);
                                 if (character.pet != null) character.pet.PetSelection(character, enemies, heroes, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(enemies, heroes);
@@ -143,10 +146,26 @@ public class RaidSimulation
                 return new Character(10, 18, 4, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "Kaleido");
             case 1:
                 return new Character(10, 18, 4, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Woodbeard");
-            default:
+            case 2:
                 return new Character(10, 18, 4, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "Robomech");
+            default:
+                return new Character(8, 23, 5, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Zol"); // prio subject to change
         }
     }
+
+    private Character GetRaidTrash(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return new Character(3.4f, 4, 4.6f, 10f, 50f, 10f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "ArcherOrc");
+            case 1:
+                return new Character(6.2f, 2f, 1.8f, 10f, 50f, 15f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1, isNotHero, "MageOrc");
+            default:
+                return new Character(5.8f, 3.8f, 2.4f, 30f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 2, isNotHero, "AssassinOrc");
+        }
+    }
+
     public static int GetPartyCount(Character[] opponents)
     {
         return opponents.Count(member => member.alive);

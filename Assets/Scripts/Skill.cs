@@ -12,6 +12,7 @@ public enum SkillType
     Weakest,
     Random,
     SelfHeal,
+    SelfSHield,
     SpreadHeal,
     TargetHeal,
     AOEHeal,
@@ -51,7 +52,7 @@ public class Skill
                 case SkillType.TargetHeal:
                     return Boolean.True;
                 default:
-					return Boolean.Null;
+                    return Boolean.Null;
             }
         }
     }
@@ -67,17 +68,17 @@ public class Skill
                 case SkillType.Pierce2:
                     return Boolean.True;
                 default:
-					return Boolean.Null;
+                    return Boolean.Null;
             }
         }
     }
-	public Boolean IsTarget
-	{ 
-		get 
-		{
-			switch (skillType)
-			{ 
-				case SkillType.AOE:
+    public Boolean IsTarget
+    {
+        get
+        {
+            switch (skillType)
+            {
+                case SkillType.AOE:
                 case SkillType.AOEDrain:
                 case SkillType.Pierce3:
                 case SkillType.Pierce2:
@@ -89,8 +90,8 @@ public class Skill
                 default:
                     return Boolean.True;
             }
-		}
-	}
+        }
+    }
     private bool IsCrit;
     private bool IsEmp;
     public static Random random = new Random(Guid.NewGuid().GetHashCode());
@@ -138,6 +139,7 @@ public class Skill
             if (Logic.RNGroll(0.5f)) amountToCast += 3;
         }
         if (Logic.RNGroll(author.dsChance)) amountToCast++;
+        if (Logic.RNGroll(author.quadChance)) amountToCast += 3;
         while (amountToCast != 0)
         {
             if (WorldBossSimulation.GetPartyCount(opponents) == 0) return;
@@ -235,6 +237,7 @@ public class Skill
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
+            if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectTarget(opponents), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
         }
     }
 
@@ -274,20 +277,19 @@ public class Skill
     {
         Character target = Logic.HealFindWeakestPerc(party);
         int attackValue = GetValue(author);
-        if (author.lunarBonus)
-        {
-            attackValue = Convert.ToInt32(attackValue * 1.15f);
-        }
-        if (target.decayBonus)
+        attackValue = Convert.ToInt32(attackValue * author.bonusHealing);
+
+        if (target.FindMythBonus(MythicBonus.Decay))
         {
             if (Logic.RNGroll(5f)) attackValue *= 2;
         }
-        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+
+        if (author.percToShield > 0f)
         {
-            target.shield = Convert.ToInt32(attackValue * 0.1);
+            target.shield += Convert.ToInt32(attackValue * author.percToShield);
             if (target.shield > target.maxShield) target.shield = target.maxShield;
         }
-        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+        if (author.overHeal)
         {
             if (target.maxHp - target.hp < attackValue)
             {
@@ -306,22 +308,19 @@ public class Skill
         for (int i = 0; i < party.Length; i++)
         {
             int attackValue = GetValue(author);
-            if (author.lunarBonus)
-            {
-                attackValue = Convert.ToInt32(attackValue * 1.15f);
-            }
+            attackValue = Convert.ToInt32(attackValue * author.bonusHealing);
             if (party[i].alive)
             {
-                if (party[i].decayBonus)
+                if (party[i].FindMythBonus(MythicBonus.Decay))
                 {
                     if (Logic.RNGroll(5f)) attackValue *= 2;
                 }
-                if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+                if (author.percToShield > 0f)
                 {
-                    party[i].shield = Convert.ToInt32(attackValue * 0.1);
+                    party[i].shield += Convert.ToInt32(attackValue * author.percToShield);
                     if (party[i].shield > party[i].maxShield) party[i].shield = party[i].maxShield;
                 }
-                if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+                if (author.overHeal)
                 {
                     if (party[i].maxHp - party[i].hp < attackValue)
                     {
@@ -341,17 +340,32 @@ public class Skill
     {
         Character target = Logic.HealFindWeakestPerc(party);
         int healingValue = GetValue(author);
-        if (author.lunarBonus)
-        {
-            healingValue = Convert.ToInt32(healingValue * 1.15f);
-        }
+        healingValue = Convert.ToInt32(healingValue * author.bonusHealing);
+
         for (int i = 0; i < 10; i++)
         {
             target = Logic.HealFindWeakestPerc(party);
             target.hp += healingValue / 10;
-            if (target.decayBonus)
+            if (target.FindMythBonus(MythicBonus.Decay))
             {
                 if (Logic.RNGroll(5f)) target.hp += healingValue / 10;
+            }
+            if (author.percToShield > 0f)
+            {
+                target.shield += Convert.ToInt32(healingValue * author.percToShield / 10);
+                if (target.shield > target.maxShield) target.shield = target.maxShield;
+            }
+            if (author.overHeal)
+            {
+                int attackValue = healingValue / 10;
+                if (target.maxHp - target.hp < attackValue)
+                {
+                    attackValue -= (target.maxHp - target.hp);
+                    target.hp = target.maxHp;
+                    target.shield += attackValue;
+                    if (target.shield > target.maxShield) target.shield = target.maxShield;
+                    attackValue = 0;
+                }
             }
             if (target.hp > target.maxHp)
             {
@@ -362,20 +376,17 @@ public class Skill
     private void SelfHealSkill(Character author)
     {
         int attackValue = GetValue(author);
-        if (author.decayBonus)
+        if (author.FindMythBonus(MythicBonus.Decay))
         {
             if (Logic.RNGroll(5f)) attackValue *= 2;
         }
-        if (author.lunarBonus)
-        {
-            attackValue = Convert.ToInt32(attackValue * 1.15f);
-        }
-        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_2_of_4)
+        attackValue = Convert.ToInt32(attackValue * author.bonusHealing);
+        if (author.percToShield > 0f)
         {
             author.shield = Convert.ToInt32(attackValue * 0.1);
             if (author.shield > author.maxShield) author.shield = author.maxShield;
         }
-        if ((int)author.maruBonus >= (int)Character.MARUBonus.Bonus_3_of_4)
+        if (author.overHeal)
         {
             if (author.maxHp - author.hp < attackValue)
             {
@@ -386,7 +397,7 @@ public class Skill
                 attackValue = 0;
             }
         }
-            author.hp += attackValue;
+        author.hp += attackValue;
         if (author.hp > author.maxHp) author.hp = author.maxHp;
     }
     private void AoeSkill(Character author, Character[] party, Character[] opponents)

@@ -31,33 +31,33 @@ public class HeroPanel : MonoBehaviour
 
     // Pet
     public Dropdown pet;
-    public Dropdown petType;
     public Dropdown petProcType;
     public Dropdown petLevel;
-    public InputField PetProcChance;
     public Dropdown weapon;
     public Dropdown metaRune;
-    public Dropdown divinity;
+
 
 
     // mythic bonuses
-    public Toggle NecrosisBonus;
-    public Toggle HysteriaBonus;
-    public Toggle NightVisageBonus;
-    public Toggle ConsumptionBonus;
-    public Toggle DecayBonus;
+
 
     // set bonuses
-    public Toggle AresBonus;
-    public Toggle BushidoBonus;
-    public Toggle LunarBonus;
-    public Toggle UnityBonus;
-    public Dropdown DivinityBonus;
-    public Dropdown ObliterationBonus;
-    public Dropdown MaruBonus;
-    public Dropdown ConductionBonus;
-    public Dropdown IllustriousBonus;
-    public Dropdown TatersBonus;
+
+
+    public Dropdown Set_1;
+    public Dropdown Set_2;
+    public Dropdown Set_3;
+
+    public Dropdown Myth_1;
+    public Dropdown Myth_2;
+    public Dropdown Myth_3;
+    public Dropdown Myth_4;
+    public Dropdown Myth_5;
+    public Dropdown Myth_6;
+
+    public Dropdown SetPieceCount_1;
+    public Dropdown SetPieceCount_2;
+    public Dropdown SetPieceCount_3;
 
     public Toggle GateKeeperBonus;
 
@@ -103,22 +103,46 @@ public class HeroPanel : MonoBehaviour
         metaRune.ClearOptions();
         metaRune.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MetaRune))));
 
-        //Divinity
-        DivinityBonus.ClearOptions();
-        DivinityBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
+        //set 1
+        Set_1.ClearOptions();
+        Set_1.AddOptions(new List<string>(Enum.GetNames(typeof(SetBonus))));
 
-        //oblit
-        ObliterationBonus.ClearOptions();
-        ObliterationBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ObliterationBonus))));
-        //maru
-        MaruBonus.ClearOptions();
-        MaruBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MARUBonus))));
-        //conduc
-        ConductionBonus.ClearOptions();
-        ConductionBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ConductionBonus))));
-        //illus
-        IllustriousBonus.ClearOptions();
-        IllustriousBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.IllustriousBonus))));
+        Set_2.ClearOptions();
+        Set_2.AddOptions(new List<string>(Enum.GetNames(typeof(SetBonus))));
+
+        Set_3.ClearOptions();
+        Set_3.AddOptions(new List<string>(Enum.GetNames(typeof(SetBonus))));
+
+        Myth_1.ClearOptions();
+        Myth_1.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+        Myth_2.ClearOptions();
+        Myth_2.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+        Myth_3.ClearOptions();
+        Myth_3.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+        Myth_4.ClearOptions();
+        Myth_4.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+        Myth_5.ClearOptions();
+        Myth_5.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+        Myth_6.ClearOptions();
+        Myth_6.AddOptions(new List<string>(Enum.GetNames(typeof(MythicBonus))));
+
+
+        ////Divinity
+        //DivinityBonus.ClearOptions();
+        //DivinityBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.DivinityBonus))));
+
+        ////oblit
+        //ObliterationBonus.ClearOptions();
+        //ObliterationBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ObliterationBonus))));
+        ////maru
+        //MaruBonus.ClearOptions();
+        //MaruBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.MARUBonus))));
+        ////conduc
+        //ConductionBonus.ClearOptions();
+        //ConductionBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.ConductionBonus))));
+        ////illus
+        //IllustriousBonus.ClearOptions();
+        //IllustriousBonus.AddOptions(new List<string>(Enum.GetNames(typeof(Character.IllustriousBonus))));
     }
 
     // Predefine Switch
@@ -139,6 +163,7 @@ public class HeroPanel : MonoBehaviour
         }
 
 		SetFieldsFromHero(hero);
+        Debug.Log("test");
     }
 
 	public void SetFieldsFromHero(Character hero)
@@ -158,20 +183,20 @@ public class HeroPanel : MonoBehaviour
         empowerRunes.text    = Convert.ToString(hero.empowerChance);
         damageReduction.text = Convert.ToString(hero.damageReduction);
         //set bonuses
-        UnityBonus.isOn    = hero.unity;
-        AresBonus.isOn = hero.aresBonus;
-        BushidoBonus.isOn = hero.bushidoBonus;
-        LunarBonus.isOn = hero.lunarBonus;
+        //UnityBonus.isOn    = hero.unity;
+        //AresBonus.isOn = hero.aresBonus;
+        //BushidoBonus.isOn = hero.bushidoBonus;
+        //LunarBonus.isOn = hero.lunarBonus;
         GateKeeperBonus.isOn = hero.gateKeeperBonus;
 
 
 
         //mythic bonuses
-        NecrosisBonus.isOn = hero.necrosisBonus;
-        HysteriaBonus.isOn = hero.hysteriaBonus;
-        NightVisageBonus.isOn = hero.nightVisageBonus;
-        ConsumptionBonus.isOn = hero.consumptionBonus;
-        DecayBonus.isOn = hero.decayBonus;
+        //NecrosisBonus.isOn = hero.necrosisBonus;
+        //HysteriaBonus.isOn = hero.hysteriaBonus;
+        //NightVisageBonus.isOn = hero.nightVisageBonus;
+        //ConsumptionBonus.isOn = hero.consumptionBonus;
+        //DecayBonus.isOn = hero.decayBonus;
 
 
         // Runes
@@ -222,65 +247,106 @@ public class HeroPanel : MonoBehaviour
 				break;
 			}
 		}
-		// divinity
-		for (int i = 0; i < DivinityBonus.options.Count; i++)
-		{
-			if (DivinityBonus.options[i].text == hero.divinityBonus.ToString())
-			{
-                DivinityBonus.value = i;
-				break;
-			}
-		}
-
-        // oblit
-        for (int i = 0; i < ObliterationBonus.options.Count; i++)
+        for (int i = 0; i < Set_1.options.Count; i++)
         {
-            if (ObliterationBonus.options[i].text == hero.obliterationBonus.ToString())
+            if (Set_1.options[i].text == hero.setArray[0].GetBonus().ToString())
             {
-                ObliterationBonus.value = i;
+                Set_1.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < SetPieceCount_1.options.Count; i++)
+        {
+            if (i == hero.setArray[0].GetPieceCount() - 2)
+            {
+                SetPieceCount_1.value = i;
                 break;
             }
         }
 
-        // maru
-        for (int i = 0; i < MaruBonus.options.Count; i++)
+        for (int i = 0; i < Set_2.options.Count; i++)
         {
-            if (MaruBonus.options[i].text == hero.maruBonus.ToString())
+            if (Set_2.options[i].text == hero.setArray[1].GetBonus().ToString())
             {
-                MaruBonus.value = i;
+                Set_2.value = i;
+                break;
+            }
+        }
+        for(int i = 0; i < SetPieceCount_2.options.Count; i++)
+        {
+            if (i == hero.setArray[1].GetPieceCount() - 2)
+            {
+                SetPieceCount_2.value = i;
                 break;
             }
         }
 
-        // conduction
-        for (int i = 0; i < ConductionBonus.options.Count; i++)
+        for (int i = 0; i < Set_3.options.Count; i++)
         {
-            if (ConductionBonus.options[i].text == hero.conductionBonus.ToString())
+            if (Set_3.options[i].text == hero.setArray[2].GetBonus().ToString())
             {
-                ConductionBonus.value = i;
+                Set_3.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < SetPieceCount_3.options.Count; i++)
+        {
+            if (i == hero.setArray[2].GetPieceCount() - 2)
+            {
+                SetPieceCount_3.value = i;
                 break;
             }
         }
 
-        // illus
-        for (int i = 0; i < IllustriousBonus.options.Count; i++)
+        for (int i = 0; i < Myth_1.options.Count; i++)
         {
-            if (IllustriousBonus.options[i].text == hero.illustriousBonus.ToString())
+            if (Myth_1.options[i].text == hero.mythicArray[0].ToString())
             {
-                IllustriousBonus.value = i;
+                Myth_1.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < Myth_2.options.Count; i++)
+        {
+            if (Myth_2.options[i].text == hero.mythicArray[1].ToString())
+            {
+                Myth_2.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < Myth_3.options.Count; i++)
+        {
+            if (Myth_3.options[i].text == hero.mythicArray[2].ToString())
+            {
+                Myth_3.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < Myth_4.options.Count; i++)
+        {
+            if (Myth_4.options[i].text == hero.mythicArray[3].ToString())
+            {
+                Myth_4.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < Myth_5.options.Count; i++)
+        {
+            if (Myth_5.options[i].text == hero.mythicArray[4].ToString())
+            {
+                Myth_5.value = i;
+                break;
+            }
+        }
+        for (int i = 0; i < Myth_6.options.Count; i++)
+        {
+            if (Myth_6.options[i].text == hero.mythicArray[5].ToString())
+            {
+                Myth_6.value = i;
                 break;
             }
         }
 
-        // taters
-        for (int i = 0; i < TatersBonus.options.Count; i++)
-        {
-            if (TatersBonus.options[i].text == hero.tatersBonus.ToString())
-            {
-                TatersBonus.value = i;
-                break;
-            }
-        }
 
     }
 
@@ -307,25 +373,34 @@ public class HeroPanel : MonoBehaviour
             staminaRunes = Convert.ToSingle(staminaRunes.text),
             agilityRunes = Convert.ToSingle(agilityRunes.text),
             //Set Bonuses
-
-            unity = UnityBonus.isOn,
-            bushidoBonus = BushidoBonus.isOn,
-            lunarBonus = LunarBonus.isOn,
-            aresBonus = AresBonus.isOn,
+            bonusHealing = 1f,
+            quadChance = 0f,
             gateKeeperBonus = GateKeeperBonus.isOn,
-			divinityBonus   = GetDivinityBonusFromString(DivinityBonus.options[DivinityBonus.value].text),
-            obliterationBonus = GetOblitBonusFromString(ObliterationBonus.options[ObliterationBonus.value].text),
-            maruBonus = GetMarutBonusFromString(MaruBonus.options[MaruBonus.value].text),
-            conductionBonus = GetConducBonusFromString(ConductionBonus.options[ConductionBonus.value].text),
-            illustriousBonus = GetIllustBonusFromString(IllustriousBonus.options[IllustriousBonus.value].text),
-            tatersBonus = GetTatersBonusFromString(TatersBonus.options[TatersBonus.value].text),
+
+            setArray = new Set[] 
+            {
+                new Set(GetSetBonusFromString(Set_1.options[Set_1.value].text), SetPieceCount_1.value + 2),
+                new Set(GetSetBonusFromString(Set_2.options[Set_2.value].text), SetPieceCount_2.value + 2),
+                new Set(GetSetBonusFromString(Set_3.options[Set_3.value].text), SetPieceCount_3.value + 2)},
+            mythicArray = new MythicBonus[]
+            {
+                GetMythicBonusFromString(Myth_1.options[Myth_1.value].text),
+                GetMythicBonusFromString(Myth_2.options[Myth_2.value].text),
+                GetMythicBonusFromString(Myth_3.options[Myth_3.value].text),
+                GetMythicBonusFromString(Myth_4.options[Myth_4.value].text),
+                GetMythicBonusFromString(Myth_5.options[Myth_5.value].text),
+                GetMythicBonusFromString(Myth_6.options[Myth_6.value].text)
+            },
+
+            
+
             //Mythic
 
-            necrosisBonus = NecrosisBonus.isOn,
-            hysteriaBonus = HysteriaBonus.isOn,
-            nightVisageBonus = NightVisageBonus.isOn,
-            consumptionBonus = ConsumptionBonus.isOn,
-            decayBonus = DecayBonus.isOn,
+            //necrosisBonus = NecrosisBonus.isOn,
+            //hysteriaBonus = HysteriaBonus.isOn,
+            //nightVisageBonus = NightVisageBonus.isOn,
+            //consumptionBonus = ConsumptionBonus.isOn,
+            //decayBonus = DecayBonus.isOn,
 
 
         // Pet
@@ -337,7 +412,7 @@ public class HeroPanel : MonoBehaviour
             _isHero         = true
         };
     }
-
+    /*
 	public static Character.DivinityBonus GetDivinityBonusFromString(String s)
 	{
 		Character.DivinityBonus divinityBonus;
@@ -466,7 +541,132 @@ public class HeroPanel : MonoBehaviour
 
         return illustBonus;
     }
+    */
+    public static SetBonus GetSetBonusFromString(String s)
+    {
+        SetBonus setBonus = SetBonus.None;
+        switch (s)
+        {
+            case "AresBonus":
+                setBonus = SetBonus.AresBonus;
+                break;
+            case "DivinityBonus":
+                setBonus = SetBonus.DivinityBonus;
+                break;
+            case "MaruBonus":
+                setBonus = SetBonus.MaruBonus;
+                break;
+            case "NWBonus":
+                setBonus = SetBonus.NWBonus;
+                break;
 
+            //Trials
+            case "UnityBonus":
+                setBonus = SetBonus.UnityBonus;
+                break;
+            case "TrugdorBonus":
+                setBonus = SetBonus.TrugdorBonus;
+                break;
+            case "BushidoBonus":
+                setBonus = SetBonus.BushidoBonus;
+                break;
+            case "TaldBonus":
+                setBonus = SetBonus.TaldBonus;
+                break;
+            case "ConducBonus":
+                setBonus = SetBonus.ConducBonus;
+                break;
+            case "LuminaryBonus":
+                setBonus = SetBonus.LuminaryBonus;
+                break;
+
+            //WB orlag
+            case "Lunarbonus":
+                setBonus = SetBonus.Lunarbonus;
+                break;
+            case "JynxBonus":
+                setBonus = SetBonus.JynxBonus;
+                break;
+            case "OblitBonus":
+                setBonus = SetBonus.OblitBonus;
+                break;
+            case "AgonyBonus":
+                setBonus = SetBonus.AgonyBonus;
+                break;
+
+            //WB nether
+            case "IllustriousBonus":
+                setBonus = SetBonus.IllustriousBonus;
+                break;
+            case "TatersBonus":
+                setBonus = SetBonus.TatersBonus;
+                break;
+            case "InfernoBonus":
+                setBonus = SetBonus.InfernoBonus;
+                break;
+        }
+        return setBonus;
+    }
+
+    public static MythicBonus GetMythicBonusFromString(String s)
+    {
+        MythicBonus mythicBonus = MythicBonus.None;
+
+        switch (s)
+        {
+
+            case "Pewpew":
+                mythicBonus = MythicBonus.Pewpew;
+                break;
+            case "Hysteria_not_Implemented":
+                mythicBonus = MythicBonus.Hysteria_not_Implemented;
+                break;
+            case "Bub":
+                mythicBonus = MythicBonus.Bub;
+                break;
+            case "Supersition_Not_Implemented":
+                mythicBonus = MythicBonus.Supersition_Not_Implemented;
+                break;
+            case "NightVisage":
+                mythicBonus = MythicBonus.NightVisage;
+                break;
+            case "Consumption":
+                mythicBonus = MythicBonus.Consumption;
+                break;
+            case "Decay":
+                mythicBonus = MythicBonus.Decay;
+                break;
+            case "Necrosis":
+                mythicBonus = MythicBonus.Necrosis;
+                break;
+            case "Cometfell":
+                mythicBonus = MythicBonus.Cometfell;
+                break;
+            case "Nebuleye_Not_Implemented":
+                mythicBonus = MythicBonus.Nebuleye_Not_Implemented;
+                break;
+            case "HoodOfMenace":
+                mythicBonus = MythicBonus.HoodOfMenace;
+                break;
+            case "CryptTunic":
+                mythicBonus = MythicBonus.CryptTunic;
+                break;
+            case "FishNBarrel":
+                mythicBonus = MythicBonus.FishNBarrel;
+                break;
+            case "EngulfintArtifact":
+                mythicBonus = MythicBonus.EngulfintArtifact;
+                break;
+            case "Nemesis":
+                mythicBonus = MythicBonus.Nemesis;
+                break;
+            case "Bedlam":
+                mythicBonus = MythicBonus.Bedlam;
+                break;
+        }
+
+        return mythicBonus;
+    }
 
     public static Character.MetaRune GetMetaRuneFromString(String s)
 	{

@@ -8,7 +8,7 @@ public class PageToggle : MonoBehaviour {
     public GameObject PageTwo;
 	// Use this for initialization
 	void Start () {
-		
+        PageTwo.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -21,11 +21,13 @@ public class PageToggle : MonoBehaviour {
         {
             PageOne.SetActive(false);
             PageTwo.SetActive(true);
+            Debug.Log("flip 1");
         }
         else
         {
             PageOne.SetActive(true);
             PageTwo.SetActive(false);
+            Debug.Log("flip 2");
         }
     }
 }
