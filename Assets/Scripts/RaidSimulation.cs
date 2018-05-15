@@ -37,7 +37,7 @@ public class RaidSimulation
         }
     }
 
-    public IEnumerator Simulation(int boss, System.Action<float> callback)
+    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback)
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
@@ -48,7 +48,7 @@ public class RaidSimulation
         float win = 0;
         float lose = 0;
 
-        int games = 1000;//number of times fight will run.
+        int games = fightCount;//number of times fight will run.
         int gameDivider = Convert.ToInt32(games / 100);
         progressionBar = 0;
 
@@ -89,7 +89,7 @@ public class RaidSimulation
                             if (character._isHero)
                             {
                                 character.IncrementSp(heroes);
-                                character.ActivateOnTurnPassives();
+                                character.ActivateOnTurnPassives(heroes, enemies);
                                 if (character.pet != null) character.pet.PetSelection(character, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(heroes, enemies);

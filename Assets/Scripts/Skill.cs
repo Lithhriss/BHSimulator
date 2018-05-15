@@ -25,7 +25,8 @@ public enum SkillType
     Ricochet4,
     Ricochet2,
     Unity,
-    Revive
+    Revive,
+    OnTurnShield
 
 }
 public enum Boolean
@@ -206,6 +207,10 @@ public class Skill
                     SpreadHealSkill(author, party);
                     break;
                 case SkillType.Revive:
+                    break;
+                case SkillType.OnTurnShield:
+                    OnTurnShieldTeam(author, party);
+                    amountToCast = 0;
                     break;
             }
             amountToCast--;
@@ -459,5 +464,17 @@ public class Skill
         }
     }
 
+    private void OnTurnShieldTeam(Character author, Character[] party)
+    {
+        int attackValue = GetValue(author);
+        foreach (var member in party)
+        {
+            if (member.alive)
+            {
+                member.shield += attackValue;
+                if (member.shield > member.maxHp) member.shield = member.maxShield;
+            }
+        }
+    }
 
 }

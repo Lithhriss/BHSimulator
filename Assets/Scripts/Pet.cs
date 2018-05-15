@@ -9,6 +9,7 @@ public enum PetAbilty
     SpreahHeal,
     SelfHeal,
     WeakestHeal,
+    SpreadShield,
     TeamShield,
     TeamHealShield,
     AOEAttack,
@@ -95,6 +96,9 @@ public class Pet
                         break;
                     case PetAbilty.WeakestHeal:
                         WeakestHeal(party);
+                        break;
+                    case PetAbilty.SpreadShield:
+                        SpreadShield(party);
                         break;
                     case PetAbilty.TeamHealShield:
                         TeamHealShield(party);
@@ -184,6 +188,19 @@ public class Pet
                 {
                     party[i].shield = party[i].maxShield;
                 }
+            }
+        }
+    }
+    private void SpreadShield(Character[] party)
+    {
+        Character target;
+        for (int i = 0; i < 10; i++)
+        {
+            target = Logic.ShieldFindWeakestPerc(party);
+            target.shield += Value / 10;
+            if (target.shield > target.maxShield)
+            {
+                target.shield = target.maxShield;
             }
         }
     }

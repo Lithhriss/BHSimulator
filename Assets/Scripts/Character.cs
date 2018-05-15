@@ -20,6 +20,7 @@ public enum PetType
     Skulldemort,
     Toebert,
     Urgoff,
+    Roogamenz,
     Fuvboi,
     Karlorr,
     Pumkwim,
@@ -61,6 +62,7 @@ public class Character
     private float totalTS;
 
     public List<Skill> skillList = new List<Skill>();
+    public List<Skill> onTurnSkills = new List<Skill>();
     public double priority;
 
     // Combat Stats
@@ -71,6 +73,7 @@ public class Character
     public int shield;
     public int maxShield;
     public float hpPerc { get { return (float)hp / (float)maxHp; } }
+    public float shieldPerc { get { return (float)shield / (float)maxShield; } }
     public float turnRate;
     public float interval;
     public float counter;
@@ -131,7 +134,8 @@ public class Character
         Axe,
         Laser,
         DemonStaff,
-        ShieldStaff
+        ShieldStaff,
+        Harvester
     }
     public MetaRune metaRune;
     public enum MetaRune
@@ -480,7 +484,12 @@ public class Character
             case PetType.Urgoff:
                 float urgoffScaling = 48f;
                 if (petProcType == PetProcType.PerHit) urgoffScaling = 43f;
-                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), urgoffScaling, 10f, PetAbilty.SpreahHeal, petProcType);
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), urgoffScaling, 20f, PetAbilty.SpreahHeal, petProcType);
+                break;
+            case PetType.Roogamenz:
+                float rooScaling = 44f;
+                if (petProcType == PetProcType.PerHit) rooScaling = 40f;
+                pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), rooScaling, 30f, PetAbilty.SpreadShield, petProcType);
                 break;
             case PetType.Karlorr:
                 pet = new Pet((petProcType == PetProcType.AllType ? 30f + PetLevel * 0.75f : 60f + PetLevel * 1.5f), 53f, 10f, PetAbilty.WeakestAttack, petProcType);
@@ -641,6 +650,12 @@ public class Character
                 skillList.Add(new Skill(0.3f, 0.2f, 5, 2, SkillType.AOEDrain));
                 skillList.Add(new Skill(1.12f, 0.2f, 75, 2, SkillType.SelfSHield));
                 skillList.Add(new Skill(1.8f, 0.2f, 5, 4, SkillType.Target));
+                break;
+            case Weapon.Harvester:
+                skillList.Add(new Skill(0.6f, 0.1f, 30, 2, SkillType.AOE));
+                skillList.Add(new Skill(1.35f, 0.1f, 50, 2, SkillType.Target));
+                skillList.Add(new Skill(1.80f, 0.1f, 5, 8, SkillType.SpreadHeal));
+                skillList.Add(new Skill(2.85f, 0.1f, 5, 8, SkillType.Weakest));
                 break;
         }
     }
@@ -933,6 +948,9 @@ public class Character
                 case MythicBonus.CryptTunic:
                     deflectChance += 2f;
                     break;
+                case MythicBonus.EngulfintArtifact:
+                    onTurnSkills.Add(new Skill(0.02f, 10, 100, 0, SkillType.OnTurnShield));
+                    break;
                 case MythicBonus.Nemesis:
                     dsChance += 4f;
                     break;
@@ -961,15 +979,22 @@ public class Character
         return false;
     }
 
-    public void ActivateOnTurnPassives()
+    public void ActivateOnTurnPassives(Character[] party, Character[] opponents)
     {
         if (FindSetBonus(SetBonus.TatersBonus, 3))
         {
-
+            // too lazy to implement, who uses it anyway?
         }
-        if (FindMythBonus(MythicBonus.EngulfintArtifact))
+        foreach (Skill skill in onTurnSkills)
         {
-            //shield team
+            skill.ApplySkill(this, party, opponents);
+        }
+        if (weapon == Weapon.Harvester)
+        {
+            if (Logic.RNGroll(5f))
+            {
+                skillList[Logic.random.Next(skillList.Count)].ApplySkill(this, party, opponents);
+            }
         }
     }
 

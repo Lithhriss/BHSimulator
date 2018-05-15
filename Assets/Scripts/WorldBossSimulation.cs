@@ -49,14 +49,14 @@ public class WorldBossSimulation
         DifficultyModifier = difficultyModifier;
     }
 
-    public IEnumerator Simulation(int boss, System.Action<float> callback)
+    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback)
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
         redirectCount = 0;
 
         
-        int games = 1000;
+        int games = fightCount;
         int gameDivider = Convert.ToInt32(games / 100);
         float win = 0;
         float lose = 0;
@@ -103,7 +103,7 @@ public class WorldBossSimulation
                             if (character._isHero)
                             {
                                 character.IncrementSp(heroes);
-                                character.ActivateOnTurnPassives();
+                                character.ActivateOnTurnPassives(heroes, enemies);
                                 if (character.pet != null) character.pet.PetSelection(character, heroes, enemies, PetProcType.PerTurn);
                                 if (matchOver) break;
                                 character.ChooseSkill(heroes, enemies);
@@ -128,7 +128,7 @@ public class WorldBossSimulation
             {
                 lose++;
             }
-            if ((float)p % gameDivider == 0 && p > 0)
+            if (p % gameDivider == 0 && p > 0)
             {
                 progressionBar += 1;
                 slider.value = progressionBar;

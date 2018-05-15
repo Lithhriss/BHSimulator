@@ -275,6 +275,34 @@ class Logic
 
         //return heroes.Where(hero => hero.alive).OrderBy(hero => hero.hpPerc).First();
     }
+
+    public static Character ShieldFindWeakestPerc(Character[] heroes)
+    {
+        int i;
+        int lowest = 0;
+        //HpPerc(heroes);
+        for (i = 0; i < heroes.Length - 1; i++)
+        {
+            if (heroes[lowest].shieldPerc >= heroes[i + 1].shieldPerc)
+            {
+                if (heroes[i + 1].alive)
+                {
+                    lowest = i + 1;
+                }
+                else
+                {
+                    if (!heroes[lowest].alive)
+                    {
+                        lowest = i + 1;
+                    }
+                }
+            }
+        }
+        return heroes[lowest];
+
+        //return heroes.Where(hero => hero.alive).OrderBy(hero => hero.hpPerc).First();
+    }
+
     public static Character SelectTarget(Character[] party)
     {
         while (true)

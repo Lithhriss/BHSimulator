@@ -105,6 +105,7 @@ public class Launch : MonoBehaviour
     public Dropdown wbName;
     public Dropdown tier;
     public Dropdown wbDifficulty;
+    public InputField fightCountField;
 
 	void Awake()
 	{
@@ -128,7 +129,7 @@ public class Launch : MonoBehaviour
                 winrateToShow = wbSim.winRate;
                 break;
         }
-        myText.text = "Winrate over " + totalGameToShow + " fights = " + winrateToShow + "%";
+        myText.text = " fights = " + winrateToShow + "%";
     }
 
     public void OnClickInitRaid()
@@ -188,7 +189,8 @@ public class Launch : MonoBehaviour
             default:
                 break;
         }
-		StartCoroutine(rdSim.Simulation(bossDiff, callback => {
+        if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
+		StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossDiff, callback => {
 			IsRunning = false;
 		}));
         isRaid = false;
@@ -216,6 +218,7 @@ public class Launch : MonoBehaviour
             wbSim.heroes[3] = hero_4.GetHero();
             wbSim.heroes[4] = hero_5.GetHero();
         }
-        StartCoroutine(wbSim.Simulation(wbName.value, callback => { IsRunning = false; }));
+        if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
+        StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }));
     }
 }

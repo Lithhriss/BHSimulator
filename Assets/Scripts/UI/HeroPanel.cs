@@ -66,7 +66,9 @@ public class HeroPanel : MonoBehaviour
     public void ShowProcTypeOnSpecificPet()
     {
         if (pet.options[pet.value].text == PetType.Toebert.ToString() ||
-            pet.options[pet.value].text == PetType.Urgoff.ToString())
+            pet.options[pet.value].text == PetType.Urgoff.ToString()  ||
+            pet.options[pet.value].text == PetType.Roogamenz.ToString()) 
+
         {
             petProcType.gameObject.SetActive(true);
         }
@@ -736,6 +738,9 @@ public class HeroPanel : MonoBehaviour
             case "Urgoff":
                 pet = PetType.Urgoff;
                 break;
+            case "Roogamenz":
+                pet = PetType.Roogamenz;
+                break;
             case "Fuvboi":
                 pet = PetType.Fuvboi;
                 break;
@@ -871,6 +876,9 @@ public class HeroPanel : MonoBehaviour
                 break;
             case "DemonStaff":
                 weapon = Character.Weapon.DemonStaff;
+                break;
+            case "Harvester":
+                weapon = Character.Weapon.Harvester;
                 break;
             default:
 				weapon = Character.Weapon.None;
