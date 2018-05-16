@@ -176,11 +176,11 @@ class Logic
     public static int DefensiveProcCase(Character hero)
     {
         int scenario = 10;
-        if (RNGroll(hero.blockChance)) { scenario = 1; }
-        if (hero.FindMythBonus(MythicBonus.HoodOfMenace) && hero.hp > 0.75f * hero.maxHp)
-        {
-            if (RNGroll(hero.evadeChance + 5f)) { scenario = 0; }
-        }
+		float evadeMod = 0f;
+		        if (RNGroll(hero.blockChance)) { scenario = 1; }
+		if (hero.FindMythBonus(MythicBonus.HoodOfMenace) && hero.hp > 0.75f * hero.maxHp) evadeMod += 5f;
+
+		if (RNGroll(hero.evadeChance + evadeMod)) { scenario = 0; }
         return scenario;
     }
     public static Character RedirectSelection(Character target, Character[] party)

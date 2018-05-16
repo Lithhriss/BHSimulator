@@ -210,7 +210,7 @@ public class Skill
                     break;
                 case SkillType.OnTurnShield:
                     OnTurnShieldTeam(author, party);
-                    amountToCast = 0;
+                    amountToCast = 1;
                     break;
             }
             amountToCast--;
@@ -242,7 +242,7 @@ public class Skill
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-            if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectTarget(opponents), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
+			if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
         }
     }
 

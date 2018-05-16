@@ -955,7 +955,7 @@ public class Character
                     dsChance += 4f;
                     break;
                 case MythicBonus.Bedlam:
-                    bonusHealing += 8f;
+                    bonusHealing += 0.08f;
                     break;
             }
         }
