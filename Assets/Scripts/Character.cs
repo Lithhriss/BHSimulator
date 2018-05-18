@@ -135,6 +135,7 @@ public class Character
         Laser,
         DemonStaff,
         ShieldStaff,
+        YakBlade,
         Harvester
     }
     public MetaRune metaRune;
@@ -637,7 +638,7 @@ public class Character
                 skillList.Add(new Skill(0.39f, 0.5f, 15, 2, SkillType.Ricochet4));
                 skillList.Add(new Skill(1.35f, 0.5f, 15, 2, SkillType.Target));
                 skillList.Add(new Skill(1.72f, 0.5f, 30, 2, SkillType.Closest));
-                skillList.Add(new Skill(1.2f, 0.5f, 30, 2, SkillType.SpreadHeal));
+                skillList.Add(new Skill(1.2f, 0.5f, 30, 4, SkillType.SpreadHeal));
                 break;
             case Weapon.DemonStaff:
                 skillList.Add(new Skill(1.42f, 0.2f, 5, 2, SkillType.Weakest));
@@ -650,6 +651,12 @@ public class Character
                 skillList.Add(new Skill(0.3f, 0.2f, 5, 2, SkillType.AOEDrain));
                 skillList.Add(new Skill(1.12f, 0.2f, 75, 2, SkillType.SelfSHield));
                 skillList.Add(new Skill(1.8f, 0.2f, 5, 4, SkillType.Target));
+                break;
+            case Weapon.YakBlade:
+                skillList.Add(new Skill(0.82f, 0.1f, 10, 2, SkillType.Pierce3));
+                skillList.Add(new Skill(1.35f, 0.1f, 10, 2, SkillType.Target));
+                skillList.Add(new Skill(0.9f, 0.1f, 65, 2, SkillType.SpreadHeal));
+                skillList.Add(new Skill(0.8f, 0.1f, 5, 4, SkillType.AOE));
                 break;
             case Weapon.Harvester:
                 skillList.Add(new Skill(0.6f, 0.1f, 30, 2, SkillType.AOE));
@@ -764,7 +771,7 @@ public class Character
                 skillList.Add(new Skill(2.7f, 0.3f, 10, 4, SkillType.Execute));
                 break;
             case "Robomech":
-                skillList.Add(new Skill(0.52f, 0.2f, 5, 2, SkillType.Closest));
+                skillList.Add(new Skill(0.52f, 0.2f, 5, 2, SkillType.Ricochet2));
                 skillList.Add(new Skill(0.6f, 0.2f, 5, 2, SkillType.AOE));
                 skillList.Add(new Skill(1.9f, 0.2f, 50, 4, SkillType.Weakest));
                 skillList.Add(new Skill(1.2f, 0.2f, 30, 4, SkillType.AOEHeal));
@@ -916,7 +923,7 @@ public class Character
                         agilityRunes += 6f;
                         if (set.GetPieceCount() > 2)
                         {
-                            taterBonus = true;
+                            onTurnSkills.Add(new Skill(0.13f, 0.75f, 0, 0, SkillType.WeakestTayto));
                         }
                         break;
                     case SetBonus.InfernoBonus:
@@ -1131,7 +1138,7 @@ public class Character
         int position = Array.IndexOf(party, this);
         for (int i = position - 1; i < position + 1; i++)
         {
-            if (!(i < 0 || i > party.Length) && party[i].alive)
+            if (!(i < 0 || i >= party.Length) && party[i].alive)
             {
                 foreach (Set set in party[i].setArray)
                 {
@@ -1155,15 +1162,16 @@ public class Character
     {
         Boolean isAoeAccepted = WorldBossSimulation.IsAoeEnabled(opponents);
         Boolean isHealingNeeded = Logic.IsHealingNeeded(party);
+        Boolean isShieldingNeeded = Logic.IsShieldingNeeded(this);
         int skillRange;
         int skillRoll;
         int skillInc = 0;
 
-        skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded)).Sum(skill => skill.Weight));
+        skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded || skill.IsShielding == isShieldingNeeded)).Sum(skill => skill.Weight));
         skillRoll = random.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
-            if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded))
+            if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded || skillList[i].IsShielding == isShieldingNeeded))
             {
                 skillInc += skillList[i].Weight;
                 if (skillRoll < skillInc)

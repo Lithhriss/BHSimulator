@@ -26,7 +26,8 @@ public enum SkillType
     Ricochet2,
     Unity,
     Revive,
-    OnTurnShield
+    OnTurnShield,
+    WeakestTayto
 
 }
 public enum Boolean
@@ -57,6 +58,21 @@ public class Skill
             }
         }
     }
+
+    public Boolean IsShielding
+    {
+        get
+        {
+            switch (skillType)
+            {
+                case SkillType.SelfSHield:
+                    return Boolean.True;
+                default:
+                    return Boolean.Null;
+            }
+        }
+    }
+
     public Boolean IsAOE
     {
         get
@@ -170,6 +186,9 @@ public class Skill
                 case SkillType.SelfHeal:
                     SelfHealSkill(author);
                     break;
+                case SkillType.SelfSHield:
+                    SelfShieldSkill(author);
+                    break;
                 case SkillType.SpreadHeal:
                     SpreadHealSkill(author, party);
                     break;
@@ -212,6 +231,11 @@ public class Skill
                     OnTurnShieldTeam(author, party);
                     amountToCast = 1;
                     break;
+                case SkillType.WeakestTayto:
+                    WeakestTaytoSkill(author, party, opponents);
+                    amountToCast = 1;
+                    break;
+
             }
             amountToCast--;
         }
@@ -276,6 +300,13 @@ public class Skill
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectWeakest(opponents), author, opponents, party, ref absorbProc);
+        DamageLogic(author, party, opponents, target, absorbProc);
+    }
+    private void WeakestTaytoSkill(Character author, Character[] party, Character[] opponents)
+    {
+        //find target 
+        bool absorbProc = false;
+        Character target = Logic.SelectWeakest(opponents);
         DamageLogic(author, party, opponents, target, absorbProc);
     }
     private void TargetHealSkill(Character author, Character[] party)
@@ -405,6 +436,13 @@ public class Skill
         author.hp += attackValue;
         if (author.hp > author.maxHp) author.hp = author.maxHp;
     }
+    private void SelfShieldSkill(Character author)
+    {
+        int attackValue = GetValue(author);
+        author.shield += attackValue;
+        if (author.shield > author.maxShield) author.shield = author.maxShield;
+    }
+
     private void AoeSkill(Character author, Character[] party, Character[] opponents)
     {
         bool absorbProc = false;

@@ -50,6 +50,15 @@ class Logic
             target.shield = target.maxShield;
         }
     }
+
+    public static Boolean IsShieldingNeeded(Character author)
+    {
+
+        if (author.alive && author.shield < author.maxShield * 0.75f) return Boolean.True;
+        
+        return Boolean.False;
+    }
+
     public static void Hit(int attackValue, Character target, Character author, bool isBlocked, Character[] opponents, Character[] party)
     {
         float attackModifier = 1f + author.ReturnPersonalAttackMods(target, opponents, party);

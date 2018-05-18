@@ -5,6 +5,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /WebBuilds/
+/[Ww]indows_[Bb]uild/
 /Assets/AssetStoreTools*
 sysinfo.txt
 *.pidb.meta
@@ -30,6 +31,7 @@ ExportedObj/
 *.unitypackage
 *.app
 *.exe
+*.zip
 
 # OS Generated
 .DS_Store

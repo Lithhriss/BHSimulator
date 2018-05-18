@@ -880,6 +880,12 @@ public class HeroPanel : MonoBehaviour
             case "Harvester":
                 weapon = Character.Weapon.Harvester;
                 break;
+            case "ShieldStaff":
+                weapon = Character.Weapon.ShieldStaff;
+                break;
+            case "YakBlade":
+                weapon = Character.Weapon.YakBlade;
+                break;
             default:
 				weapon = Character.Weapon.None;
 				break;
