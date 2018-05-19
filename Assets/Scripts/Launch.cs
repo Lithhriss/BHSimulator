@@ -93,11 +93,8 @@ public class Launch : MonoBehaviour
 		}
 	}
 
-    public HeroPanel hero_1;
-    public HeroPanel hero_2;
-    public HeroPanel hero_3;
-    public HeroPanel hero_4;
-    public HeroPanel hero_5;
+    public HeroPanel[] heroes;
+
     public Text myText;
     public Dropdown bossName;
     public Dropdown bossDifficulty;
@@ -106,6 +103,8 @@ public class Launch : MonoBehaviour
     public Dropdown tier;
     public Dropdown wbDifficulty;
     public InputField fightCountField;
+    public PlayerPanelToggle ppt;
+    
 
 	void Awake()
 	{
@@ -138,12 +137,14 @@ public class Launch : MonoBehaviour
         gameMode = GameMode.Raid;
         rdSim = new RaidSimulation();
         totalGameToShow = rdSim.games;
+        int playerNumber = ppt.GetPlayerNumber();
+        Debug.Log(playerNumber);
+        rdSim.heroes = new Character[playerNumber];
+        for (int i = 0; i < playerNumber; i++)
+        {
+            rdSim.heroes[i] = heroes[i].GetHero();
+        }
 
-        rdSim.heroes[0] = hero_1.GetHero();
-        rdSim.heroes[1] = hero_2.GetHero();
-        rdSim.heroes[2] = hero_3.GetHero();
-        rdSim.heroes[3] = hero_4.GetHero();
-        rdSim.heroes[4] = hero_5.GetHero();
 
         int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
         Debug.Log(difficultyChecker);
@@ -202,21 +203,31 @@ public class Launch : MonoBehaviour
         wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);
         totalGameToShow = wbSim.Games;
         gameMode = GameMode.Wb;
+        int playerNumber = ppt.GetPlayerNumber();
+        //rdSim.heroes = new Character[playerNumber];
         if (wbName.value == 1)
         {
-            wbSim.heroes = new Character[3];
-            wbSim.heroes[0] = hero_1.GetHero();
-            wbSim.heroes[1] = hero_2.GetHero();
-            wbSim.heroes[2] = hero_3.GetHero();
+            if (playerNumber < 3)
+            {
+                wbSim.heroes = new Character[playerNumber];
+            }
+            else
+            {
+                wbSim.heroes = new Character[3];
+                playerNumber = 3;
+            }
+            for (int i = 0; i < playerNumber; i++)
+            {
+                wbSim.heroes[i] = heroes[i].GetHero();
+            }
         }
         else
         {
-            wbSim.heroes = new Character[5];
-            wbSim.heroes[0] = hero_1.GetHero();
-            wbSim.heroes[1] = hero_2.GetHero();
-            wbSim.heroes[2] = hero_3.GetHero();
-            wbSim.heroes[3] = hero_4.GetHero();
-            wbSim.heroes[4] = hero_5.GetHero();
+            rdSim.heroes = new Character[playerNumber];
+            for (int i = 0; i < playerNumber; i++)
+            {
+                wbSim.heroes[i] = heroes[i].GetHero();
+            }
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
         StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }));

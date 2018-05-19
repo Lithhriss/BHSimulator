@@ -1025,7 +1025,7 @@ public class Character
 
             for (int i = position - 1; i < position + 1; i++)
             {
-                if (!(i < 0 || i > party.Length) && party[i].alive)
+                if (!(i < 0 || i >= party.Length) && party[i].alive)
                 {
                     foreach (Set set in party[i].setArray)
                     {

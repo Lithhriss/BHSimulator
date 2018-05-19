@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class RaidSimulation
 {
-    public Character[] heroes = new Character[5];
+    public Character[] heroes;
     public Character[] enemies = new Character[1];
     private bool isNotHero = false;
     public int difficultyModifier;
