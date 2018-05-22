@@ -77,6 +77,8 @@ public class Character
     public float turnRate;
     public float interval;
     public float counter;
+    public float enrageBar;
+    public float maxEnrage;
 
     // Specials
     public float critChance;
@@ -88,6 +90,8 @@ public class Character
     public float evadeChance;
     public float deflectChance;
     public float absorbChance;
+    public float enrage;
+    public float teamEnrage;
 
     //new
     public float meterlessChance;
@@ -166,6 +170,10 @@ public class Character
         totalTS = power + stamina + agility;
         critChance = crit;
         critDamage = (100f + critdmg) / 100f;
+        enrageBar = 0f;
+        teamEnrage = 0f;
+        maxEnrage = maxHp / 10;
+        enrage = 0f;
         empowerChance = emp;
         dsChance = ds;
         blockChance = block;
@@ -436,6 +444,10 @@ public class Character
         hp = Convert.ToInt32(stamina * 10 * staminaRunes);
         maxHp = hp;
         maxShield = Convert.ToInt32(maxHp / 2);
+        enrageBar = 0f;
+        maxEnrage = maxHp / 10;
+        enrage = 0f;
+        //teamEnrage = 0f;
         interval = 100 / turnRate;
         counter = 0;
         sp = 0;
@@ -824,6 +836,7 @@ public class Character
         hp = maxHp;
         shield = 0;
         counter = 0;
+        enrageBar = 0f;
         sp = 0;
         redirect = true;
         spUsed = false;
@@ -943,6 +956,9 @@ public class Character
         {
             switch (mythicBonus)
             {
+                case MythicBonus.Supersition_Not_Implemented:
+                    teamEnrage = 3f;
+                    break;
                 case MythicBonus.Pewpew:
                     ricochetChance = 3f;
                     break;

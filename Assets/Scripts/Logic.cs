@@ -119,6 +119,17 @@ class Logic
         {
             author.hp -= Convert.ToInt32(attackValue * 0.10);
         }
+        //enrage and team enrage
+        target.enrageBar += attackValue * target.enrage / 100f;
+        if (target.enrageBar > target.maxEnrage) target.enrageBar = target.maxEnrage;
+        foreach (Character member in opponents)
+        {
+            if (member.alive && member.teamEnrage > 0)
+            {
+                member.enrageBar += attackValue * target.teamEnrage / 100f;
+                if (target.enrageBar > target.maxEnrage) target.enrageBar = target.maxEnrage;
+            }
+        }
         if (target.shield > 0)
         {
             if (attackValue > target.shield)

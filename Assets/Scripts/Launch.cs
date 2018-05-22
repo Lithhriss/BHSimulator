@@ -223,7 +223,7 @@ public class Launch : MonoBehaviour
         }
         else
         {
-            rdSim.heroes = new Character[playerNumber];
+            wbSim.heroes = new Character[playerNumber];
             for (int i = 0; i < playerNumber; i++)
             {
                 wbSim.heroes[i] = heroes[i].GetHero();

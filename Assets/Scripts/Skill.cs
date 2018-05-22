@@ -130,16 +130,17 @@ public class Skill
         IsEmp = Logic.RNGroll(character.empowerChance);
     }
 
-    public int GetValue(Character character)
+    public int GetValue(Character author)
     {
-        int attackModifier = Convert.ToInt32(Value * Range * character.power);
+        int attackModifier = Convert.ToInt32(Value * Range * (author.power + author.enrageBar));
         int returnValue = 0;
         int mod = Convert.ToInt32(Math.Pow(-1, random.Next(2)));
-        returnValue = Convert.ToInt32(character.power * Value + random.Next(attackModifier) * mod);
+        returnValue = Convert.ToInt32((author.power + author.enrageBar) * Value + random.Next(attackModifier) * mod);
+        author.enrageBar = 0;
 
         if (IsCrit)
         {
-            returnValue = Convert.ToInt32(returnValue * character.critDamage);
+            returnValue = Convert.ToInt32(returnValue * author.critDamage);
         }
         if (IsEmp)
         {
@@ -442,7 +443,6 @@ public class Skill
         author.shield += attackValue;
         if (author.shield > author.maxShield) author.shield = author.maxShield;
     }
-
     private void AoeSkill(Character author, Character[] party, Character[] opponents)
     {
         bool absorbProc = false;
@@ -501,7 +501,6 @@ public class Skill
             else { break; }
         }
     }
-
     private void OnTurnShieldTeam(Character author, Character[] party)
     {
         int attackValue = GetValue(author);
