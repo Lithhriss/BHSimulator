@@ -92,8 +92,8 @@ public class Launch : MonoBehaviour
 			}
 		}
 	}
-
-    public HeroPanel[] heroes;
+    public GameObject[] heroContainers;
+    private HeroPanel[] heroes;
 
     public Text myText;
     public Dropdown bossName;
@@ -133,6 +133,7 @@ public class Launch : MonoBehaviour
 
     public void OnClickInitRaid()
     {
+        InitHeroArray();
 		IsRunning = true;
         gameMode = GameMode.Raid;
         rdSim = new RaidSimulation();
@@ -199,6 +200,7 @@ public class Launch : MonoBehaviour
 
     public void OnClickInitWB()
     {
+        InitHeroArray();
         int difficultyChecker = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
         wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);
         totalGameToShow = wbSim.Games;
@@ -231,5 +233,14 @@ public class Launch : MonoBehaviour
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
         StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }));
+    }
+
+    private void InitHeroArray()
+    {
+        heroes = new HeroPanel[5];
+        for (int i = 0; i < heroContainers.Length; i++)
+        {
+            heroes[i] = heroContainers[i].GetComponentInChildren<HeroPanel>();
+        }
     }
 }

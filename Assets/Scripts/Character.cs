@@ -431,6 +431,7 @@ public class Character
     public void InitialiseHero()
     {
         totalTS = power + stamina + agility;
+        
         AttributePassiveSetBonuses();
         AttributePassiveMythBonuses();
         powerRunes = (100f + powerRunes) / 100f;
@@ -860,7 +861,7 @@ public class Character
                 {
                     //Raids
                     case SetBonus.AresBonus:
-                        meterlessChance = 20f;
+                        meterlessChance += 20f;
                         break;
                     case SetBonus.DivinityBonus:
                         //not passive bonus
@@ -941,7 +942,7 @@ public class Character
                         break;
                     case SetBonus.InfernoBonus:
                         empowerChance += 4f;
-                        if (set.GetPieceCount() > 2) meterlessChance = 20f;
+                        if (set.GetPieceCount() > 2) meterlessChance += 20f;
                         //bonus not passive
                         break;
                 }
@@ -956,7 +957,7 @@ public class Character
         {
             switch (mythicBonus)
             {
-                case MythicBonus.Supersition_Not_Implemented:
+                case MythicBonus.Supersition:
                     teamEnrage = 3f;
                     break;
                 case MythicBonus.Pewpew:

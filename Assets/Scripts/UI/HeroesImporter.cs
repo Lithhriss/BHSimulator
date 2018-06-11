@@ -14,7 +14,8 @@ public class HeroesImporter : MonoBehaviour
     public Button openOverlayButton;
     public Button submitImportButton;
     public GameObject importOverlay;
-    public HeroPanel[] heroes;
+    public GameObject[] heroContainers;
+    private HeroPanel[] heroes;
     public InputField importInputField;
 
     void Start()
@@ -60,7 +61,7 @@ public class HeroesImporter : MonoBehaviour
     private String GetHeroesCsv()
     {
         StringBuilder sb;
-
+        InitHeroArray();
         sb = new StringBuilder();
         for (var i = 0; i < heroes.Length; i++)
         {
@@ -129,7 +130,7 @@ public class HeroesImporter : MonoBehaviour
     public void UpdateHeroPanelsFromCsv(String csv)
     {
         String[] lines;
-
+        InitHeroArray();
 
         lines = csv.Split('\n');
 
@@ -202,5 +203,14 @@ public class HeroesImporter : MonoBehaviour
 
 
         return hero;
+    }
+
+    private void InitHeroArray()
+    {
+        heroes = new HeroPanel[5];
+        for (int i = 0; i < heroContainers.Length; i++)
+        {
+            heroes[i] = heroContainers[i].GetComponentInChildren<HeroPanel>();
+        }
     }
 }

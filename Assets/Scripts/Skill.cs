@@ -154,7 +154,7 @@ public class Skill
         int amountToCast = 1;
         if (author.gateKeeperBonus)
         {
-            if (Logic.RNGroll(0.5f)) amountToCast += 3;
+            if (Logic.RNGroll(0.5f)) amountToCast += 4;
         }
         if (Logic.RNGroll(author.dsChance)) amountToCast++;
         if (Logic.RNGroll(author.quadChance)) amountToCast += 3;

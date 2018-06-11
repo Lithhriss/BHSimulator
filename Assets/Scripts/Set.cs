@@ -38,7 +38,7 @@ public enum MythicBonus
     Pewpew,
     Hysteria_not_Implemented,
     Bub,
-    Supersition_Not_Implemented,
+    Supersition,
     NightVisage,
     Consumption,
     Decay,

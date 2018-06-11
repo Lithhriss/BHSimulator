@@ -165,7 +165,6 @@ public class HeroPanel : MonoBehaviour
         }
 
 		SetFieldsFromHero(hero);
-        Debug.Log("test");
     }
 
 	public void SetFieldsFromHero(Character hero)
@@ -377,6 +376,7 @@ public class HeroPanel : MonoBehaviour
             //Set Bonuses
             bonusHealing = 1f,
             quadChance = 0f,
+            meterlessChance = 0f,
             gateKeeperBonus = GateKeeperBonus.isOn,
 
             setArray = new Set[] 
@@ -626,8 +626,8 @@ public class HeroPanel : MonoBehaviour
             case "Bub":
                 mythicBonus = MythicBonus.Bub;
                 break;
-            case "Supersition_Not_Implemented":
-                mythicBonus = MythicBonus.Supersition_Not_Implemented;
+            case "Supersition":
+                mythicBonus = MythicBonus.Supersition;
                 break;
             case "NightVisage":
                 mythicBonus = MythicBonus.NightVisage;
