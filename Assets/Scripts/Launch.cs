@@ -11,10 +11,14 @@ public class Launch : MonoBehaviour
 	public static Launch instance;
     WorldBossSimulation wbSim;
     RaidSimulation rdSim;
+
     private bool isRaid;
     private bool isWb;
+    private bool cancelButton;
+
     private float winrateToShow;
     private int totalGameToShow;
+
     private GameMode gameMode;
     public enum GameMode
     {
@@ -96,6 +100,8 @@ public class Launch : MonoBehaviour
     private HeroPanel[] heroes;
 
     public Text myText;
+    public Text errorText;
+    public Slider slider;
     public Dropdown bossName;
     public Dropdown bossDifficulty;
     public static int bossDiff;
@@ -111,10 +117,12 @@ public class Launch : MonoBehaviour
 		instance = this;
         isRaid = false;
         isWb = false;
+        cancelButton = false;
 	}
 
     void Start()
-    {        
+    {
+        errorText.text = "";
     }
 
     void Update()
@@ -133,7 +141,7 @@ public class Launch : MonoBehaviour
 
     public void OnClickInitRaid()
     {
-        InitHeroArray();
+        ResetUI();
 		IsRunning = true;
         gameMode = GameMode.Raid;
         rdSim = new RaidSimulation();
@@ -192,21 +200,18 @@ public class Launch : MonoBehaviour
                 break;
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-		StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossDiff, callback => {
-			IsRunning = false;
-		}));
+		StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossDiff, callback => {IsRunning = false;}, StopSim));
         isRaid = false;
     }
 
     public void OnClickInitWB()
     {
-        InitHeroArray();
+        ResetUI();
         int difficultyChecker = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
         wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker]);
         totalGameToShow = wbSim.Games;
         gameMode = GameMode.Wb;
         int playerNumber = ppt.GetPlayerNumber();
-        //rdSim.heroes = new Character[playerNumber];
         if (wbName.value == 1)
         {
             if (playerNumber < 3)
@@ -232,7 +237,7 @@ public class Launch : MonoBehaviour
             }
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-        StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }));
+        StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }, StopSim));
     }
 
     private void InitHeroArray()
@@ -243,4 +248,28 @@ public class Launch : MonoBehaviour
             heroes[i] = heroContainers[i].GetComponentInChildren<HeroPanel>();
         }
     }
+
+    public void OnClickCancelSim()
+    {
+        cancelButton = true;
+    }
+
+    private bool StopSim(bool callFromSim)
+    {
+        if (cancelButton || callFromSim)
+        {
+            errorText.text = "Simulation has been forcibly stopped!";
+            return true;
+        }
+        return false;
+    }
+
+    private void ResetUI()
+    {
+        errorText.text = "";
+        cancelButton = false;
+        slider.value = 0;
+        InitHeroArray();
+    }
+
 }

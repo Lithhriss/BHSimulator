@@ -37,7 +37,7 @@ public class RaidSimulation
         }
     }
 
-    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback)
+    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback, Func<bool, bool> stopSim)
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
@@ -47,6 +47,8 @@ public class RaidSimulation
         //}
         float win = 0;
         float lose = 0;
+        bool breakSim = false;
+        int safetyNet = 2000;
 
         int games = fightCount;//number of times fight will run.
         int gameDivider = Convert.ToInt32(games / 100);
@@ -58,6 +60,7 @@ public class RaidSimulation
         }
         for (p = 0; p < games; p++)
         {
+            int turnCount = 0;
             float trCounter = 0;
             SetupEnemies(boss);
             Character[] charArray = new Character[heroes.Length + enemies.Length];
@@ -105,7 +108,13 @@ public class RaidSimulation
                         }
                     }
                 }
+                if (stopSim(turnCount > safetyNet))
+                {
+                    breakSim = true;
+                    break;
+                }
             }
+            if (breakSim) break;
             if (heroesAlive)
             {
                 win++;
