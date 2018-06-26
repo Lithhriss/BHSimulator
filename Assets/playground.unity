@@ -6215,27 +6215,30 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.51
-  m_Text: "09.06.18 - Added a drag feature allowing to swap heroes from ttheir positions\n\n22.05.18
-    - Added Enrage mechanic and superstition. Enrage variable isn't available yet.\n\n19.05.18
-    - Added option menu\n- You can select how many heroes are in your party (Nether
-    will default at 3)\n\n18.05.18 - Added Tayto 3/3 bonus\n- Fixed agony edge case
-    check\n\n16.05.18 - Fixed a bugs with Engulfing Artifact, Bedlam and evade.\n-
-    Added Yak Blade\n- Shield staff properly implemented\n\n15.05.18 - Added Roogamenz
-    pet and Harvester weapon\n- Fixed Urgoff random spread\n- Engulfing artifact works
-    as intended\n- Added Input field to modify the amount of fights to simulate. 10,000
-    is still very quick. An order of magnitude higher and it becomes to be pretty
-    slow.\n\n13.05.18 - New UI design to reduce set/myth clogging. 3 set and 6 mythic
-    slots are now available. You don't have to worry about stats given by sets/mythics.
-    Just input the stats given by runes, enchants, mounts and accs\r\n\r\n05.04.18
-    - Refactor of the main loop and spread heal skill resulting in a drastic decrease
-    in computing time\r\n\r\n01.04.18 - Fixed a Imprt/Export bug\r\n\r\n28.02.18 -
-    Refactored Pet Proc Code.\r\n- Added all Legendary and epic pets\r\n- Redesigned
-    the Dev Log to be able to hold a lot more information\r\n\r\n25.02.18 - Fixed
-    bug where using Laser would freeze the simulator\r\n- Fixed bug where using Buvboi
-    would freeze the simulator\r\n\r\n24.01.18 - I have decided to add a Dev Log to
-    keep you guys updated with development.\r\n- Bugs fixed : Purple and Green Bosses
-    had their power and stamina values inverted.\r\n- Raid Simulator integrated in
-    new architecture.\r\n\r\nFuture content : \r\n- Release GvG at some point\r"
+  m_Text: "21.06.18 - Added a stop buttong to stop ongoing simulations\n- Added a
+    safety feature that stops ongoing simulations if a fight lasts longer than 2000
+    team turns\n\n09.06.18 - Added a drag feature allowing to swap heroes from ttheir
+    positions\n\n22.05.18 - Added Enrage mechanic and superstition. Enrage variable
+    isn't available yet.\n\n19.05.18 - Added option menu\n- You can select how many
+    heroes are in your party (Nether will default at 3)\n\n18.05.18 - Added Tayto
+    3/3 bonus\n- Fixed agony edge case check\n\n16.05.18 - Fixed a bugs with Engulfing
+    Artifact, Bedlam and evade.\n- Added Yak Blade\n- Shield staff properly implemented\n\n15.05.18
+    - Added Roogamenz pet and Harvester weapon\n- Fixed Urgoff random spread\n- Engulfing
+    artifact works as intended\n- Added Input field to modify the amount of fights
+    to simulate. 10,000 is still very quick. An order of magnitude higher and it becomes
+    to be pretty slow.\n\n13.05.18 - New UI design to reduce set/myth clogging. 3
+    set and 6 mythic slots are now available. You don't have to worry about stats
+    given by sets/mythics. Just input the stats given by runes, enchants, mounts and
+    accs\r\n\r\n05.04.18 - Refactor of the main loop and spread heal skill resulting
+    in a drastic decrease in computing time\r\n\r\n01.04.18 - Fixed a Imprt/Export
+    bug\r\n\r\n28.02.18 - Refactored Pet Proc Code.\r\n- Added all Legendary and epic
+    pets\r\n- Redesigned the Dev Log to be able to hold a lot more information\r\n\r\n25.02.18
+    - Fixed bug where using Laser would freeze the simulator\r\n- Fixed bug where
+    using Buvboi would freeze the simulator\r\n\r\n24.01.18 - I have decided to add
+    a Dev Log to keep you guys updated with development.\r\n- Bugs fixed : Purple
+    and Green Bosses had their power and stamina values inverted.\r\n- Raid Simulator
+    integrated in new architecture.\r\n\r\nFuture content : \r\n- Release GvG at some
+    point\r"
 --- !u!222 &298781644
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6311,6 +6314,144 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 300835170}
+--- !u!1 &311075512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1626634331863130, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 311075513}
+  - component: {fileID: 311075516}
+  - component: {fileID: 311075515}
+  - component: {fileID: 311075514}
+  m_Layer: 5
+  m_Name: Stop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &311075513
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224804999160579458, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 311075512}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 0.012500001, y: 0.012500001, z: 0.012500001}
+  m_Children:
+  - {fileID: 1093257838}
+  m_Father: {fileID: 1190574635}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -1.3774166, y: -4.6499996}
+  m_SizeDelta: {x: 61.97, y: 35}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &311075514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114753089379295474, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 311075512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0.38431373, g: 0.21960784, b: 0.22647159, a: 1}
+    m_HighlightedColor: {r: 0.5294118, g: 0.32324374, b: 0.31764707, a: 1}
+    m_PressedColor: {r: 0.26666668, g: 0.17421934, b: 0.16862746, a: 1}
+    m_DisabledColor: {r: 0.32352942, g: 0.32352942, b: 0.32352942, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 311075515}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1182412855}
+        m_MethodName: OnClickCancelSim
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &311075515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114061177336321154, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 311075512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &311075516
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222404050680455688, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 311075512}
 --- !u!1 &313077073
 GameObject:
   m_ObjectHideFlags: 0
@@ -20888,6 +21029,84 @@ RectTransform:
   m_AnchoredPosition: {x: -0.00006102, y: -251.20624}
   m_SizeDelta: {x: 240, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1093257837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1312850173837388, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1093257838}
+  - component: {fileID: 1093257840}
+  - component: {fileID: 1093257839}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1093257838
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224655575685186556, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1093257837}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 311075513}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1093257839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114272987926964222, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1093257837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: caf550bce87742f4596248b1cd5c1c95, type: 3}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: STOP
+--- !u!222 &1093257840
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222161185551048652, guid: ebce69b0449f40d4197890fb73d72a70,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1093257837}
 --- !u!1 &1098639724
 GameObject:
   m_ObjectHideFlags: 0
@@ -22381,6 +22600,7 @@ MonoBehaviour:
   - {fileID: 452631343}
   myText: {fileID: 1766268922}
   errorText: {fileID: 2132412358}
+  slider: {fileID: 35429053}
   bossName: {fileID: 1589964763}
   bossDifficulty: {fileID: 1966119519}
   wbName: {fileID: 404477284}
@@ -22498,6 +22718,7 @@ Transform:
   m_Children:
   - {fileID: 689111317}
   - {fileID: 401600288}
+  - {fileID: 311075513}
   m_Father: {fileID: 1679204380}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24829,7 +25050,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Latest update - 09.06.18
+  m_Text: 'Latest update - 21.06.18
 
 '
 --- !u!222 &1272930121
@@ -41639,8 +41860,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -201.82, y: -62}
-  m_SizeDelta: {x: -423.66, y: 20}
+  m_AnchoredPosition: {x: -87.29999, y: -62}
+  m_SizeDelta: {x: -194.7, y: 20}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2132412357
 CanvasRenderer:

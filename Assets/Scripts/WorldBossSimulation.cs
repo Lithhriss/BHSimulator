@@ -49,7 +49,7 @@ public class WorldBossSimulation
         DifficultyModifier = difficultyModifier;
     }
 
-    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback, Func<bool, bool> stopSim)
+    public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback, Func<bool, bool> InvokeStopSim)
     {
         slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
@@ -60,7 +60,7 @@ public class WorldBossSimulation
         int gameDivider = Convert.ToInt32(games / 100);
         float win = 0;
         float lose = 0;
-        bool breakSim = false;
+        bool stopSim = false;
         int safetyNet = 2000;
 
 
@@ -94,7 +94,7 @@ public class WorldBossSimulation
             }
             charArray = charArray.OrderByDescending(chr => chr.turnRate).ToArray();
 
-            while (heroesAlive && enemiesAlive)
+            while (heroesAlive && enemiesAlive && !stopSim)
             {
                 foreach (Character character in charArray)
                 {
@@ -123,13 +123,10 @@ public class WorldBossSimulation
                         }
                     }
                 }
-                if (stopSim(turnCount > safetyNet))
-                {
-                    breakSim = true;
-                    break;
-                }
+                if (InvokeStopSim(turnCount > safetyNet)) stopSim = true;
+
             }
-            if (breakSim) break;
+            if (stopSim) break;
             if (heroesAlive)
             {
                 win++;

@@ -200,7 +200,7 @@ public class Launch : MonoBehaviour
                 break;
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-		StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossDiff, callback => {IsRunning = false;}, StopSim));
+		StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossDiff, callback => {IsRunning = false;}, InvokeStopSim));
         isRaid = false;
     }
 
@@ -237,7 +237,7 @@ public class Launch : MonoBehaviour
             }
         }
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-        StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }, StopSim));
+        StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }, InvokeStopSim));
     }
 
     private void InitHeroArray()
@@ -254,7 +254,7 @@ public class Launch : MonoBehaviour
         cancelButton = true;
     }
 
-    private bool StopSim(bool callFromSim)
+    private bool InvokeStopSim(bool callFromSim)
     {
         if (cancelButton || callFromSim)
         {
@@ -271,5 +271,5 @@ public class Launch : MonoBehaviour
         slider.value = 0;
         InitHeroArray();
     }
-
+    
 }
