@@ -845,7 +845,7 @@ public class Character
         luminaryLife = true;
     }
 
-    public void IncrementCounter()
+    public void IncCounter()
     {
         counter += turnRate;
         //counter++;
@@ -1066,7 +1066,7 @@ public class Character
                         returnMod += 0.1f;
                         break;
                     case SetBonus.ConducBonus:
-                        if (set.GetPieceCount() > 3 && WorldBossSimulation.GetPartyCount(opponents) == 1) returnMod += 0.25f;
+                        if (set.GetPieceCount() > 3 && Simulation.GetPartyCount(opponents) == 1) returnMod += 0.25f;
                         break;
                     case SetBonus.InfernoBonus:
                         if (set.GetPieceCount() == 4 && spUsed) returnMod += 0.2f;
@@ -1115,7 +1115,7 @@ public class Character
                 switch (set.GetBonus())
                 {
                     case SetBonus.OblitBonus:
-                        if (set.GetPieceCount() > 3 && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) returnMod += 0.15f;
+                        if (set.GetPieceCount() > 3 && Simulation.GetPartyCount(opponents) == opponents.Length) returnMod += 0.15f;
                         break;
                     case SetBonus.NWBonus:
                         if (set.GetPieceCount() > 3 && shield > 0) returnMod += 0.15f;
@@ -1142,7 +1142,7 @@ public class Character
         agility = Convert.ToInt32(ts * 1.1f * agility / totalTS);
     }
 
-    public void IncrementSp(Character[] party)
+    public void IncSp(Character[] party)
     {
         sp++;
         float spRegen = 0f;
@@ -1170,7 +1170,7 @@ public class Character
             sp++;
         }
     }
-    public void SubstractCounter(float value)
+    public void SubCount(float value)
     {
         counter -= value;
         //counter -= interval;

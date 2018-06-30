@@ -160,7 +160,7 @@ public class Skill
         if (Logic.RNGroll(author.quadChance)) amountToCast += 3;
         while (amountToCast != 0)
         {
-            if (WorldBossSimulation.GetPartyCount(opponents) == 0) return;
+            if (Simulation.GetPartyCount(opponents) == 0) return;
             StoreRandomFactors(author);
             switch (skillType)
             {
@@ -267,7 +267,7 @@ public class Skill
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-			if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
+			if (Logic.RNGroll(author.ricochetChance) && Simulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
         }
     }
 

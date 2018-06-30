@@ -248,7 +248,7 @@ public class Pet
         while (true)
         {
             int target = random.Next(enemies.Length);
-            if (WorldBossSimulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
+            if (Simulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
             {
                 enemies[target].hp -= Value;
                 return;

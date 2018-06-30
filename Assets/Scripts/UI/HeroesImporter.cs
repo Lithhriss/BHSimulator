@@ -24,7 +24,7 @@ public class HeroesImporter : MonoBehaviour
         submitImportButton.GetComponent<Button>().onClick.AddListener(SubmitImport_onClick);
         cancelImportButton.GetComponent<Button>().onClick.AddListener(CancelImport_onClick);
 
-        Launch.onRun += OnSimulationRun;
+        //Launch.onRun += OnSimulationRun;
     }
 
     void OnSimulationRun()
