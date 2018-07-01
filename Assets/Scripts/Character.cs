@@ -50,7 +50,7 @@ public enum PetType
 
 public class Character
 {
-    public static Random random = new Random(Guid.NewGuid().GetHashCode());
+    //public static Random random = new Random(Guid.NewGuid().GetHashCode());
 
 
     public bool _isHero;
@@ -1185,7 +1185,7 @@ public class Character
         int skillInc = 0;
 
         skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded || skill.IsShielding == isShieldingNeeded)).Sum(skill => skill.Weight));
-        skillRoll = random.Next(skillRange);
+        skillRoll = Logic.random.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
             if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded || skillList[i].IsShielding == isShieldingNeeded))

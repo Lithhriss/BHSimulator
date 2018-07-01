@@ -111,7 +111,7 @@ public class Skill
     }
     private bool IsCrit;
     private bool IsEmp;
-    public static Random random = new Random(Guid.NewGuid().GetHashCode());
+    //public static Random random = new Random(Guid.NewGuid().GetHashCode());
     private SkillType skillType;
 
 
@@ -134,8 +134,8 @@ public class Skill
     {
         int attackModifier = Convert.ToInt32(Value * Range * (author.power + author.enrageBar));
         int returnValue = 0;
-        int mod = Convert.ToInt32(Math.Pow(-1, random.Next(2)));
-        returnValue = Convert.ToInt32((author.power + author.enrageBar) * Value + random.Next(attackModifier) * mod);
+        int mod = Convert.ToInt32(Math.Pow(-1, Logic.random.Next(2)));
+        returnValue = Convert.ToInt32((author.power + author.enrageBar) * Value + Logic.random.Next(attackModifier) * mod);
         author.enrageBar = 0;
 
         if (IsCrit)

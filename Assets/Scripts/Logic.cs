@@ -6,12 +6,15 @@ using System.Linq;
 class Logic
 {
     public static Random random = new Random(Guid.NewGuid().GetHashCode());
+    private static RngLogger<int> logger = new RngLogger<int>();
     //methods for game logic
     public static bool RNGroll(float a)
     {
+        //return false;
         bool outcome;
         float chance = a * 10f;
         float roll = random.Next(1000);
+        //logger.WriteLine((int)roll);
         if (roll < chance)
         {
             outcome = true;

@@ -238,6 +238,7 @@ public class Launch : MonoBehaviour
         bossType = bossName.value;
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
         //current way to run sim, via coroutine to update loading bar every percent
+        Debug.Log("difficulty is " + difficulty);
         StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossType, callback => {IsRunning = false;}, InvokeStopSim));
         
     }
@@ -265,7 +266,6 @@ public class Launch : MonoBehaviour
         }
         wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker], playerNumber, heroes);
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-        Debug.Log("launching sim");
         StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }, InvokeStopSim));
     }
 
