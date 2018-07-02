@@ -132,10 +132,10 @@ public class Skill
 
     public int GetValue(Character author)
     {
-        int attackModifier = Convert.ToInt32(Value * Range * (author.power + author.enrageBar));
+        int attackModifier = Convert.ToInt32(Value * Range * author.power);
         int returnValue = 0;
-        int mod = Convert.ToInt32(Math.Pow(-1, Logic.random.Next(2)));
-        returnValue = Convert.ToInt32((author.power + author.enrageBar) * Value + Logic.random.Next(attackModifier) * mod);
+        int mod = Convert.ToInt32(Math.Pow(-1, ThreadSafeRandom.Next(2)));
+        returnValue = Convert.ToInt32((author.power + author.enrageBar) * Value + ThreadSafeRandom.Next(attackModifier) * mod);
         author.enrageBar = 0;
 
         if (IsCrit)
@@ -154,13 +154,13 @@ public class Skill
         int amountToCast = 1;
         if (author.gateKeeperBonus)
         {
-            if (Logic.RNGroll(0.5f)) amountToCast += 4;
+            if (Logic.RNGroll(0.5f)) amountToCast += 3;
         }
         if (Logic.RNGroll(author.dsChance)) amountToCast++;
         if (Logic.RNGroll(author.quadChance)) amountToCast += 3;
         while (amountToCast != 0)
         {
-            if (Simulation.GetPartyCount(opponents) == 0) return;
+            if (WorldBossSimulation.GetPartyCount(opponents) == 0) return;
             StoreRandomFactors(author);
             switch (skillType)
             {
@@ -267,7 +267,7 @@ public class Skill
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-			if (Logic.RNGroll(author.ricochetChance) && Simulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
+            if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
         }
     }
 

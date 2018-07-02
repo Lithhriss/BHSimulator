@@ -61,8 +61,8 @@ public class Pet
     {
         int attackModifier = Convert.ToInt32(Scaling * Range * author.power);
         int returnValue = 0;
-        int mod = Convert.ToInt32(Math.Pow(-1, Logic.random.Next(2)));
-        returnValue = Convert.ToInt32(author.power * Scaling + Logic.random.Next(attackModifier) * mod);
+        int mod = Convert.ToInt32(Math.Pow(-1, ThreadSafeRandom.Next(2)));
+        returnValue = Convert.ToInt32(author.power * Scaling + ThreadSafeRandom.Next(attackModifier) * mod);
 
         if (IsCrit)
         {
@@ -247,8 +247,8 @@ public class Pet
     {
         while (true)
         {
-            int target = Logic.random.Next(enemies.Length);
-            if (Simulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
+            int target = ThreadSafeRandom.Next(enemies.Length);
+            if (WorldBossSimulation.GetPartyCount(enemies) > 0 && enemies[target].hp > 0)
             {
                 enemies[target].hp -= Value;
                 return;

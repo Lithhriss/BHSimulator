@@ -5,15 +5,14 @@ using System.Linq;
 
 class Logic
 {
-    public static Random random = new Random(Guid.NewGuid().GetHashCode());
-    private static RngLogger<int> logger = new RngLogger<int>();
+    //public static Random random = new Random(Guid.NewGuid().GetHashCode());
     //methods for game logic
+    private static RngLogger<float> logger = new RngLogger<float>();
     public static bool RNGroll(float a)
     {
-        //return false;
         bool outcome;
         float chance = a * 10f;
-        float roll = random.Next(1000);
+        float roll = ThreadSafeRandom.Next(1000);
         //logger.WriteLine((int)roll);
         if (roll < chance)
         {
@@ -58,7 +57,7 @@ class Logic
     {
 
         if (author.alive && author.shield < author.maxShield * 0.75f) return Boolean.True;
-        
+
         return Boolean.False;
     }
 
@@ -149,7 +148,8 @@ class Logic
         target.hp -= attackValue;
         // when init if user doesn't have NW, set bool to true
         if (target.hp < target.maxHp / 2
-            && !target.nightWalkerUsed)
+            && !target.nightWalkerUsed
+            && target.FindSetBonus(SetBonus.NWBonus, 3))
         {
             target.nightWalkerUsed = true;
             target.shield = target.maxShield;
@@ -160,9 +160,10 @@ class Logic
             target.hp += ConsumptionProc(opponents);
             if (!target.alive)
             {
-                if (target.luminaryLife)
+                if (target.luminaryLife && target.FindSetBonus(SetBonus.LuminaryBonus, 4))
                 {
                     target.hp += attackValuePrint;
+                    if (target.hp > target.maxHp) target.hp = target.maxHp;
                     target.luminaryLife = false;
                 }
             }
@@ -199,11 +200,11 @@ class Logic
     public static int DefensiveProcCase(Character hero)
     {
         int scenario = 10;
-		float evadeMod = 0f;
-		        if (RNGroll(hero.blockChance)) { scenario = 1; }
-		if (hero.FindMythBonus(MythicBonus.HoodOfMenace) && hero.hp > 0.75f * hero.maxHp) evadeMod += 5f;
+        float evadeMod = 0f;
+        if (RNGroll(hero.blockChance)) { scenario = 1; }
+        if (hero.FindMythBonus(MythicBonus.HoodOfMenace) && hero.hp > 0.75f * hero.maxHp) evadeMod += 5f;
 
-		if (RNGroll(hero.evadeChance + evadeMod)) { scenario = 0; }
+        if (RNGroll(hero.evadeChance + evadeMod)) { scenario = 0; }
         return scenario;
     }
     public static Character RedirectSelection(Character target, Character[] party)
@@ -257,21 +258,7 @@ class Logic
         }
         return returnChar;
     }
-    public static void HpPerc(Character[] party)
-    {
-        int i;
-        for (i = 0; i < party.Length; i++)
-        {
-            if (party[i].alive)
-            {
-                //party[i].hpPerc = (float)(party[i].hp) / (float)(party[i].maxHp);
-            }
-            else
-            {
-                //party[i].hpPerc = 100;
-            }
-        }
-    }
+
     public static Character HealFindWeakestPerc(Character[] heroes)
     {
         int i;
@@ -330,7 +317,7 @@ class Logic
     {
         while (true)
         {
-            int target = random.Next(party.Length);
+            int target = ThreadSafeRandom.Next(party.Length);
             if (party[target].alive) return party[target];
         }
     }
@@ -385,14 +372,14 @@ class Logic
     }
     public static Character SelectRicochet(Character[] party, Character currentTarget)
     {
-        Character newTarget = party[random.Next(party.Length)];
+        Character newTarget = party[ThreadSafeRandom.Next(party.Length)];
         while (true)
         {
             if (newTarget != currentTarget || newTarget.alive)
             {
                 break;
             }
-            newTarget = party[random.Next(party.Length)];
+            newTarget = party[ThreadSafeRandom.Next(party.Length)];
         }
         return newTarget;
     }

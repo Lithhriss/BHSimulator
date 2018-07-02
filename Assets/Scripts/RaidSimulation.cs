@@ -8,9 +8,10 @@ public class RaidSimulation : Simulation
 {
 
 
-    public RaidSimulation(int diffMod, int playerNumber, HeroPanel[] heroPanel)
+    public RaidSimulation(int _difficultyModifier, int playerNumber, HeroPanel[] heroPanel, int _instanceNumber)
     {
-        difficultyModifier = diffMod;
+        instanceNumber = _instanceNumber;
+        difficultyModifier = _difficultyModifier;
         heroes = new Character[playerNumber];
         for (int i = 0; i < playerNumber; i++)
         {
@@ -20,7 +21,7 @@ public class RaidSimulation : Simulation
 
     public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback, Func<bool, bool> stopSim)
     {
-        slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
+        Slider slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
         //if (boss == 3)
         //{
@@ -33,7 +34,7 @@ public class RaidSimulation : Simulation
 
         int games = fightCount;//number of times fight will run.
         int gameDivider = Convert.ToInt32(games / 100);
-        progressionBar = 0;
+        int progressionBar = 0;
 
         foreach (Character hero in heroes)
         {  //initialisation
@@ -130,9 +131,6 @@ public class RaidSimulation : Simulation
         enemies[0].InitialiseMobs();
     }
 
-
-
-
     private Character GetRaidBoss(int index)
     {
         switch (index)
@@ -165,7 +163,7 @@ public class RaidSimulation : Simulation
     {
         UnityEngine.Debug.Log(str);
     }
-    public void Simulation(int boss, Action<float> callback, Func<bool, bool> stopSim, Action<bool> simOutcome)
+    public void Simulation1(int boss, Action<float> callback, Func<bool, bool> stopSim, Action<bool> simOutcome)
     {
         if (stopSim(false)) return;
         int safetyNet = 2000;

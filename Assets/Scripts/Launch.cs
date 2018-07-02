@@ -25,12 +25,6 @@ public class Launch : MonoBehaviour
     private float winrateToShow;
 
     private GameMode gameMode;
-    public enum GameMode
-    {
-        None,
-        Raid,
-        Wb
-    }
 
     private static Dictionary<int, int> WBDictionary = new Dictionary<int, int>()
     {
@@ -86,6 +80,25 @@ public class Launch : MonoBehaviour
 
 
     };
+    private static Dictionary<int, int> RaidDictionary = new Dictionary<int, int>()
+    {
+        {0, 70 },
+        {1, 115 },
+        {2, 160 },
+
+        {10, 105 },
+        {11, 156 },
+        {12, 207 },
+
+        {20, 150 },
+        {21, 207 },
+        {22, 265 },
+
+        {30, 205 },
+        {31, 310 },
+        {32, 485 },
+
+    };
 
     private bool _isRunning = false;
     public bool IsRunning
@@ -104,6 +117,7 @@ public class Launch : MonoBehaviour
     private bool MultiThreadSim;
 
 
+
     public GameObject[] heroContainers;
     private HeroPanel[] heroes;
     public PlayerPanelToggle ppt;
@@ -112,6 +126,7 @@ public class Launch : MonoBehaviour
     public Text myText;
     public Text errorText;
     public Slider slider;
+    public Slider processorSlider;
     public Dropdown bossName;
     public Dropdown bossDifficulty;
     public Dropdown wbName;
@@ -150,12 +165,12 @@ public class Launch : MonoBehaviour
                 case GameMode.Raid:
                     winrateToShow = rdSim.winRate;
                     break;
-                case GameMode.Wb:
+                case GameMode.WB:
                     winrateToShow = wbSim.winRate;
                     break;
             }
         }
-        if (showError) ShowError();
+        if (showError) errorText.text = "Simulation has been forcibly stopped!";
         myText.text = " fights = " + winrateToShow + "%";
     }
 
@@ -165,20 +180,12 @@ public class Launch : MonoBehaviour
         IsRunning = true;
         MultiThreadSim = true;
         GameMode gameMode = (GameMode)_gameMode;
-        int difficulty = 0;
-        switch (gameMode)
-        {
-            case GameMode.Raid:
-                difficulty = bossName.value * 10 + bossDifficulty.value;
-                break;
-            default:
-                difficulty = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
-                break;
-        }
-
+        int difficulty = GetDifficulty(gameMode);
+        int bossValue = 0;
+        if (gameMode == GameMode.Raid) bossValue = bossName.value;
+        else bossValue = wbName.value;
         if (Convert.ToInt32(fightCountField.text) < 0) fightCountField.text = "1";
-        MultiThreadSimHandler simHandler = new MultiThreadSimHandler(gameMode, heroes, bossName.value, difficulty, ppt.GetPlayerNumber(), Convert.ToInt32(fightCountField.text), CallbackWinrate, CallbackSliderValue, ShowError, GetCancelButtonState);
-        simHandler.LaunchSimulation();
+        new Thread(() => new MultiThreadSimHandler(gameMode, heroes, bossName.value, difficulty, ppt.GetPlayerNumber(), Convert.ToInt32(fightCountField.text), CallbackWinrate, CallbackSliderValue, ShowError, GetCancelButtonState, callback => { IsRunning = false; }).LaunchSimulation((int)processorSlider.value)).Start();
     }
 
     public void OnClickInitRaid()
@@ -187,52 +194,11 @@ public class Launch : MonoBehaviour
         IsRunning = true;
         MultiThreadSim = false;
         gameMode = GameMode.Raid;
-        int difficulty = 0;
+        int difficulty = GetDifficulty(gameMode);
         int playerNumber = ppt.GetPlayerNumber();
-        int difficultyChecker = bossName.value * 10 + bossDifficulty.value;
-        switch (difficultyChecker)
-        {
-            case 0:
-                difficulty = 70;
-                break;
-            case 1:
-                difficulty = 115;
-                break;
-            case 2:
-                difficulty = 160;
-                break;
-            case 10:
-                difficulty = 105;
-                break;
-            case 11:
-                difficulty = 156;
-                break;
-            case 12:
-                difficulty = 207;
-                break;
-            case 20:
-                difficulty = 150;
-                break;
-            case 21:
-                difficulty = 207;
-                break;
-            case 22:
-                difficulty = 265;
-                break;
-            case 30:
-                difficulty = 205; //to change
-                break;
-            case 31:
-                difficulty = 310; //to change
-                break;
-            case 32:
-                difficulty = 485; //to change
-                break;
-            default:
-                break;
-        }
+        
 
-        rdSim = new RaidSimulation(difficulty, playerNumber, heroes);
+        rdSim = new RaidSimulation(difficulty, playerNumber, heroes, 0);
 
         int bossType = 0;
         bossType = bossName.value;
@@ -249,7 +215,7 @@ public class Launch : MonoBehaviour
         ResetUI();
         int difficultyChecker = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
 
-        gameMode = GameMode.Wb;
+        gameMode = GameMode.WB;
         int playerNumber = ppt.GetPlayerNumber();
         if (wbName.value == 1)
         {
@@ -264,7 +230,7 @@ public class Launch : MonoBehaviour
             }
 
         }
-        wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker], playerNumber, heroes);
+        wbSim = new WorldBossSimulation(WBDictionary[difficultyChecker], playerNumber, heroes, 0);
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
         StartCoroutine(wbSim.Simulation(Convert.ToInt32(fightCountField.text), wbName.value, callback => { IsRunning = false; }, InvokeStopSim));
     }
@@ -297,23 +263,7 @@ public class Launch : MonoBehaviour
 
     private void ShowError()
     {
-        errorText.text = "Simulation has been forcibly stopped!";
-        showError = false;
-    }
-
-    public void SimulationOutcome(bool win)
-    {
-
-        //Debug.Log("sim completed");
-        simulationsCompleted++;
-        if (win) simulationsWon++;
-        winrateToShow = (float)simulationsWon * 100 / (float)simulationsCompleted;
-        if (simulationsCompleted * 100 / gamesToSimulate >= sliderValue + 1 && slider.value < 100)
-        {
-            sliderValue++;
-            updateSlider = true;
-        }
-
+        showError = true; ;
     }
 
     public void UpdateSlider()
@@ -324,6 +274,7 @@ public class Launch : MonoBehaviour
     private void ResetUI()
     {
         errorText.text = "";
+        showError = false;
         forceStopSimulation = false;
         sliderValue = 0;
         slider.value = 0;
@@ -334,6 +285,7 @@ public class Launch : MonoBehaviour
     private void CallbackWinrate(float winrate)
     {
         winrateToShow = winrate;
+        //Debug.Log("winrate callbacked!");
     }
 
     private void CallbackSliderValue(int _sliderValue)
@@ -346,8 +298,28 @@ public class Launch : MonoBehaviour
         return forceStopSimulation;
     }
 
-}
+    private int GetDifficulty(GameMode gameMode)
+    {
+        int difficulty = 0;
+        switch (gameMode)
+        {
+            case GameMode.Raid:
+                difficulty = bossName.value * 10 + bossDifficulty.value;
+                difficulty = RaidDictionary[difficulty];
+                break;
+            default:
+                difficulty = wbName.value * 100 + tier.value * 10 + wbDifficulty.value;
+                difficulty = WBDictionary[difficulty];
+                break;
+        }
+        return difficulty;
+    }
 
+}
+//MultiThreadSimHandler simHandler = new MultiThreadSimHandler(gameMode, heroes, bossValue, difficulty, ppt.GetPlayerNumber(), Convert.ToInt32(fightCountField.text), CallbackWinrate, CallbackSliderValue, ShowError, GetCancelButtonState, callback => { IsRunning = false; });
+//simHandler.LaunchSimulation((int)processorSlider.value);
+//new Thread(() => simHandler.LaunchSimulation((int)processorSlider.value)).Start();
+//simHandler.LaunchSimulation((int)processorSlider.value);
 
 #region Previous code
 /*

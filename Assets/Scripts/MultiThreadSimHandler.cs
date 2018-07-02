@@ -1,12 +1,19 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
+
+public enum GameMode
+{
+    None,
+    Raid,
+    WB
+}
 
 public class MultiThreadSimHandler
 {
-    private static readonly object SyncObj = new object();
+    public static readonly object SyncObj = new object();
 
-    private Launch.GameMode gameMode;
+    private GameMode gameMode;
     private HeroPanel[] heroPanels;
     private int simulationDifficulty;
     private int playerNumber;
@@ -25,10 +32,12 @@ public class MultiThreadSimHandler
     private Action<float> CallBackWinrate;
     private Action<int> CallBackSliderValue;
     private Action CallbackShowError;
+    private Action <float> WeirdCallback; 
 
     private Func<bool> GetCancelButtonState;
 
-    public MultiThreadSimHandler(Launch.GameMode _gameMode, HeroPanel[] _heroPanels, int _bossType, int _simulationDifficulty, int _playerNumber, int _gamesToSimulate, Action<float> _callbackWinrate, Action<int> _callbackSliderValue, Action _callbackShowError, Func<bool> _getCancelButtonState)
+
+    public MultiThreadSimHandler(GameMode _gameMode, HeroPanel[] _heroPanels, int _bossType, int _simulationDifficulty, int _playerNumber, int _gamesToSimulate, Action<float> _callbackWinrate, Action<int> _callbackSliderValue, Action _callbackShowError, Func<bool> _getCancelButtonState, Action<float> _weirdCallback)
     {
         gameMode = _gameMode;
         heroPanels = _heroPanels;
@@ -49,57 +58,33 @@ public class MultiThreadSimHandler
         CallBackSliderValue = _callbackSliderValue;
         CallbackShowError = _callbackShowError;
         GetCancelButtonState = _getCancelButtonState;
-
-        ThreadPool.SetMaxThreads(Environment.ProcessorCount, 0);
+        WeirdCallback = _weirdCallback;
     }
 
-
-    public void LaunchSimulation()
+    public void LaunchSimulation(int processorCount)
     {
+        UnityEngine.Debug.Log("boo");
         simRunning = true;
-        Simulation simulation;
-        CancellationTokenSource cts = new CancellationTokenSource();
-        for (int i = 0; i < simulationsToRun; i++)
+        Parallel.For(0, simulationsToRun, new ParallelOptions { MaxDegreeOfParallelism = processorCount }, (x, state) =>
         {
+            if (!simRunning || GetCancelButtonState())
+            {
+                CallbackShowError();
+                state.Break();
+            }
             switch (gameMode)
             {
-                case Launch.GameMode.Raid:
-                    simulation = new RaidSimulation(simulationDifficulty, playerNumber, heroPanels);
+                case GameMode.Raid:
+                    new RaidSimulation(simulationDifficulty, playerNumber, heroPanels, x).Run(bossType, WeirdCallback, InvokeStopSim, SimulationOutcome);
                     break;
                 default:
-                    simulation = new WorldBossSimulation(simulationDifficulty, playerNumber, heroPanels);
+                    new WorldBossSimulation(simulationDifficulty, playerNumber, heroPanels, x).Run(bossType, WeirdCallback, InvokeStopSim, SimulationOutcome);
                     break;
             }
-            ThreadPool.QueueUserWorkItem(state => simulation.Run(bossType, Callback, InvokeStopSim, SimulationOutcome, cts.Token));
-        }
+        });
 
-        while (GetActiveThreadCount() > 0 && simRunning)
-        {
-            try
-            {
-                Thread.Sleep(100);
-                Debug.Log("winrate is " + winrateToShow);
-                CallBackWinrate(winrateToShow);
-                Debug.Log("slider is" + sliderValue);
-                CallBackSliderValue(sliderValue);
-                if (stopSimulation || GetCancelButtonState())
-                {
-                    simRunning = false;
-                    CallbackShowError();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.ToString());
-                //simRunning = false;
-            }
-        }
         CallBackWinrate(winrateToShow);
         CallBackSliderValue(sliderValue);
-    }
-    public void Callback(float value)
-    {
-        //fill out later, not very important
     }
     public void SimulationOutcome(bool win)
     {
@@ -108,27 +93,34 @@ public class MultiThreadSimHandler
             simulationsCompleted++;
             if (win) simulationsWon++;
             winrateToShow = (float)simulationsWon * 100 / (float)simulationsCompleted;
-            if (simulationsCompleted * 100 / simulationsToRun >= sliderValue + 1 && sliderValue < 100) sliderValue = Convert.ToInt32(simulationsCompleted * 100 / simulationsToRun);
+            if (simulationsCompleted * 100 / simulationsToRun >= sliderValue + 1 && sliderValue < 100)
+            {
+                sliderValue = Convert.ToInt32(simulationsCompleted * 100 / simulationsToRun);
+                CallBackWinrate(winrateToShow);
+                CallBackSliderValue(sliderValue);
+            }
             if (simulationsCompleted >= simulationsToRun) simRunning = false;
         }
     }
     private bool InvokeStopSim(bool callFromSim)
     {
-        if (stopSimulation || callFromSim)
+        if ( callFromSim)
         {
-            stopSimulation = true;
+            CallbackShowError();
+            simRunning = false;
             return true;
         }
         return false;
     }
-    private int GetActiveThreadCount()
+    private void GetActiveThreadCount()
     {
-        int availableWorkers = 0;
-        int maxWorkers = 0;
-        int availableIo = 0;
-        int maxIo = 0;
-        ThreadPool.GetAvailableThreads(out availableWorkers, out availableIo);
-        ThreadPool.GetMaxThreads(out maxWorkers, out maxIo);
-        return maxWorkers - availableWorkers;
+        //int availableWorkers = 0;
+        //int maxWorkers = 0;
+        //int availableIo = 0;
+        //int maxIo = 0;
+        //ThreadPool.GetAvailableThreads(out int availableWorkers, out int availableIo);
+        //ThreadPool.GetMaxThreads(out int maxWorkers, out int maxIo);
+        //return maxWorkers - availableWorkers;
     }
+
 }

@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEngine.UI;
-using System.Threading;
 
-public class Simulation {
 
+public class Simulation
+{
+    protected int instanceNumber;
     protected Character[] heroes;
     protected Character[] enemies;
     protected bool isNotHero = false;
     protected int difficultyModifier;
     public float winRate;
-    protected int progressionBar = 0;
-    protected Slider slider;
+
     protected bool heroesAlive
     {
         get
@@ -37,7 +36,7 @@ public class Simulation {
     }
 
 
-    public void Run(int boss, Action<float> callback, Func<bool, bool> stopSim, Action<bool> simOutcome, CancellationToken ct)
+    public void Run(int boss, Action<float> callback, Func<bool, bool> stopSim, Action<bool> simOutcome)
     {
         if (stopSim(false)) return;
         int safetyNet = 2000;
@@ -46,23 +45,7 @@ public class Simulation {
         SetupEnemies(boss);
         int turnCount = 0;
         float trCounter = 0;
-
-        Character[] charArray = new Character[heroes.Length + enemies.Length];
-        int charIndex = 0;
-        foreach (var hero in heroes)
-        {
-            hero.Revive();
-            trCounter += hero.turnRate;
-            charArray[charIndex] = hero;
-            charIndex++;
-        }
-        foreach (var enemy in enemies)
-        {
-            trCounter += enemy.turnRate;
-            charArray[charIndex] = enemy;
-            charIndex++;
-        }
-        charArray = charArray.OrderByDescending(chr => chr.turnRate).ToArray();
+        Character[] charArray = InitCharacterArray(ref trCounter);
         while (heroesAlive && enemiesAlive)
         {
             foreach (var character in charArray)
@@ -94,7 +77,7 @@ public class Simulation {
             }
             if (stopSim(turnCount > safetyNet))
             {
-                //UnityEngine.Debug.Log("turncount is " + turnCount.ToString() + " and safetyNet is " + safetyNet.ToString());
+                Console.WriteLine("Instance = {0} || TurnCount = {1}", instanceNumber, turnCount);
                 return;
             }
         }
@@ -103,7 +86,28 @@ public class Simulation {
     }
 
     protected virtual void SetupEnemies(int boss)
-    { } 
+    { }
+
+    protected Character[] InitCharacterArray(ref float trCounter)
+    {
+        Character[] charArray = new Character[heroes.Length + enemies.Length];
+        int charIndex = 0;
+        foreach (var hero in heroes)
+        {
+            hero.Revive();
+            trCounter += hero.turnRate;
+            charArray[charIndex] = hero;
+            charIndex++;
+        }
+        foreach (var enemy in enemies)
+        {
+            trCounter += enemy.turnRate;
+            charArray[charIndex] = enemy;
+            charIndex++;
+        }
+        charArray = charArray.OrderByDescending(chr => chr.turnRate).ToArray();
+        return charArray;
+    }
 
     public static int GetPartyCount(Character[] opponents)
     {

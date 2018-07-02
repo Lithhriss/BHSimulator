@@ -6,8 +6,9 @@ using System.Linq;
 
 public class WorldBossSimulation : Simulation
 {
-    public WorldBossSimulation(int _difficultyModifier, int playerNumber, HeroPanel[] heroPanel)
+    public WorldBossSimulation(int _difficultyModifier, int playerNumber, HeroPanel[] heroPanel, int _instanceNumber)
     {
+        instanceNumber = _instanceNumber;
         difficultyModifier = _difficultyModifier;
         heroes = new Character[playerNumber];
         for (int i = 0; i < playerNumber; i++)
@@ -18,10 +19,10 @@ public class WorldBossSimulation : Simulation
 
     public IEnumerator Simulation(int fightCount, int boss, System.Action<float> callback, Func<bool, bool> InvokeStopSim)
     {
-        slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
+        Slider slider = UnityEngine.GameObject.Find("Progress").GetComponent<Slider>();
         int p;
 
-        
+        int progressionBar = 0;
         int games = fightCount;
         int gameDivider = Convert.ToInt32(games / 100);
         float win = 0;
@@ -127,18 +128,18 @@ public class WorldBossSimulation : Simulation
         Character bossPlaceholder;
         if (boss == 0)
         {
-            Character dpsPlaceholder = GetOrlagDPS(Logic.random.Next(3));
-            Character tankPlaceholder = GetOrlagTank(Logic.random.Next(2));
-            placeholder = GetOrlagMix(Logic.random.Next(5));
-            bossPlaceholder = GetOrlagBoss(Logic.random.Next(3));
+            Character dpsPlaceholder = GetOrlagDPS(ThreadSafeRandom.Next(3));
+            Character tankPlaceholder = GetOrlagTank(ThreadSafeRandom.Next(2));
+            placeholder = GetOrlagMix(ThreadSafeRandom.Next(5));
+            bossPlaceholder = GetOrlagBoss(ThreadSafeRandom.Next(3));
             List<Character> enemyList = new List<Character>() { dpsPlaceholder, tankPlaceholder, placeholder, bossPlaceholder };
             enemies = enemyList.OrderByDescending(mob => mob.priority).ToArray();
         }
         else
         {
             enemies = new Character[2];
-            bossPlaceholder = GetNetherBoss(Logic.random.Next(3));
-            placeholder = GetNetherMix(Logic.random.Next(5));
+            bossPlaceholder = GetNetherBoss(ThreadSafeRandom.Next(3));
+            placeholder = GetNetherMix(ThreadSafeRandom.Next(5));
             if (bossPlaceholder.priority > placeholder.priority)
             {
                 enemies[0] = bossPlaceholder;

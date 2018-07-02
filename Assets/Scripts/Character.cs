@@ -187,6 +187,7 @@ public class Character
         priority = prior;
         drain = false;
         selfInjure = false;
+        //nightWalkerUsed = true;
         name = nam;
         _isHero = ishero;
         setArray = new Set[] { new Set(SetBonus.None, 0) };
@@ -431,7 +432,6 @@ public class Character
     public void InitialiseHero()
     {
         totalTS = power + stamina + agility;
-        
         AttributePassiveSetBonuses();
         AttributePassiveMythBonuses();
         powerRunes = (100f + powerRunes) / 100f;
@@ -449,7 +449,6 @@ public class Character
         maxEnrage = maxHp / 10;
         enrage = 0f;
         //teamEnrage = 0f;
-        interval = 100 / turnRate;
         counter = 0;
         sp = 0;
         drain = false;
@@ -604,9 +603,9 @@ public class Character
         hp = Convert.ToInt32(stamina * 10 * staminaRunes);
         maxHp = hp;
         maxShield = Convert.ToInt32(maxHp / 2);
-        interval = 100 / turnRate;
         counter = 0;
         sp = 0;
+        nightWalkerUsed = true;
         drain = false;
         AttributeMobSkills();
         pet = new Pet();
@@ -841,6 +840,7 @@ public class Character
         sp = 0;
         redirect = true;
         spUsed = false;
+        nightWalkerUsed = false;
         illustriousRevive = true;
         luminaryLife = true;
     }
@@ -1017,7 +1017,7 @@ public class Character
         {
             if (Logic.RNGroll(5f))
             {
-                skillList[Logic.random.Next(skillList.Count)].ApplySkill(this, party, opponents);
+                skillList[ThreadSafeRandom.Next(skillList.Count)].ApplySkill(this, party, opponents);
             }
         }
     }
@@ -1115,7 +1115,7 @@ public class Character
                 switch (set.GetBonus())
                 {
                     case SetBonus.OblitBonus:
-                        if (set.GetPieceCount() > 3 && Simulation.GetPartyCount(opponents) == opponents.Length) returnMod += 0.15f;
+                        if (set.GetPieceCount() > 3 && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) returnMod += 0.15f;
                         break;
                     case SetBonus.NWBonus:
                         if (set.GetPieceCount() > 3 && shield > 0) returnMod += 0.15f;
@@ -1185,7 +1185,7 @@ public class Character
         int skillInc = 0;
 
         skillRange = Convert.ToInt32(skillList.Where(skill => skill.Cost <= sp && (skill.IsTarget == Boolean.True || skill.IsAOE == isAoeAccepted || skill.IsHealing == isHealingNeeded || skill.IsShielding == isShieldingNeeded)).Sum(skill => skill.Weight));
-        skillRoll = Logic.random.Next(skillRange);
+        skillRoll = ThreadSafeRandom.Next(skillRange);
         for (int i = 0; i < skillList.Count; i++)
         {
             if (skillList[i].Cost <= sp && (skillList[i].IsTarget == Boolean.True || skillList[i].IsAOE == isAoeAccepted || skillList[i].IsHealing == isHealingNeeded || skillList[i].IsShielding == isShieldingNeeded))

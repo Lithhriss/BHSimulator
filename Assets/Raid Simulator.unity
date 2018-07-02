@@ -211,7 +211,7 @@ Behaviour:
 --- !u!104 &804
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 8
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -237,6 +237,7 @@ RenderSettings:
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_UseRadianceAmbientProbe: 0
 --- !u!124 &805
 Behaviour:
   m_ObjectHideFlags: 0
@@ -259,11 +260,10 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 10
     m_Resolution: 2
     m_BakeResolution: 40
-    m_TextureWidth: 1024
-    m_TextureHeight: 1024
+    m_AtlasSize: 1024
     m_AO: 0
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
@@ -295,7 +295,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!222 &827
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -332,12 +332,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1522}
+  - {fileID: 2140824053}
   - {fileID: 1985021865}
-  - {fileID: 2081}
-  - {fileID: 2191}
-  - {fileID: 2214}
-  - {fileID: 1764}
+  - {fileID: 1843518238}
+  - {fileID: 860294742}
+  - {fileID: 494336339}
+  - {fileID: 1970209857}
   m_Father: {fileID: 1516}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -366,31 +366,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!224 &1522 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 2140824052}
---- !u!224 &1764 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 1970209856}
---- !u!224 &2081 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 1843518237}
---- !u!224 &2191 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 860294741}
---- !u!224 &2214 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224372061796025618, guid: d2b5d44271d1fe34c9f8990efb2308f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 494336338}
 --- !u!114 &2282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,17 +468,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc50c4eadfd22842b00da1ef904f27f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hero_1: {fileID: 2296}
-  hero_2: {fileID: 3090}
-  hero_3: {fileID: 3072}
-  hero_4: {fileID: 2933}
-  hero_5: {fileID: 2480}
+  heroContainers: []
+  ppt: {fileID: 0}
   myText: {fileID: 2286}
+  errorText: {fileID: 0}
+  slider: {fileID: 0}
   bossName: {fileID: 2339}
   bossDifficulty: {fileID: 2290}
   wbName: {fileID: 1697017646}
   tier: {fileID: 1441242761}
   wbDifficulty: {fileID: 1501415827}
+  fightCountField: {fileID: 0}
 --- !u!114 &2334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3128,12 +3103,12 @@ Prefab:
     - target: {fileID: 224895720122865834, guid: ebce69b0449f40d4197890fb73d72a70,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224006692067028054, guid: ebce69b0449f40d4197890fb73d72a70,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224849135656806112, guid: ebce69b0449f40d4197890fb73d72a70,
         type: 2}
@@ -5032,7 +5007,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451866723
@@ -7024,6 +6999,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &494336339 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 494336338}
 --- !u!1 &503297126
 GameObject:
   m_ObjectHideFlags: 0
@@ -10533,7 +10512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &758704827
@@ -11227,7 +11206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &836508274
@@ -13049,6 +13028,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &860294742 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 860294741}
 --- !u!1 &861674576
 GameObject:
   m_ObjectHideFlags: 0
@@ -14583,7 +14566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028249702
@@ -15400,7 +15383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1079707568
@@ -17888,7 +17871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -20.025002, y: 0}
+  m_AnchoredPosition: {x: -20.024994, y: 0}
   m_SizeDelta: {x: -59.95, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1271436987
@@ -25674,6 +25657,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1843518238 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1843518237}
 --- !u!1 &1846827491
 GameObject:
   m_ObjectHideFlags: 0
@@ -28633,6 +28620,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1970209857 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1970209856}
 --- !u!1 &1976702619
 GameObject:
   m_ObjectHideFlags: 0
@@ -28752,28 +28743,22 @@ MonoBehaviour:
   agilityRunes: {fileID: 0}
   empowerRunes: {fileID: 0}
   pet: {fileID: 0}
-  petType: {fileID: 0}
   petProcType: {fileID: 0}
   petLevel: {fileID: 0}
-  PetProcChance: {fileID: 0}
   weapon: {fileID: 0}
   metaRune: {fileID: 0}
-  divinity: {fileID: 0}
-  NecrosisBonus: {fileID: 0}
-  HysteriaBonus: {fileID: 0}
-  NightVisageBonus: {fileID: 0}
-  ConsumptionBonus: {fileID: 0}
-  DecayBonus: {fileID: 0}
-  AresBonus: {fileID: 0}
-  BushidoBonus: {fileID: 0}
-  LunarBonus: {fileID: 0}
-  UnityBonus: {fileID: 0}
-  DivinityBonus: {fileID: 0}
-  ObliterationBonus: {fileID: 0}
-  MaruBonus: {fileID: 0}
-  ConductionBonus: {fileID: 0}
-  IllustriousBonus: {fileID: 0}
-  TatersBonus: {fileID: 0}
+  Set_1: {fileID: 0}
+  Set_2: {fileID: 0}
+  Set_3: {fileID: 0}
+  Myth_1: {fileID: 0}
+  Myth_2: {fileID: 0}
+  Myth_3: {fileID: 0}
+  Myth_4: {fileID: 0}
+  Myth_5: {fileID: 0}
+  Myth_6: {fileID: 0}
+  SetPieceCount_1: {fileID: 0}
+  SetPieceCount_2: {fileID: 0}
+  SetPieceCount_3: {fileID: 0}
   GateKeeperBonus: {fileID: 0}
 --- !u!114 &1985021868
 MonoBehaviour:
@@ -30624,6 +30609,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2b5d44271d1fe34c9f8990efb2308f1, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &2140824053 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 2140824052}
 --- !u!1 &2141765929
 GameObject:
   m_ObjectHideFlags: 0
