@@ -20,7 +20,7 @@ public class MultiThreadSimHandler
     private int bossType;
 
     private bool simRunning;
-    private bool stopSimulation;
+    //private bool stopSimulation;
 
     private int simulationsToRun;
     private int simulationsCompleted;
@@ -32,12 +32,13 @@ public class MultiThreadSimHandler
     private Action<float> CallBackWinrate;
     private Action<int> CallBackSliderValue;
     private Action CallbackShowError;
+    private Action CallbackSimulationCompleted;
     private Action <float> WeirdCallback; 
 
     private Func<bool> GetCancelButtonState;
 
 
-    public MultiThreadSimHandler(GameMode _gameMode, HeroPanel[] _heroPanels, int _bossType, int _simulationDifficulty, int _playerNumber, int _gamesToSimulate, Action<float> _callbackWinrate, Action<int> _callbackSliderValue, Action _callbackShowError, Func<bool> _getCancelButtonState, Action<float> _weirdCallback)
+    public MultiThreadSimHandler(GameMode _gameMode, HeroPanel[] _heroPanels, int _bossType, int _simulationDifficulty, int _playerNumber, int _gamesToSimulate, Action<float> _callbackWinrate, Action<int> _callbackSliderValue, Action _callbackShowError, Func<bool> _getCancelButtonState, Action<float> _weirdCallback, Action _callbackSimulationsCompleted)
     {
         gameMode = _gameMode;
         heroPanels = _heroPanels;
@@ -46,7 +47,6 @@ public class MultiThreadSimHandler
         bossType = _bossType;
 
         simRunning = false;
-        stopSimulation = false;
 
         simulationsToRun = _gamesToSimulate;
         sliderValue = 0;
@@ -59,6 +59,7 @@ public class MultiThreadSimHandler
         CallbackShowError = _callbackShowError;
         GetCancelButtonState = _getCancelButtonState;
         WeirdCallback = _weirdCallback;
+        CallbackSimulationCompleted = _callbackSimulationsCompleted;
     }
 
     public void LaunchSimulation(int processorCount)
@@ -99,12 +100,16 @@ public class MultiThreadSimHandler
                 CallBackWinrate(winrateToShow);
                 CallBackSliderValue(sliderValue);
             }
-            if (simulationsCompleted >= simulationsToRun) simRunning = false;
+            if (simulationsCompleted >= simulationsToRun)
+            {
+                simRunning = false;
+                CallbackSimulationCompleted();
+            }
         }
     }
     private bool InvokeStopSim(bool callFromSim)
     {
-        if ( callFromSim)
+        if (callFromSim)
         {
             CallbackShowError();
             simRunning = false;
@@ -112,15 +117,4 @@ public class MultiThreadSimHandler
         }
         return false;
     }
-    private void GetActiveThreadCount()
-    {
-        //int availableWorkers = 0;
-        //int maxWorkers = 0;
-        //int availableIo = 0;
-        //int maxIo = 0;
-        //ThreadPool.GetAvailableThreads(out int availableWorkers, out int availableIo);
-        //ThreadPool.GetMaxThreads(out int maxWorkers, out int maxIo);
-        //return maxWorkers - availableWorkers;
-    }
-
 }

@@ -157,7 +157,7 @@ public class Skill
             if (Logic.RNGroll(0.5f)) amountToCast += 3;
         }
         if (Logic.RNGroll(author.dsChance)) amountToCast++;
-        if (Logic.RNGroll(author.quadChance)) amountToCast += 3;
+        if (Logic.RNGroll(author.quadChance)) amountToCast += 4;
         while (amountToCast != 0)
         {
             if (WorldBossSimulation.GetPartyCount(opponents) == 0) return;

@@ -75,7 +75,6 @@ public class Character
     public float hpPerc { get { return (float)hp / (float)maxHp; } }
     public float shieldPerc { get { return (float)shield / (float)maxShield; } }
     public float turnRate;
-    public float interval;
     public float counter;
     public float enrageBar;
     public float maxEnrage;

@@ -15,11 +15,9 @@ public class Launch : MonoBehaviour
     RaidSimulation rdSim;      //need to get rid off
 
     private bool forceStopSimulation;
-    private bool updateSlider;
     private bool showError;
     private int gamesToSimulate;
-    private int simulationsCompleted;
-    private int simulationsWon;
+    private bool simulationsCompleted;
     private int sliderValue;
 
     private float winrateToShow;
@@ -133,6 +131,8 @@ public class Launch : MonoBehaviour
     public Dropdown tier;
     public Dropdown wbDifficulty;
     public InputField fightCountField;
+    public Button RaidButton;
+    public Button WbButton;
     #endregion
 
 
@@ -140,7 +140,8 @@ public class Launch : MonoBehaviour
     {
         instance = this;
         forceStopSimulation = false;
-        updateSlider = false;
+
+        simulationsCompleted = false;
         showError = false;
         MultiThreadSim = false;
 
@@ -170,12 +171,27 @@ public class Launch : MonoBehaviour
                     break;
             }
         }
-        if (showError) errorText.text = "Simulation has been forcibly stopped!";
+        if (showError)
+        {
+            errorText.text = "Simulation has been forcibly stopped!";
+            RaidButton.interactable = true;
+            WbButton.interactable = true;
+            showError = false;
+        }
+        if (simulationsCompleted)
+        {
+            errorText.text = "Simulation has ended.";
+            RaidButton.interactable = true;
+            WbButton.interactable = true;
+            simulationsCompleted = false;
+        }
         myText.text = " fights = " + winrateToShow + "%";
     }
 
     public void OnClickInitSimulation(int _gameMode)
     {
+        RaidButton.interactable = false;
+        WbButton.interactable = false;
         ResetUI();
         IsRunning = true;
         MultiThreadSim = true;
@@ -185,9 +201,21 @@ public class Launch : MonoBehaviour
         if (gameMode == GameMode.Raid) bossValue = bossName.value;
         else bossValue = wbName.value;
         if (Convert.ToInt32(fightCountField.text) < 0) fightCountField.text = "1";
-        new Thread(() => new MultiThreadSimHandler(gameMode, heroes, bossName.value, difficulty, ppt.GetPlayerNumber(), Convert.ToInt32(fightCountField.text), CallbackWinrate, CallbackSliderValue, ShowError, GetCancelButtonState, callback => { IsRunning = false; }).LaunchSimulation((int)processorSlider.value)).Start();
+        new Thread(() => new MultiThreadSimHandler( gameMode, 
+                                                    heroes, 
+                                                    bossName.value, 
+                                                    difficulty, 
+                                                    ppt.GetPlayerNumber(),
+                                                    Convert.ToInt32(fightCountField.text),
+                                                    CallbackWinrate, 
+                                                    CallbackSliderValue,
+                                                    ShowError, 
+                                                    GetCancelButtonState,
+                                                    callback => { IsRunning = false; },
+                                                    SimulationCompleted).LaunchSimulation((int)processorSlider.value)).Start();
     }
 
+    //obsolete
     public void OnClickInitRaid()
     {
         ResetUI();
@@ -196,19 +224,14 @@ public class Launch : MonoBehaviour
         gameMode = GameMode.Raid;
         int difficulty = GetDifficulty(gameMode);
         int playerNumber = ppt.GetPlayerNumber();
-        
-
         rdSim = new RaidSimulation(difficulty, playerNumber, heroes, 0);
-
         int bossType = 0;
         bossType = bossName.value;
         if (Convert.ToInt32(fightCountField.text) < 100) fightCountField.text = "100";
-        //current way to run sim, via coroutine to update loading bar every percent
-        Debug.Log("difficulty is " + difficulty);
         StartCoroutine(rdSim.Simulation(Convert.ToInt32(fightCountField.text), bossType, callback => {IsRunning = false;}, InvokeStopSim));
         
     }
-
+    //obsolete
     public void OnClickInitWB()
     {
         MultiThreadSim = false;
@@ -249,6 +272,11 @@ public class Launch : MonoBehaviour
         forceStopSimulation = true;
     }
 
+    private void SimulationCompleted()
+    {
+        simulationsCompleted = true;
+    }
+
     private bool InvokeStopSim(bool callFromSim)
     {
         if (forceStopSimulation || callFromSim)
@@ -276,16 +304,16 @@ public class Launch : MonoBehaviour
         errorText.text = "";
         showError = false;
         forceStopSimulation = false;
+        simulationsCompleted = false;
         sliderValue = 0;
         slider.value = 0;
-        simulationsWon = 0;
+        //simulationsWon = 0;
         InitHeroArray();
     }
 
     private void CallbackWinrate(float winrate)
     {
         winrateToShow = winrate;
-        //Debug.Log("winrate callbacked!");
     }
 
     private void CallbackSliderValue(int _sliderValue)
@@ -316,10 +344,7 @@ public class Launch : MonoBehaviour
     }
 
 }
-//MultiThreadSimHandler simHandler = new MultiThreadSimHandler(gameMode, heroes, bossValue, difficulty, ppt.GetPlayerNumber(), Convert.ToInt32(fightCountField.text), CallbackWinrate, CallbackSliderValue, ShowError, GetCancelButtonState, callback => { IsRunning = false; });
-//simHandler.LaunchSimulation((int)processorSlider.value);
-//new Thread(() => simHandler.LaunchSimulation((int)processorSlider.value)).Start();
-//simHandler.LaunchSimulation((int)processorSlider.value);
+
 
 #region Previous code
 /*
