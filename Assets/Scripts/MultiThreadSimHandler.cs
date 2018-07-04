@@ -64,7 +64,6 @@ public class MultiThreadSimHandler
 
     public void LaunchSimulation(int processorCount)
     {
-        UnityEngine.Debug.Log("boo");
         simRunning = true;
         Parallel.For(0, simulationsToRun, new ParallelOptions { MaxDegreeOfParallelism = processorCount }, (x, state) =>
         {

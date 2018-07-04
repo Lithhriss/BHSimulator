@@ -212,7 +212,7 @@ public class Launch : MonoBehaviour
                                                     ShowError, 
                                                     GetCancelButtonState,
                                                     callback => { IsRunning = false; },
-                                                    SimulationCompleted).LaunchSimulation((int)processorSlider.value)).Start();
+                                                    SimulationCompleted).LaunchSimulation(Convert.ToInt32(processorSlider.value))).Start();
     }
 
     //obsolete

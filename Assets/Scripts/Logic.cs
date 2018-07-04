@@ -7,7 +7,7 @@ class Logic
 {
     //public static Random random = new Random(Guid.NewGuid().GetHashCode());
     //methods for game logic
-    private static RngLogger<float> logger = new RngLogger<float>();
+    //private static RngLogger<float> logger = new RngLogger<float>();
     public static bool RNGroll(float a)
     {
         bool outcome;
