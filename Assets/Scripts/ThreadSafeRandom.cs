@@ -14,4 +14,9 @@ class ThreadSafeRandom
     {
         return random.Value.Next(n);
     }
+
+    public static int NextRange(int first, int last)
+    {
+        return random.Value.Next(first, last);
+    }
 }

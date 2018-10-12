@@ -139,6 +139,7 @@ public class Character
         DemonStaff,
         ShieldStaff,
         YakBlade,
+        LaserSet,
         Harvester
     }
     public MetaRune metaRune;
@@ -151,6 +152,8 @@ public class Character
     }
 
     public bool nightWalkerUsed;
+    public bool polarisUsed;
+    public bool eruptionUsed;
 
     //p2w bonuses
     public bool gateKeeperBonus;
@@ -295,25 +298,27 @@ public class Character
             "Shadown88",
             new Character {
                 // Base Stats
-                power         = 1350,
-                stamina       = 540,
-                agility       = 480,
+                power         = 2244,
+                stamina       = 1133,
+                agility       = 293,
                 // Specials
-                critChance    = 15f,
-                critDamage    = 100f,
-                dsChance      = 10f,
-                blockChance   = 0f,
-                evadeChance   = 2.5f,
-                deflectChance = 0f,
-                absorbChance  = 0f,
+                critChance    = 10f,
+                critDamage    = 50f,
+                dsChance      = 0f,
+                blockChance   = 100f,
+                evadeChance   = 5.3f,
+                deflectChance = 4.95f,
+                absorbChance  = 10.25f,
                 // Runes
-                powerRunes    = 10.5f,
+                powerRunes    = 0f,
                 staminaRunes  = 0f,
-                agilityRunes  = 10f,
+                agilityRunes  = 0f,
                 // Pet
-                petName           = PetType.Boiguh,
-                weapon        = Weapon.Spear,
-                metaRune      = MetaRune.spRegen,
+                petName       = PetType.Toebert,
+                petProcType   = PetProcType.GetHit,
+                PetLevel      = 2,
+                weapon        = Weapon.Staff,
+                metaRune      = MetaRune.Redirect,
                 // set bonuses
                 setArray = new Set[] { new Set(SetBonus.None, 0), new Set(SetBonus.None, 0), new Set(SetBonus.None, 0)},
                 mythicArray = new MythicBonus[] { MythicBonus.None, MythicBonus.None, MythicBonus.None, MythicBonus.None, MythicBonus.None, MythicBonus.None, },
@@ -452,6 +457,8 @@ public class Character
         sp = 0;
         drain = false;
         nightWalkerUsed = false;
+        polarisUsed = false;
+        eruptionUsed = false;
         AttributeHeroSkills();
         InitialisePet();
     }
@@ -605,6 +612,8 @@ public class Character
         counter = 0;
         sp = 0;
         nightWalkerUsed = true;
+        polarisUsed = true;
+        eruptionUsed = true;
         drain = false;
         AttributeMobSkills();
         pet = new Pet();
@@ -674,6 +683,12 @@ public class Character
                 skillList.Add(new Skill(1.35f, 0.1f, 50, 2, SkillType.Target));
                 skillList.Add(new Skill(1.80f, 0.1f, 5, 8, SkillType.SpreadHeal));
                 skillList.Add(new Skill(2.85f, 0.1f, 5, 8, SkillType.Weakest));
+                break;
+            case Weapon.LaserSet:
+                skillList.Add(new Skill(1.95f, 0.5f, 10, 2, SkillType.Strongest));
+                skillList.Add(new Skill(0.675f, 0.5f, 10, 2, SkillType.Target2));
+                skillList.Add(new Skill(0.39f, 0.5f, 10, 2, SkillType.Ricochet4));
+                skillList.Add(new Skill(1.2f, 0.5f, 60, 4, SkillType.SpreadHeal));
                 break;
         }
     }
@@ -787,6 +802,26 @@ public class Character
                 skillList.Add(new Skill(1.9f, 0.2f, 50, 4, SkillType.Weakest));
                 skillList.Add(new Skill(1.2f, 0.2f, 30, 4, SkillType.AOEHeal));
                 break;
+            case "Zol":
+                skillList.Add(new Skill(0.97f, 0.2f, 5, 2, SkillType.Pierce2));
+                skillList.Add(new Skill(1.57f, 0.2f, 5, 2, SkillType.Furthest));
+                skillList.Add(new Skill(1.88f, 0.2f, 50, 2, SkillType.Execute));
+                skillList.Add(new Skill(1.2f, 0.2f, 30, 4, SkillType.TargetHeal));
+                break;
+            case "Mallow King":
+                skillList.Add(new Skill(2.29f, 0.3f, 30, 2, SkillType.Execute));
+                skillList.Add(new Skill(1.57f, 0.3f, 20, 2, SkillType.Furthest));
+                skillList.Add(new Skill(1.95f, 0.3f, 30, 4, SkillType.Random));
+                skillList.Add(new Skill(1.2f, 0.3f, 5, 4, SkillType.TargetHeal));
+                break;
+            case "Mallow King Fusion":
+                skillList.Add(new Skill(2.29f, 0.3f, 30, 2, SkillType.ExecuteClosest));
+                skillList.Add(new Skill(1.57f, 0.3f, 20, 2, SkillType.Furthest));
+                skillList.Add(new Skill(1.95f, 0.3f, 30, 4, SkillType.Random));
+                skillList.Add(new Skill(1.2f, 0.3f, 5, 4, SkillType.TargetHeal));
+                //add aoe skill sub 50% hp
+                break;
+
             case "DesertScorpion":
                 skillList.Add(new Skill(0.75f, 0.4f, 10, 2, SkillType.Drain));
                 skillList.Add(new Skill(1.12f, 0.4f, 10, 2, SkillType.SelfSHield));
@@ -876,6 +911,10 @@ public class Character
                         absorbChance += 2f;
                         // other bonuses are not passive
                         break;
+                    case SetBonus.ArsenalBonus:
+                        ricochetChance += 2f;
+                        //other passives conditional
+                        break;
 
                     //Trials
                     case SetBonus.UnityBonus:
@@ -910,6 +949,11 @@ public class Character
                         {
                             bonusHealing += 0.15f;
                         }
+                        break;
+
+                    case SetBonus.PolarisBonus:
+                        enrage += 5f;
+
                         //other bonus not passive
                         break;
 
@@ -925,6 +969,12 @@ public class Character
                         if (set.GetPieceCount() == 4)
                         {
                             ricochetChance = 10f;
+                        }
+                        break;
+                    case SetBonus.EruptionBonus:
+                        if (set.GetPieceCount() > 2)
+                        {
+                            evadeChance += 12f;
                         }
                         break;
 
@@ -943,6 +993,9 @@ public class Character
                         empowerChance += 4f;
                         if (set.GetPieceCount() > 2) meterlessChance += 20f;
                         //bonus not passive
+                        break;
+                    case SetBonus.RequiemBonus:
+                        //conditional
                         break;
                 }
             }
@@ -979,6 +1032,22 @@ public class Character
                     break;
                 case MythicBonus.Bedlam:
                     bonusHealing += 0.08f;
+                    break;
+
+                case MythicBonus.LavaDefender:
+                    //redirect + 5
+                    break;
+                case MythicBonus.ShiftingBreeze:
+                    agilityRunes += 4f;
+                    break;
+                case MythicBonus.BrightStar:
+                    deflectChance += 3f;
+                    break;
+                case MythicBonus.Veilage:
+                    empowerChance += 4f;
+                    break;
+                case MythicBonus.Flickerate:
+                    absorbChance += 2f;
                     break;
             }
         }
@@ -1070,7 +1139,24 @@ public class Character
                     case SetBonus.InfernoBonus:
                         if (set.GetPieceCount() == 4 && spUsed) returnMod += 0.2f;
                         break;
+                    case SetBonus.ArsenalBonus:
+                        if (set.GetPieceCount() > 2 && (target.hp > target.maxHp * 0.75f || target.hp < target.maxHp * 0.25f)) returnMod += 0.1f;
+                        if (set.GetPieceCount() == 4)
+                        {
 
+                            int modCount = 10 - (int)Math.Floor(((float)target.hp / target.maxHp) * 10);
+                            if (modCount == 0) modCount = 1;
+                            returnMod += modCount * 0.03f;
+                        }
+                        break;
+                    case SetBonus.RequiemBonus:
+                        if (set.GetPieceCount() >= 2)
+                            if (Logic.RNGroll(25f)) returnMod += 0.25f;
+                        if (set.GetPieceCount() == 3)
+                        {
+                            returnMod += (float)ThreadSafeRandom.NextRange(1, 24) / 100;
+                        }
+                        break;
                 }
             }
         }
@@ -1084,6 +1170,20 @@ public class Character
         }
         if (FindMythBonus(MythicBonus.FishNBarrel)) returnMod -= 0.05f;
         if (FindMythBonus(MythicBonus.NightVisage) && hp == maxHp) returnMod += 0.05f;
+        if (FindMythBonus(MythicBonus.MoonCollage))
+        {
+            int roll = ThreadSafeRandom.Next(100);
+            if (roll < 45) returnMod += 0.01f;
+            else if (roll < 65) returnMod += 0.02f;
+            else if (roll < 80) returnMod += 0.03f;
+            else if (roll < 90) returnMod += 0.05f;
+            else if (roll < 97) returnMod += 0.1f;
+            else if (roll < 100) returnMod += 0.5f;
+        }
+        if (FindMythBonus(MythicBonus.DeweDecal))
+        {
+            if (WorldBossSimulation.GetPartyCount(party) == party.Length) returnMod += 0.05f;
+        }
         //add hysterya down the line
         return returnMod;
     }
@@ -1119,13 +1219,18 @@ public class Character
                     case SetBonus.NWBonus:
                         if (set.GetPieceCount() > 3 && shield > 0) returnMod += 0.15f;
                         break;
-
-
+                    case SetBonus.PolarisBonus:
+                        if (set.GetPieceCount() > 3)
+                        {
+                            int modCount =(int)Math.Floor(((float)hp / maxHp) * 10);
+                            if (modCount == 0) modCount = 1;
+                            returnMod += modCount * 0.02f;
+                        }
+                        break;
                 }
             }
         }
         if (FindMythBonus(MythicBonus.FishNBarrel)) returnMod += 0.05f;
-
         return returnMod;
     }
 

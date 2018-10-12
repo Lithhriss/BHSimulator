@@ -561,6 +561,9 @@ public class HeroPanel : MonoBehaviour
             case "NWBonus":
                 setBonus = SetBonus.NWBonus;
                 break;
+            case "ArsenalBonus":
+                setBonus = SetBonus.ArsenalBonus;
+                break;
 
             //Trials
             case "UnityBonus":
@@ -581,6 +584,9 @@ public class HeroPanel : MonoBehaviour
             case "LuminaryBonus":
                 setBonus = SetBonus.LuminaryBonus;
                 break;
+            case "PolarisBonus":
+                setBonus = SetBonus.PolarisBonus;
+                break;
 
             //WB orlag
             case "Lunarbonus":
@@ -595,6 +601,9 @@ public class HeroPanel : MonoBehaviour
             case "AgonyBonus":
                 setBonus = SetBonus.AgonyBonus;
                 break;
+            case "EruptionBonus":
+                setBonus = SetBonus.EruptionBonus;
+                break;
 
             //WB nether
             case "IllustriousBonus":
@@ -605,6 +614,9 @@ public class HeroPanel : MonoBehaviour
                 break;
             case "InfernoBonus":
                 setBonus = SetBonus.InfernoBonus;
+                break;
+            case "RequiemBonus":
+                setBonus = SetBonus.RequiemBonus;
                 break;
         }
         return setBonus;
@@ -664,6 +676,30 @@ public class HeroPanel : MonoBehaviour
                 break;
             case "Bedlam":
                 mythicBonus = MythicBonus.Bedlam;
+                break;
+            case "MoonCollage":
+                mythicBonus = MythicBonus.MoonCollage;
+                break;
+            case "LavaDefender":
+                mythicBonus = MythicBonus.LavaDefender;
+                break;
+            case "DeweDecal":
+                mythicBonus = MythicBonus.DeweDecal;
+                break;
+            case "MagMasher":
+                mythicBonus = MythicBonus.MagMasher;
+                break;
+            case "ShiftingBreeze":
+                mythicBonus = MythicBonus.ShiftingBreeze;
+                break;
+            case "BrightStar":
+                mythicBonus = MythicBonus.BrightStar;
+                break;
+            case "Veilage":
+                mythicBonus = MythicBonus.Veilage;
+                break;
+            case "Flickerate":
+                mythicBonus = MythicBonus.Flickerate;
                 break;
         }
 
@@ -873,6 +909,9 @@ public class HeroPanel : MonoBehaviour
 				break;
             case "Laser":
                 weapon = Character.Weapon.Laser;
+                break;
+            case "LaserSet":
+                weapon = Character.Weapon.LaserSet;
                 break;
             case "DemonStaff":
                 weapon = Character.Weapon.DemonStaff;

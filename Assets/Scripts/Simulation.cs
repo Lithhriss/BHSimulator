@@ -9,6 +9,7 @@ public class Simulation
     protected int instanceNumber;
     protected Character[] heroes;
     protected Character[] enemies;
+    protected Character _boss;
     protected bool isNotHero = false;
     protected int difficultyModifier;
     public float winRate;
@@ -39,7 +40,7 @@ public class Simulation
     public void Run(int boss, Action<float> callback, Func<bool, bool> stopSim, Action<bool> simOutcome)
     {
         if (stopSim(false)) return;
-        int safetyNet = 2000;
+        int safetyNet = 4000;
 
         foreach (var hero in heroes) hero.InitialiseHero();
         SetupEnemies(boss);
@@ -77,7 +78,12 @@ public class Simulation
             }
             if (stopSim(turnCount > safetyNet))
             {
-                Console.WriteLine("Instance = {0} || TurnCount = {1}", instanceNumber, turnCount);
+                UnityEngine.Debug.Log("Instance = " + instanceNumber + " || TurnCount = " + turnCount);
+                UnityEngine.Debug.Log("hero hp = " + heroes[0].hp.ToString() + "|| hero shield = " + heroes[0].shield.ToString());
+                foreach (var mob in enemies)
+                {
+                    UnityEngine.Debug.Log("enemy hp = " + mob.hp.ToString() + "|| enemy shield = " + mob.shield.ToString() + "|| enemy name = " + mob.name);
+                }
                 return;
             }
         }
@@ -119,4 +125,11 @@ public class Simulation
         else return Boolean.False;
     }
 
+    private void ShowCurrentBattleStatus()
+    {
+        var one = "hero hp = "+ heroes[0].hp.ToString() + "|| hero shield = " + heroes[0].shield.ToString();
+        var two = "hero hp = " + _boss.hp.ToString() + "|| hero shield = " + _boss.shield.ToString();
+        UnityEngine.Debug.Log(one);
+        UnityEngine.Debug.Log(two);
+    }
 }

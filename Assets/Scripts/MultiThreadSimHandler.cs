@@ -69,6 +69,7 @@ public class MultiThreadSimHandler
         {
             if (!simRunning || GetCancelButtonState())
             {
+                UnityEngine.Debug.Log("error stop from user");
                 CallbackShowError();
                 state.Break();
             }
@@ -110,6 +111,7 @@ public class MultiThreadSimHandler
     {
         if (callFromSim)
         {
+            UnityEngine.Debug.Log("error from sim");
             CallbackShowError();
             simRunning = false;
             return true;

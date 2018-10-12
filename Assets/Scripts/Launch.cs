@@ -42,13 +42,17 @@ public class Launch : MonoBehaviour
         {31, 90 },
         {32, 135 },
 
-        {40, 61 },
-        {41, 122 },
-        {42, 183 },
+        {40, 60 },
+        {41, 120 },
+        {42, 180 },
 
-        {50, 80 }, //to change
-        {51, 180 }, //to change
-        {52, 340 }, //to change
+        {50, 80 }, 
+        {51, 160 }, 
+        {52, 240 },
+
+        {60, 110 },
+        {61, 290 },
+        {62, 490 },
 
 
         {100, 10 },
@@ -67,14 +71,17 @@ public class Launch : MonoBehaviour
         {131, 90 },
         {132, 135 },
 
-        {140, 61 },
-        {141, 122 },
-        {142, 183 },
+        {140, 60 },
+        {141, 120 },
+        {142, 180 },
 
-        {150, 80 }, //to change
-        {151, 170 }, //to change
-        {152, 320 }, //to change
+        {150, 80 },
+        {151, 160 }, 
+        {152, 240 },
 
+        {160, 110 },
+        {161, 280 },
+        {162, 470 },
 
 
     };
@@ -95,6 +102,10 @@ public class Launch : MonoBehaviour
         {30, 205 },
         {31, 310 },
         {32, 485 },
+
+        {40, 290 },
+        {41, 480 },
+        {42, 670 },
 
     };
 
@@ -198,12 +209,16 @@ public class Launch : MonoBehaviour
         GameMode gameMode = (GameMode)_gameMode;
         int difficulty = GetDifficulty(gameMode);
         int bossValue = 0;
-        if (gameMode == GameMode.Raid) bossValue = bossName.value;
+        if (gameMode == GameMode.Raid)
+        {
+            bossValue = bossName.value;
+            if (difficulty == 670) bossValue = bossValue * 10 + 1;
+        }
         else bossValue = wbName.value;
         if (Convert.ToInt32(fightCountField.text) < 0) fightCountField.text = "1";
         new Thread(() => new MultiThreadSimHandler( gameMode, 
                                                     heroes, 
-                                                    bossName.value, 
+                                                    bossValue, 
                                                     difficulty, 
                                                     ppt.GetPlayerNumber(),
                                                     Convert.ToInt32(fightCountField.text),

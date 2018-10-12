@@ -9,7 +9,9 @@ public enum SkillType
     Closest,
     Furthest,
     Target,
+    Target2,
     Weakest,
+    Strongest,
     Random,
     SelfHeal,
     SelfSHield,
@@ -22,6 +24,7 @@ public enum SkillType
     Pierce3,
     Pierce2,
     Execute,
+    ExecuteClosest,
     Ricochet4,
     Ricochet2,
     Unity,
@@ -172,8 +175,14 @@ public class Skill
                 case SkillType.Random:
                     TargetSkill(author, party, opponents);
                     break;
+                case SkillType.Target2:
+                    TargetSkillMulti(author, party, opponents, 2);
+                    break;
                 case SkillType.Weakest:
                     WeakestSkill(author, party, opponents);
+                    break;
+                case SkillType.Strongest:
+                    StrongestSkill(author, party, opponents);
                     break;
                 case SkillType.Furthest:
                     FurthestSkill(author, party, opponents);
@@ -217,6 +226,11 @@ public class Skill
                     TargetSkill(author, party, opponents);
                     author.selfInjure = false;
                     break;
+                case SkillType.ExecuteClosest:
+                    author.selfInjure = true;
+                    ClosestSkill(author, party, opponents);
+                    author.selfInjure = false;
+                    break;
                 case SkillType.Ricochet4:
                     RicochetSkill(author, party, opponents, 4);
                     break;
@@ -230,11 +244,11 @@ public class Skill
                     break;
                 case SkillType.OnTurnShield:
                     OnTurnShieldTeam(author, party);
-                    amountToCast = 1;
+                    amountToCast += 1;
                     break;
                 case SkillType.WeakestTayto:
                     WeakestTaytoSkill(author, party, opponents);
-                    amountToCast = 1;
+                    amountToCast += 1;
                     break;
 
             }
@@ -267,7 +281,11 @@ public class Skill
         else
         {
             Logic.DamageApplication(attackValue, target, author, party, receivingParty);
-            if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0) DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc); //this implmentation won't work as well if enemies have redirect/deflect
+            if (Logic.RNGroll(author.ricochetChance) && WorldBossSimulation.GetPartyCount(opponents) > 0)
+            {
+                target = Logic.RedirectDeflectLoop(Logic.SelectRicochet(receivingParty, target), author, opponents, party, ref absorbProc);
+                DamageLogic(author, party, opponents, Logic.SelectRicochet(opponents, target), absorbProc);
+            }
         }
     }
 
@@ -296,11 +314,30 @@ public class Skill
         DamageLogic(author, party, opponents, target, absorbProc);
 
     }
+
+    private void TargetSkillMulti(Character author, Character[] party, Character[] opponents, int count)
+    {
+        //find target 
+        bool absorbProc = false;
+        for (int i = 0; i < count; i++)
+        {
+            Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
+            DamageLogic(author, party, opponents, target, absorbProc);
+        }
+
+    }
     private void WeakestSkill(Character author, Character[] party, Character[] opponents)
     {
         //find target 
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectWeakest(opponents), author, opponents, party, ref absorbProc);
+        DamageLogic(author, party, opponents, target, absorbProc);
+    }
+    private void StrongestSkill(Character author, Character[] party, Character[] opponents)
+    {
+        //find target 
+        bool absorbProc = false;
+        Character target = Logic.RedirectDeflectLoop(Logic.SelectStrongest(opponents), author, opponents, party, ref absorbProc);
         DamageLogic(author, party, opponents, target, absorbProc);
     }
     private void WeakestTaytoSkill(Character author, Character[] party, Character[] opponents)
@@ -486,6 +523,7 @@ public class Skill
     }
     private void RicochetSkill(Character author, Character[] party, Character[] opponents, int bounce)
     {
+        Character[] targetParty;
         bool absorbProc = false;
         Character target = Logic.RedirectDeflectLoop(Logic.SelectTarget(opponents), author, opponents, party, ref absorbProc);
         DamageLogic(author, party, opponents, target, absorbProc);
@@ -494,7 +532,10 @@ public class Skill
         {
             if (Logic.CountAlive(opponents) > 1)
             {
-                target = Logic.RedirectDeflectLoop(Logic.SelectRicochet(opponents, target), author, opponents, party, ref absorbProc);
+                if (opponents.Contains(target)) targetParty = opponents;
+                else targetParty = party;
+                
+                target = Logic.RedirectDeflectLoop(Logic.SelectRicochet(targetParty, target), author, opponents, party, ref absorbProc);
                 DamageLogic(author, party, opponents, target, absorbProc);
                 absorbProc = false;
             }

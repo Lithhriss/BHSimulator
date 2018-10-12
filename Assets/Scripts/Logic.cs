@@ -66,47 +66,6 @@ class Logic
         float attackModifier = 1f + author.ReturnPersonalAttackMods(target, opponents, party);
         float reductionModifier = 0f + target.ReturnPersonalDefenceMods(opponents);
         int attackValuePrint = attackValue;
-        //oblit check
-        //int position = Array.IndexOf(opponents, target);
-        //if (position != 0)
-        //{
-        //    for (int i = position; i >= 0; i--)
-        //    {
-        //        if (opponents[i].alive
-        //            && (int)opponents[i].obliterationBonus >= (int)Character.ObliterationBonus.Bonus_2_of_4) reductionModifier += 0.05f;
-        //    }
-        //}
-        //position = Array.IndexOf(party, author);
-        //if (position != 0)
-        //{
-        //    for (int i = position; i >= 0; i--)
-        //    {
-        //        if (party[i].alive
-        //            && (int)party[i].obliterationBonus >= (int)Character.ObliterationBonus.Bonus_3_of_4)
-        //            attackModifier += 0.05f;
-        //    }
-        //}
-        //if (target.obliterationBonus == Character.ObliterationBonus.Bonus_4_of_4 
-        //    && WorldBossSimulation.GetPartyCount(opponents) == opponents.Length) reductionModifier += 0.15f;
-
-        ////night check
-        //if(target.nightWalkerBonus == Character.NightWalkerBonus.Bonus_4_of_4 
-        //    && target.shield > 0) reductionModifier += 0.15f;
-
-        //if (target.barrelBonus) reductionModifier += 0.05f;
-        //if (author.barrelBonus) attackModifier -= 0.05f;
-
-        //if (target.bushidoBonus) attackModifier += 0.1f;
-        //if (author.bushidoBonus) attackModifier += 0.1f;
-
-        //if (author.nightVisageBonus && author.hp == author.maxHp) attackModifier += 0.05f;
-
-        //if (WorldBossSimulation.GetPartyCount(opponents) == 1 
-        //    && author.conductionBonus == Character.ConductionBonus.Bonus_4_of_4) attackModifier += 0.25f;
-
-        //if (author.divinityBonus == Character.DivinityBonus.Bonus_3_of_3
-        //    && target.hp <= 0.3f * (float)target.maxHp) attackModifier += 0.30f;
-
         attackValue = Convert.ToInt32(attackValue * attackModifier);
 
         if (isBlocked) attackValue = Convert.ToInt32(0.5 * attackValue);
@@ -154,6 +113,15 @@ class Logic
             target.nightWalkerUsed = true;
             target.shield = target.maxShield;
         }
+
+        if (target.hp < target.maxHp / 2
+    && !target.polarisUsed
+    && target.FindSetBonus(SetBonus.PolarisBonus, 3))
+        {
+            target.polarisUsed = true;
+            target.hp = target.maxHp;
+        }
+
         if (!target.alive)
         {
             target.hp = -1;
@@ -370,6 +338,31 @@ class Logic
         }
         return returnChar;
     }
+
+    public static Character SelectStrongest(Character[] party)
+    {
+        Character returnChar = party[0];
+        foreach (var member in party)
+        {
+            if (member.alive)
+            {
+                if (returnChar.alive)
+                {
+                    if (member.hp > returnChar.hp)
+                    {
+                        returnChar = member;
+                    }
+                }
+                else
+                {
+                    returnChar = member;
+                }
+            }
+        }
+        return returnChar;
+    }
+
+
     public static Character SelectRicochet(Character[] party, Character currentTarget)
     {
         Character newTarget = party[ThreadSafeRandom.Next(party.Length)];
@@ -392,6 +385,12 @@ class Logic
             case 0: // evade
                 break;
             case 1: //block
+                if (!target.eruptionUsed)
+                {
+                    HitAbsorbed(attackValue, target);
+                    target.eruptionUsed = true;
+                    break;
+                }
                 isBlocked = true;
                 Hit(attackValue, target, author, isBlocked, opponents, party);
                 if (target.alive) target.pet.PetSelection(target, opponents, party, PetProcType.GetHit);

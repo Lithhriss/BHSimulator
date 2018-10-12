@@ -10,6 +10,7 @@ public enum SetBonus
     DivinityBonus,
     MaruBonus,
     NWBonus,
+    ArsenalBonus,
 
     //Trials
     UnityBonus,
@@ -18,17 +19,20 @@ public enum SetBonus
     TaldBonus,
     ConducBonus,
     LuminaryBonus,
+    PolarisBonus,
 
     //WB orlag
     Lunarbonus,
     JynxBonus,
     OblitBonus,
     AgonyBonus,
+    EruptionBonus,
 
     //WB nether
     IllustriousBonus,
     TatersBonus,
     InfernoBonus,
+    RequiemBonus
 
 }
 
@@ -43,6 +47,7 @@ public enum MythicBonus
     Consumption,
     Decay,
     Necrosis,
+
     Cometfell,
     Nebuleye_Not_Implemented,
     HoodOfMenace,
@@ -50,7 +55,17 @@ public enum MythicBonus
     FishNBarrel,
     EngulfintArtifact,
     Nemesis,
-    Bedlam
+    Bedlam,
+
+    MoonCollage,
+    LavaDefender,
+    MagMasher,
+    DeweDecal,
+    ShiftingBreeze,
+    BrightStar,
+    Veilage,
+    Flickerate
+
 
 }
 

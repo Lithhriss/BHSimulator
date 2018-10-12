@@ -141,8 +141,12 @@ public class RaidSimulation : Simulation
                 return new Character(10, 18, 4, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Woodbeard");
             case 2:
                 return new Character(10, 18, 4, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 1.9, isNotHero, "Robomech");
-            default:
+            case 3:
                 return new Character(8, 23, 5, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Zol"); // prio subject to change
+            case 4:
+                return new Character(8, 18, 5, 10f, 50f, 0f, 0f, 0f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Mallow King"); // prio subject to change
+            default:
+                return new Character(8, 18, 5, 10f, 50f, 0f, 0f, 45f, 2.5f, 0f, 0f, 0f, 0f, 0f, 0f, difficultyModifier, 0.9, isNotHero, "Mallow King Fusions"); // prio subject to change
         }
     }
 
